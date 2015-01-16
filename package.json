@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app",
-    "postinstall": "node node_modules/.bin/gulp default"
+    "postinstall": "gulp default"
   },
   "author": "",
   "license": "ISC",
