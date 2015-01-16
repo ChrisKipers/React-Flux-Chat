@@ -14,7 +14,7 @@ var Settings = React.createClass({
   },
   _submitEdit: function(event) {
     event.preventDefault();
-    SettingActions.setUserName(this.state.settings.userName);
+    SettingActions.setUserNameFromUI(this.state.settings.userName);
     this.props.onClose();
   },
   render: function() {

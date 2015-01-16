@@ -1,6 +1,7 @@
 var React = require('react');
 var ChatRoom = require('./ChatRoom.jsx');
 var ChatRoomList = require('./ChatRoomList.jsx');
+var UserList = require('./UserList.jsx')
 var TextRenderer = require('./TextRenderer.jsx');
 var MessageActions = require('./../actions/MessageActions');
 var AppHeader = require('./AppHeader.jsx');
@@ -16,6 +17,7 @@ var App = React.createClass({
         <div className="app-content">
           <div className="chat-side-bar">
             <ChatRoomList onRoomSelect={this._changeRoom}/>
+            <UserList />
             <div className="new-chat-room">
               <TextRenderer text="Create Room" onSubmit={this._createNewChatRoom} />
             </div>

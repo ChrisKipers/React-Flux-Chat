@@ -1,5 +1,7 @@
 var io = require('socket.io-client');
 var MessageActions = require('./actions/MessageActions');
+var SettingActions = require('./actions/SettingActions');
+var UserActions = require('./actions/UserActions');
 var Constants = require('./constants');
 
 var socket = io();
@@ -12,7 +14,13 @@ socket.on('connect', function() {
   });
   socket.on(Constants.SET_MESSAGES, function(allMessages) {
     MessageActions.setMessages(allMessages);
-  })
+  });
+  socket.on(Constants.SET_USER_NAME_FROM_SERVER, function(userName) {
+    SettingActions.setUserNameFromServer(userName);
+  });
+  socket.on(Constants.SET_USERS, function(users) {
+    UserActions.setUsers(users);
+  });
 });
 
 
@@ -24,7 +32,12 @@ function submitNewRoom(room) {
   socket.emit(Constants.SUBMIT_ROOM, room);
 }
 
+function submitNewUserName(userName) {
+  socket.emit(Constants.SET_USER_NAME_FROM_UI, userName);
+}
+
 module.exports = {
   submitMessage: submitMessage,
-  submitNewRoom: submitNewRoom
+  submitNewRoom: submitNewRoom,
+  submitNewUserName: submitNewUserName
 };

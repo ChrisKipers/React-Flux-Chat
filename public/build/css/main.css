@@ -66,17 +66,24 @@ header:after {
 	padding-top: 15px;
 }
 
-.room-list:before {
-	content: "ROOMS";
+.room-list:before, .user-list:before {
 	color: #838383;
 	padding: 10px;
 }
 
-.room-list li {
+.room-list:before {
+	content: "ROOMS";
+}
+
+.user-list:before {
+	content: "USERS";
+}
+
+.room-list li, .user-list li {
 	padding: 10px;
 }
 
-.room-list li:hover {
+.room-list li:hover, .user-list li:hover  {
 	background-color: #E9E9E9;
 }
 
