@@ -3,6 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Constants = require('./public/src/js/constants');
+var config = require('./config');
 
 var chatRooms = {
   General: []
@@ -39,6 +40,6 @@ io.on('connection', function(socket){
 
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(config.port, function(){
+  console.log('listening on *:' + config.port);
 });
