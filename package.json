@@ -2,10 +2,10 @@
   "name": "react-msg",
   "version": "0.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node app",
-    "postinstall": "gulp default"
+    "postinstall": "gulp"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +17,8 @@
     "react": "^0.12.2",
     "socket.io-client": "^1.2.1",
     "moment": "^2.9.0",
-    "sillyname": "0.0.3"
+    "sillyname": "0.0.3",
+    "express": "^4.11.0"
   },
   "devDependencies": {
     "browserify": "^8.1.0",
