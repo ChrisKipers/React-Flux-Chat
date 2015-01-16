@@ -2,7 +2,7 @@ body {
 	font-family: 'Open Sans', sans-serif;
 }
 
-div, form {
+div, form, input {
 	box-sizing: border-box;
 }
 
@@ -151,15 +151,17 @@ header:after {
 }
 
 .chat-room form {
+	border-top: 1px solid #CCCCCC;
 	position: absolute;
-	height: 40px;
+	height: 45px;
 	bottom: 0;
 	width: 100%;
 	background: #E9E9E9;
-	padding: 15px;
+	padding: 10px;
 }
 
 .chat-room form input {
+	padding: 5px;
 	width: 100%;
 }
 
