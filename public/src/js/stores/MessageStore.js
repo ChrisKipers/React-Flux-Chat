@@ -2,19 +2,15 @@ var AppDispatcher = require('../AppDispatcher.js');
 var EventEmitter = require('events').EventEmitter;
 var Constants = require('../constants.js');
 var assign = require('object-assign');
-var _ = require('lodash');
 var service = require('../service');
 
 var CHANGE_EVENT = 'change';
 
 var _messagesByRoom = {
-  general: []
-}; // collection of todo items
+  General: []
+}; 
 
-/**
- * Create a TODO item.
- * @param {string} text The content of the TODO
- */
+
 function addMessage(message, roomName) {
   addRoom(roomName);
   _messagesByRoom[roomName].push(message);
@@ -31,10 +27,6 @@ function setAllMessages(allMessages) {
 
 var MessageStore = assign({}, EventEmitter.prototype, {
 
-  /**
-   * Get the entire collection of TODOs.
-   * @return {object}
-   */
   getAll: function() {
     return _messagesByRoom;
   },
@@ -43,16 +35,10 @@ var MessageStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
@@ -77,11 +63,9 @@ var MessageStore = assign({}, EventEmitter.prototype, {
           setAllMessages(action.allMessages);
           MessageStore.emitChange();
         break;
-
-      // add more cases for other actionTypes, like TODO_UPDATE, etc.
     }
 
-    return true; // No errors. Needed by promise in Dispatcher.
+    return true;
   })
 
 });

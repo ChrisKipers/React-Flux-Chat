@@ -1,3 +1,4 @@
+/*jshint quotmark:false */
 var React = require('react');
 var UserStore = require('../stores/UserStore');
 

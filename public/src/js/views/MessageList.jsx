@@ -1,3 +1,4 @@
+/*jshint quotmark:false */
 var React = require('react');
 var Message = require('./Message.jsx');
 var _ = require('lodash');

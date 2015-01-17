@@ -10,6 +10,8 @@ var stylish = require('jshint-stylish');
 var es = require('event-stream');
 var react = require('gulp-react');
 
+var jsHintConfig = require('./config/jshint-config.json');
+
 // gulp.task('browserify', function() {
 //     var bundler = browserify({
 //         entries: ['./public/src/js/main.js'], // Only need initial file, browserify finds the deps
@@ -47,7 +49,7 @@ gulp.task('browserify', function() {
 });
 
 gulp.task('compass', function() {
-  gulp.src('./public/src/scss/*.scss')
+  return gulp.src('./public/src/scss/*.scss')
     .pipe(compass({
       config_file: './config/compass-config.rb',
       css: 'public/build/css',
@@ -61,8 +63,9 @@ gulp.task('lint', function() {
   var jsFilePipe = gulp.src('./public/src/js/**/*.js');
   var jsxFilePipe = gulp.src('./public/src/js/**/*.jsx').pipe(react());
   return es.merge(serverJSFile, jsFilePipe, jsxFilePipe)
-    .pipe(jshint())
+    .pipe(jshint(jsHintConfig))
     .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('default', ['browserify', 'compass']);
+gulp.task('default', ['lint', 'browserify', 'compass']);
+gulp.task('build', ['browserify', 'compass'])

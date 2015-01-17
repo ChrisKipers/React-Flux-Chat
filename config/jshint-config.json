@@ -1,0 +1,8 @@
+{
+  "undef": true,
+  "unused": true,
+  "predef": ["require", "module", "console"],
+  "quotmark": "single",
+  "camelcase": true,
+  "curly": true
+}

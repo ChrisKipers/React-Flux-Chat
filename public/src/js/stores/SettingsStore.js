@@ -8,10 +8,6 @@ var CHANGE_EVENT = 'change';
 
 var _userName;
 
-/**
- * Create a TODO item.
- * @param {string} text The content of the TODO
- */
 function setUserName(newUserName) {
   _userName = newUserName;
 }
@@ -26,16 +22,10 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
   },
 
-  /**
-   * @param {function} callback
-   */
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
 
-  /**
-   * @param {function} callback
-   */
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
@@ -51,10 +41,9 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
           setUserName(action.userName);
           SettingsStore.emitChange();
         break;
-      // add more cases for other actionTypes, like TODO_UPDATE, etc.
     }
 
-    return true; // No errors. Needed by promise in Dispatcher.
+    return true;
   })
 
 });

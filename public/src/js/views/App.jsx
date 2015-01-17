@@ -1,3 +1,4 @@
+/*jshint quotmark:false */
 var React = require('react');
 var ChatRoom = require('./ChatRoom.jsx');
 var ChatRoomList = require('./ChatRoomList.jsx');

@@ -1,3 +1,4 @@
+/*jshint quotmark:false */
 var React = require('react');
 var MessageStore = require('../stores/MessageStore');
 var MessageActions = require('../actions/MessageActions');
