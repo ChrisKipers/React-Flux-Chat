@@ -1,0 +1,46 @@
+@import 'theme';
+@import 'layout_constants';
+
+header {
+	background: $HEADER_BACKGROUND_COLOR;
+	border-bottom: 1px solid black;
+	padding: 10px;
+	height: $LAYOUT_HEIGHT;
+	box-sizing: border-box;	
+	text-align: center;
+
+	&:before, &:after {
+		content: '';
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		background-size: cover;
+	}
+
+	&:before {
+		background-image: url(../images/react_logo.svg);
+	}
+
+	&:after {
+		background-image: url(../images/flux_logo.svg);
+	}
+
+	.title {
+		padding-left: 10px;
+		padding-right: 10px;
+		color: white;
+		font-family: $HEADER_FONT;
+		font-size: 25px;
+	}
+
+	.settings-header-section {
+		float: right;
+		.settings-icon {
+			background-image: url(../images/settings_icon.png);
+			display: inline-block;
+			width: 25px;
+			height: 25px;
+			background-size: cover;
+		}
+	}
+}

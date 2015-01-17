@@ -4,6 +4,7 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify'); 
 var concat = require('gulp-concat');
+var compass = require('gulp-compass')
 
 // gulp.task('browserify', function() {
 //     var bundler = browserify({
@@ -41,5 +42,14 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest('./public/build/js/'));
 });
 
-// Just running the two tasks
-gulp.task('default', ['browserify']);
+gulp.task('compass', function() {
+  gulp.src('./public/src/scss/*.scss')
+    .pipe(compass({
+      config_file: './compass-config.rb',
+      css: 'public/build/css',
+      sass: 'public/src/scss'
+    }))
+    .pipe(gulp.dest('./public/build/css'));
+});
+
+gulp.task('default', ['browserify', 'compass']);

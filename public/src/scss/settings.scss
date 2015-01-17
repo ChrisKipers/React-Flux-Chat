@@ -1,0 +1,49 @@
+@import 'theme';
+@import 'layout_constants';
+
+.settings-dropdown {
+	position: absolute;
+	z-index: 1;
+	right: 12px;
+	top: 44px;
+	border: 1px solid $BORDER_COLOR;
+	box-shadow:2px 4px 20px #000000;
+	width: 300px;
+
+	&:before {
+		content: "";
+		display: block;
+		position: absolute;
+		top: -10px;
+		border-style: solid;
+		right: 0;
+		border-width: 0 10px 10px;
+		border-color: $LIGHT_BACKGROUND_COLOR transparent;
+	}
+
+	h1, .dialog-footer {
+		background-color: $LIGHT_BACKGROUND_COLOR;
+		padding: 10px;
+	}
+
+	h1 {
+		color: $PRIMARY_HEADER_COLOR;
+	}
+
+	form {
+		background-color: white;
+		padding: 10px 0 10px 0;
+	}
+
+	.close-botton {
+		position: absolute;
+		top: 0;
+		right: 0;
+		background: transparent;
+		border: none;
+		background-image: url(../images/close_icon.png);
+		background-size: cover;
+		width: 20px;
+		height: 20px;
+	}
+}

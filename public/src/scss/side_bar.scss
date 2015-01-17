@@ -1,0 +1,53 @@
+@import 'theme';
+@import 'layout_constants';
+
+.chat-side-bar {
+	background: $LIGHT_BACKGROUND_COLOR;
+	display: inline-block;
+	box-sizing: border-box;
+	width: $SIDE_BAR_WIDTH;
+	border-right: 1px solid $BORDER_COLOR;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	cursor: pointer;
+}
+
+.room-list, .user-list {
+
+	padding-top: 15px;
+
+	&:before {
+		color: $PRIMARY_HEADER_COLOR;
+		padding: 10px;
+	}
+
+	li {
+		padding: 10px;
+		&:hover {
+			background-color: $LIGHT_BACKGROUND_HOVER_COLOR;
+		}
+	}
+}
+
+.room-list {
+	&:before {
+		content: "ROOMS";
+	}
+}
+
+.user-list {
+	&:before {
+		content: "USERS";
+	}
+}
+
+
+.new-chat-room {
+	padding: 10px;
+	color: #30D181;
+}
+
+.new-chat-room:hover {
+	background-color: #A2CDFC;
+}
