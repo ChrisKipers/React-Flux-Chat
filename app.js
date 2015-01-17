@@ -3,7 +3,7 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var Constants = require('./public/src/js/constants');
-var config = require('./config');
+var config = require('./config/config');
 var generateName = require('sillyname');
 var _ = require('lodash');
 

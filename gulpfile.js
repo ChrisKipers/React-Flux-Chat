@@ -49,7 +49,7 @@ gulp.task('browserify', function() {
 gulp.task('compass', function() {
   gulp.src('./public/src/scss/*.scss')
     .pipe(compass({
-      config_file: './compass-config.rb',
+      config_file: './config/compass-config.rb',
       css: 'public/build/css',
       sass: 'public/src/scss'
     }))
