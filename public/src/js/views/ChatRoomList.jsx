@@ -18,7 +18,7 @@ var ChatRoomList = React.createClass({
     var roomComponents = this.state.rooms.map(function(room) {
       return (
         <li onClick={this._selectRoom}>{room}</li>
-      )
+      );
     }.bind(this));
     return (
       <ul className="room-list">

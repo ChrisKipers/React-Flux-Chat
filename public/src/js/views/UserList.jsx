@@ -18,7 +18,7 @@ var UserList = React.createClass({
     var roomComponents = this.state.users.map(function(user) {
       return (
         <li>{user}</li>
-      )
+      );
     });
     return (
       <ul className="user-list">

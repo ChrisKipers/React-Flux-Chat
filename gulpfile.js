@@ -4,7 +4,11 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var reactify = require('reactify'); 
 var concat = require('gulp-concat');
-var compass = require('gulp-compass')
+var compass = require('gulp-compass');
+var jshint = require('gulp-jshint');
+var stylish = require('jshint-stylish');
+var es = require('event-stream');
+var react = require('gulp-react');
 
 // gulp.task('browserify', function() {
 //     var bundler = browserify({
@@ -50,6 +54,15 @@ gulp.task('compass', function() {
       sass: 'public/src/scss'
     }))
     .pipe(gulp.dest('./public/build/css'));
+});
+
+gulp.task('lint', function() {
+  var serverJSFile = gulp.src('./app.js');
+  var jsFilePipe = gulp.src('./public/src/js/**/*.js');
+  var jsxFilePipe = gulp.src('./public/src/js/**/*.jsx').pipe(react());
+  return es.merge(serverJSFile, jsFilePipe, jsxFilePipe)
+    .pipe(jshint())
+    .pipe(jshint.reporter(stylish));
 });
 
 gulp.task('default', ['browserify', 'compass']);

@@ -21,8 +21,8 @@ var MessageList = React.createClass({
     var messageComponents = this.props.messages.map(function(message) {
       return (
         <Message author={message.author} content={message.content} date={message.date}/>
-      )
-    })
+      );
+    });
     return (
       <div className="message-list" onScroll={this._onScroll}>
         {messageComponents}

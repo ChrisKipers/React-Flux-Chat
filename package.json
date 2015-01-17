@@ -30,6 +30,9 @@
     "reactify": "^0.17.1",
     "install": "^0.1.8",
     "npm": "^2.2.0",
-    "gulp-compass": "^2.0.3"
+    "gulp-compass": "^2.0.3",
+    "gulp-jshint": "^1.9.0",
+    "jshint-stylish": "^1.0.0",
+    "event-stream": "^3.2.1"
   }
 }

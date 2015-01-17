@@ -43,12 +43,12 @@ var TextRenderer = React.createClass({
           onChange={this._updateEditText} ref="textInput" 
           onKeyDown={this._keyDown}
           onBlur={this._submitEdit} />
-      </form>
+      </form>;
     } else {
       view = 
       <div onClick={this._enterEdit}>
         {this.props.text}
-      </div>
+      </div>;
     }
     
     return view;
