@@ -1,16 +1,15 @@
 {
-  "name": "react-msg",
-  "version": "0.0.0",
-  "description": "",
+  "name": "react-flux-chat",
+  "version": "0.0.1",
+  "description": "A Chat App to server as a demo for React and Flux.",
   "main": "app.js",
   "scripts": {
     "start": "node app",
     "postinstall": "gulp"
   },
-  "author": "",
+  "author": "Chris Kipers",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^3.3.1",
     "flux": "^2.0.1",
     "lodash": "^2.4.1",
     "object-assign": "^2.0.0",
@@ -31,7 +30,6 @@
     "reactify": "^0.17.1",
     "install": "^0.1.8",
     "npm": "^2.2.0",
-    "gulp-sass": "^1.3.2",
     "gulp-compass": "^2.0.3"
   }
 }
