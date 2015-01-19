@@ -1,3 +1,4 @@
+'use strict';
 /* global __dirname */
 /* global process  */
 var express = require('express');
@@ -24,6 +25,10 @@ function addMessage(message) {
   chatRooms[message.room].push(message);
 }
 
+function emitUsers() {
+  io.emit(Constants.SET_USERS, _.values(usersBySocketId));
+}
+
 function setUserName(userName, socketId) {
   usersBySocketId[socketId] = userName;
   emitUsers();
@@ -32,10 +37,6 @@ function setUserName(userName, socketId) {
 function removeUser(socketId) {
   delete usersBySocketId[socketId];
   emitUsers();
-}
-
-function emitUsers() {
-  io.emit(Constants.SET_USERS, _.values(usersBySocketId));
 }
 
 app.get('/', function(req, res){

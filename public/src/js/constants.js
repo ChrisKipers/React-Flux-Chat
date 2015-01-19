@@ -1,3 +1,4 @@
+'use strict';
 module.exports = {
   ADD_MESSAGE: 'ADD_MESSAGE',
   ADD_ROOM: 'ADD_ROOM',

@@ -1,3 +1,4 @@
+'use strict';
 /*jshint quotmark:false */
 var React = require('react');
 var _ = require('lodash');

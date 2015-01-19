@@ -1,3 +1,4 @@
+'use strict';
 var io = require('socket.io-client');
 var MessageActions = require('./actions/MessageActions');
 var SettingActions = require('./actions/SettingActions');
