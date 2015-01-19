@@ -22,7 +22,7 @@ var MessageList = React.createClass({
   render: function() {
     var messageComponents = this.props.messages.map(function(message) {
       return (
-        <Message author={message.author} content={message.content} date={message.date}/>
+        <Message {...message}/>
       );
     });
     return (
