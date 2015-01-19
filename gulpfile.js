@@ -10,18 +10,36 @@ var gulp = require('gulp'),
   livereload = require('gulp-livereload');
 
 var jsHintConfig = require('./config/jshint-config.json');
+var package = require('./package');
 
 gulp.task('browserify', function () {
-  return browserify({
+  var bundle = browserify({
     entries: ['./public/src/js/main.js'], // Only need initial file, browserify finds the deps
     transform: [reactify], // We want to convert JSX to normal javascript
     debug: true, // Gives us sourcemapping
     cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
-  })
-    .bundle() // Create the initial bundle when starting the task
+  });
+
+  var dependencyNames = Object.keys(package.dependencies);
+  dependencyNames.forEach(function (dependencyName) {
+    bundle.external(require.resolve(dependencyName, {expose: dependencyName}));
+  });
+
+  bundle.bundle() // Create the initial bundle when starting the task
     .pipe(source('main.js'))
     .pipe(gulp.dest('./public/build/js/'))
     .pipe(livereload());
+});
+
+gulp.task('browserify-lib', function () {
+  var bundle = browserify();
+  var dependencyNames = Object.keys(package.dependencies);
+  dependencyNames.forEach(function (dependencyName) {
+    bundle.require(dependencyName);
+  });
+  bundle.bundle()
+    .pipe(source('bundle.js'))
+    .pipe(gulp.dest('./public/build/js'));
 });
 
 gulp.task('compass', function () {
@@ -46,9 +64,10 @@ gulp.task('lint', function () {
 
 gulp.task('watch', function () {
   livereload.listen();
-  gulp.watch('./public/src/js/*.js', ['lint', 'browserify']);
-  gulp.watch('./public/src/scss/*.scss', ['compass']);
+  gulp.watch('./public/src/js/**/*.js', ['lint', 'browserify']);
+  gulp.watch('./public/src/js/**/*.jsx', ['lint', 'browserify']);
+  gulp.watch('./public/src/scss/**/*.scss', ['compass']);
 });
 
-gulp.task('default', ['lint', 'browserify', 'compass']);
-gulp.task('build', ['browserify', 'compass']);
+gulp.task('default', ['lint', 'browserify-lib', 'browserify', 'compass']);
+gulp.task('build', ['browserify-lib', 'browserify', 'compass']);

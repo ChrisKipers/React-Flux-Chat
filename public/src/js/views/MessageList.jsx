@@ -35,7 +35,7 @@ var MessageList = React.createClass({
     var listElement = this.getDOMNode();
     var isAtBottom = listElement.scrollTop + listElement.offsetHeight === listElement.scrollHeight;
     this.setState({lockedOnBottom: isAtBottom});
-  },
+  }
 });
 
 module.exports = MessageList;
