@@ -4,27 +4,27 @@
 $author_col_width: 120px;
 
 .message {
-	border-bottom: 1px solid $MESSAGE_SEPERATOR_COLOR;
-	padding: 15px;
+  border-bottom: 1px solid $MESSAGE_SEPERATOR_COLOR;
+  padding: 15px;
 }
 
 .message .author {
-	display: inline-block;
-	width: $author_col_width;
-	text-align: right;
-	padding-right: 20px;
-	color: $AUTHOR_TEXT_COLOR;
-	vertical-align:top
+  display: inline-block;
+  width: $author_col_width;
+  text-align: right;
+  padding-right: 20px;
+  color: $AUTHOR_TEXT_COLOR;
+  vertical-align: top
 }
 
 .message .content {
-	display: inline-block;
-	width: calc(100% - #{$author_col_width});
+  display: inline-block;
+  width: calc(100% - #{$author_col_width});
 }
 
 .message .date-time {
-	float: right;
-	padding-left: 20px;
-	color: $DATE_TEXT_COLOR;
-	font-size: 12px;
+  float: right;
+  padding-left: 20px;
+  color: $DATE_TEXT_COLOR;
+  font-size: 12px;
 }

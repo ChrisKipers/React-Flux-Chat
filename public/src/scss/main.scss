@@ -1,8 +1,6 @@
 @import "reset";
-
 @import 'theme';
 @import 'layout_constants';
-
 @import 'chat_room';
 @import 'header';
 @import 'message';
@@ -10,17 +8,17 @@
 @import 'side_bar';
 
 body {
-	font-family: 'Open Sans', sans-serif;
+  font-family: 'Open Sans', sans-serif;
 }
 
 div, form, input {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .app-content {
-	position: absolute;
-	top: $LAYOUT_HEIGHT;
-	bottom: 0;
-	left: 0;
-	right: 0;
+  position: absolute;
+  top: $LAYOUT_HEIGHT;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
