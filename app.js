@@ -1,5 +1,4 @@
 'use strict';
-/* global __dirname */
 /* global process  */
 var express = require('express');
 var app = express();

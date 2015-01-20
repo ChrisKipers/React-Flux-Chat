@@ -1,7 +1,7 @@
 'use strict';
 /* global document */
 var React = require('react');
-var App = require('./views/App.jsx');
+var App = require('./components/App.jsx');
 
 React.render(
   React.createElement(App, null),
