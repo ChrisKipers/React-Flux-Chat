@@ -50,13 +50,15 @@ var ChatRoom = React.createClass({
   _submitMessage: function(e) {
     e.preventDefault();
     var messageText = this.refs.messageInput.getDOMNode().value;
-    var newMessage = {
-      room: this.props.room,
-      content: messageText,
-      author: this.state.userName,
-      date: Date.now()
-    };
-    MessageActions.submitMessage(newMessage);
+    if (messageText.trim().length > 0) {
+      var newMessage = {
+        room: this.props.room,
+        content: messageText,
+        author: this.state.userName,
+        date: Date.now()
+      };
+      MessageActions.submitMessage(newMessage);
+    }
     this.refs.messageInput.getDOMNode().value = "";
   }
 });
