@@ -10,7 +10,9 @@ var gulp = require('gulp'),
   livereload = require('gulp-livereload'),
   uglifyjs = require('gulp-uglifyjs'),
   uglifycss = require('gulp-uglifycss'),
-  clean = require('gulp-clean');
+  clean = require('gulp-clean'),
+  jasmine = require('gulp-jasmine'),
+  karma = require('karma');
 
 var jsHintConfig = require('./config/jshint-config.json');
 var package = require('./package');
@@ -59,21 +61,21 @@ gulp.task('lint', function () {
     .pipe(jshint.reporter(stylish));
 });
 
-gulp.task('uglify-js', ['browserify', 'browserify-lib'], function() {
+gulp.task('uglify-js', ['browserify', 'browserify-lib'], function () {
   return gulp.src('./public/build/js/*.js')
-  .pipe(uglifyjs('main.min.js', {
+    .pipe(uglifyjs('main.min.js', {
       outSourceMap: true
     }))
-  .pipe(gulp.dest('./public/dist/js'));
+    .pipe(gulp.dest('./public/dist/js'));
 });
 
-gulp.task('uglify-css', ['sass'], function() {
+gulp.task('uglify-css', ['sass'], function () {
   return gulp.src('./public/build/css/main.css')
     .pipe(uglifycss())
     .pipe(gulp.dest('./public/dist/css/'));
 });
 
-gulp.task('clean', function() {
+gulp.task('clean', function () {
   return gulp.src(['./public/build', './public/dist'])
     .pipe(clean());
 });
@@ -83,6 +85,17 @@ gulp.task('watch', function () {
   gulp.watch('./public/src/js/**/*.js', ['lint', 'browserify']);
   gulp.watch('./public/src/js/**/*.jsx', ['lint', 'browserify']);
   gulp.watch('./public/src/scss/**/*.scss', ['sass']);
+
+  return karma.server.start({
+    configFile: __dirname + '/config/karma.conf.js'
+  });
+});
+
+gulp.task('test', function () {
+  return karma.server.start({
+    configFile: __dirname + '/config/karma.conf.js',
+    singleRun: true
+  });
 });
 
 gulp.task('default', ['watch']);
@@ -92,7 +105,7 @@ gulp.task('build', ['uglify-js', 'uglify-css']);
 function getFrontendDependencies() {
   var backendOnlyDependencies = ['jade', 'express', 'socket.io', 'sillyname'];
   var dependencyNames = Object.keys(package.dependencies);
-  return dependencyNames.filter(function(dependencyName) {
+  return dependencyNames.filter(function (dependencyName) {
     return backendOnlyDependencies.indexOf(dependencyName) === -1;
   });
 }
