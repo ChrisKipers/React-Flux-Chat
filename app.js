@@ -42,7 +42,10 @@ function removeUser(socketId) {
 }
 
 app.get('/', function(req, res){
-  res.render('index');
+  res.render('index', {
+    jsFiles: config.jsFiles,
+    cssFiles: config.cssFiles
+  });
 });
 
 app.use(express.static(process.cwd() + '/public'));

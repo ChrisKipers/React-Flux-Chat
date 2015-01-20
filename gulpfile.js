@@ -7,7 +7,10 @@ var gulp = require('gulp'),
   stylish = require('jshint-stylish'),
   es = require('event-stream'),
   react = require('gulp-react'),
-  livereload = require('gulp-livereload');
+  livereload = require('gulp-livereload'),
+  uglifyjs = require('gulp-uglifyjs'),
+  uglifycss = require('gulp-uglifycss'),
+  clean = require('gulp-clean');
 
 var jsHintConfig = require('./config/jshint-config.json');
 var package = require('./package');
@@ -25,7 +28,7 @@ gulp.task('browserify', function () {
     bundle.external(require.resolve(dependencyName, {expose: dependencyName}));
   });
 
-  bundle.bundle() // Create the initial bundle when starting the task
+  return bundle.bundle() // Create the initial bundle when starting the task
     .pipe(source('main.js'))
     .pipe(gulp.dest('./public/build/js/'))
     .pipe(livereload());
@@ -37,7 +40,7 @@ gulp.task('browserify-lib', function () {
   dependencyNames.forEach(function (dependencyName) {
     bundle.require(dependencyName);
   });
-  bundle.bundle()
+  return bundle.bundle()
     .pipe(source('bundle.js'))
     .pipe(gulp.dest('./public/build/js'));
 });
@@ -62,6 +65,25 @@ gulp.task('lint', function () {
     .pipe(jshint.reporter(stylish));
 });
 
+gulp.task('uglify-js', ['browserify', 'browserify-lib'], function() {
+  return gulp.src('./public/build/js/*.js')
+  .pipe(uglifyjs('main.min.js', {
+      outSourceMap: true
+    }))
+  .pipe(gulp.dest('./public/dist/js'));
+});
+
+gulp.task('uglify-css', ['compass'], function() {
+  return gulp.src('./public/build/css/main.css')
+    .pipe(uglifycss())
+    .pipe(gulp.dest('./public/dist/css/'));
+});
+
+gulp.task('clean', function() {
+  return gulp.src(['./public/build', './public/dist'])
+    .pipe(clean());
+});
+
 gulp.task('watch', function () {
   livereload.listen();
   gulp.watch('./public/src/js/**/*.js', ['lint', 'browserify']);
@@ -69,5 +91,6 @@ gulp.task('watch', function () {
   gulp.watch('./public/src/scss/**/*.scss', ['compass']);
 });
 
-gulp.task('default', ['lint', 'browserify-lib', 'browserify', 'compass']);
-gulp.task('build', ['browserify-lib', 'browserify', 'compass']);
+gulp.task('default', ['watch']);
+gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'compass']);
+gulp.task('build', ['uglify-js', 'uglify-css']);
