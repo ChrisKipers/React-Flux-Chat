@@ -10,6 +10,8 @@ var config = require('./config/config');
 var generateName = require('sillyname');
 var _ = require('lodash');
 
+app.set('view engine', 'jade');
+
 var chatRooms = {
   General: []
 };
@@ -40,7 +42,7 @@ function removeUser(socketId) {
 }
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
+  res.render('index');
 });
 
 app.use(express.static(process.cwd() + '/public'));
