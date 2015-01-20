@@ -18,11 +18,11 @@ header {
 	}
 
 	&:before {
-		background-image: url(../images/react_logo.svg);
+		background-image: url(../../assets/images/logos/react.png);
 	}
 
 	&:after {
-		background-image: url(../images/flux_logo.svg);
+		background-image: url(../../assets/images/logos/flux.png);
 	}
 
 	.title {
@@ -36,7 +36,7 @@ header {
 	.settings-header-section {
 		float: right;
 		.settings-icon {
-			background-image: url(../images/settings_icon.png);
+			background-image: url(../../assets/images/icons/settings.png);
 			display: inline-block;
 			width: 25px;
 			height: 25px;
