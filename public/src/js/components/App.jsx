@@ -33,8 +33,8 @@ var App = React.createClass({
         <div className="app-content">
           <div className="chat-side-bar">
             <ChatRoomList onRoomSelect={this._changeRoom}/>
-            <UserList />
             <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
+            <UserList />
           </div>
           <div className="chat-room-col">
             <ChatRoom room={this.state.room} userName={this.state.userName} messages={messagesForActiveChatRoom}/>

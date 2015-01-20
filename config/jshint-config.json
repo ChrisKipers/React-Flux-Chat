@@ -4,5 +4,6 @@
   "predef": ["require", "module", "console"],
   "quotmark": "single",
   "camelcase": true,
-  "curly": true
+  "curly": true,
+  "node": true
 }
