@@ -4,7 +4,7 @@ var React = require('react');
 var ChatRoom = require('./ChatRoom.jsx');
 var ChatRoomList = require('./ChatRoomList.jsx');
 var UserList = require('./UserList.jsx');
-var TextRenderer = require('./TextRenderer.jsx');
+var CreateRoomInput = require('./CreateRoomInput.jsx');
 var MessageActions = require('./../actions/MessageActions');
 var AppHeader = require('./AppHeader.jsx');
 var SettingsStore = require('../stores/SettingsStore');
@@ -34,9 +34,7 @@ var App = React.createClass({
           <div className="chat-side-bar">
             <ChatRoomList onRoomSelect={this._changeRoom}/>
             <UserList />
-            <div className="new-chat-room">
-              <TextRenderer text="Create Room" onSubmit={this._createNewChatRoom} />
-            </div>
+            <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
           </div>
           <div className="chat-room-col">
             <ChatRoom room={this.state.room} userName={this.state.userName} messages={messagesForActiveChatRoom}/>

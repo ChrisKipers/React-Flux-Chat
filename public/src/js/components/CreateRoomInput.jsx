@@ -15,7 +15,7 @@ var TextRenderer = React.createClass({
     this._exitEnter();
   },
   _enterEdit: function() {
-    this._setPartialState({editing: true, text: this.props.text}, function() {
+    this._setPartialState({editing: true, text: ""}, function() {
       var inputElement = this.refs.textInput.getDOMNode();
       inputElement.focus();
       inputElement.select(); 
@@ -44,16 +44,21 @@ var TextRenderer = React.createClass({
         <input type="text" value={this.state.text} 
           onChange={this._updateEditText} ref="textInput" 
           onKeyDown={this._keyDown}
-          onBlur={this._submitEdit} />
+          onBlur={this._exitEnter}
+          placeholder="Enter Room Name"/>
       </form>;
     } else {
       view = 
       <div onClick={this._enterEdit}>
-        {this.props.text}
+        Create Room
       </div>;
     }
     
-    return view;
+    return (
+      <div className="new-chat-room">
+        {view}
+      </div>
+    );
   }
 });
 

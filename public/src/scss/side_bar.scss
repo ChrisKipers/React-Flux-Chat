@@ -44,9 +44,10 @@
 
 .new-chat-room {
   padding: 10px;
-  color: #30D181;
-}
+  color: $HEADER_BACKGROUND_COLOR;
+  font-weight: bold;
 
-.new-chat-room:hover {
-  background-color: #A2CDFC;
+  &:hover {
+    background-color: $LIGHT_BACKGROUND_HOVER_COLOR;
+  }
 }
