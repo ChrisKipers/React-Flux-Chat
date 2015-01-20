@@ -23,8 +23,7 @@ gulp.task('browserify', function () {
     cache: {}, packageCache: {}, fullPaths: true // Requirement of watchify
   });
 
-  var dependencyNames = Object.keys(package.dependencies);
-  dependencyNames.forEach(function (dependencyName) {
+  getFrontendDependencies().forEach(function (dependencyName) {
     bundle.external(require.resolve(dependencyName, {expose: dependencyName}));
   });
 
@@ -36,8 +35,7 @@ gulp.task('browserify', function () {
 
 gulp.task('browserify-lib', function () {
   var bundle = browserify();
-  var dependencyNames = Object.keys(package.dependencies);
-  dependencyNames.forEach(function (dependencyName) {
+  getFrontendDependencies().forEach(function (dependencyName) {
     bundle.require(dependencyName);
   });
   return bundle.bundle()
@@ -90,3 +88,11 @@ gulp.task('watch', function () {
 gulp.task('default', ['watch']);
 gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'sass']);
 gulp.task('build', ['uglify-js', 'uglify-css']);
+
+function getFrontendDependencies() {
+  var backendOnlyDependencies = ['jade', 'express', 'socket.io'];
+  var dependencyNames = Object.keys(package.dependencies);
+  return dependencyNames.filter(function(dependencyName) {
+    return backendOnlyDependencies.indexOf(dependencyName) === -1;
+  });
+}
