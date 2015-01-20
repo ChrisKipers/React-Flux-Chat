@@ -2,7 +2,7 @@ var gulp = require('gulp'),
   source = require('vinyl-source-stream'),
   browserify = require('browserify'),
   reactify = require('reactify'),
-  compass = require('gulp-compass'),
+  sass = require('gulp-sass'),
   jshint = require('gulp-jshint'),
   stylish = require('jshint-stylish'),
   es = require('event-stream'),
@@ -45,13 +45,9 @@ gulp.task('browserify-lib', function () {
     .pipe(gulp.dest('./public/build/js'));
 });
 
-gulp.task('compass', function () {
+gulp.task('sass', function () {
   return gulp.src('./public/src/scss/*.scss')
-    .pipe(compass({
-      config_file: './config/compass-config.rb',
-      css: 'public/build/css',
-      sass: 'public/src/scss'
-    }))
+    .pipe(sass())
     .pipe(gulp.dest('./public/build/css'))
     .pipe(livereload());
 });
@@ -73,7 +69,7 @@ gulp.task('uglify-js', ['browserify', 'browserify-lib'], function() {
   .pipe(gulp.dest('./public/dist/js'));
 });
 
-gulp.task('uglify-css', ['compass'], function() {
+gulp.task('uglify-css', ['sass'], function() {
   return gulp.src('./public/build/css/main.css')
     .pipe(uglifycss())
     .pipe(gulp.dest('./public/dist/css/'));
@@ -88,9 +84,9 @@ gulp.task('watch', function () {
   livereload.listen();
   gulp.watch('./public/src/js/**/*.js', ['lint', 'browserify']);
   gulp.watch('./public/src/js/**/*.jsx', ['lint', 'browserify']);
-  gulp.watch('./public/src/scss/**/*.scss', ['compass']);
+  gulp.watch('./public/src/scss/**/*.scss', ['sass']);
 });
 
 gulp.task('default', ['watch']);
-gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'compass']);
+gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'sass']);
 gulp.task('build', ['uglify-js', 'uglify-css']);
