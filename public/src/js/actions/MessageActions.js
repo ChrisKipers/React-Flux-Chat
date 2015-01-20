@@ -2,7 +2,7 @@
 var AppDispatcher = require('../AppDispatcher');
 var Constants = require('../constants');
 
-var CommentActions = {
+var MessageActions = {
   submitMessage: function(message) {
     AppDispatcher.dispatch({
       actionType: Constants.SUBMIT_MESSAGE,
@@ -35,4 +35,4 @@ var CommentActions = {
   }
 };
 
-module.exports = CommentActions;
+module.exports = MessageActions;

@@ -4,7 +4,7 @@ var React = require('react');
 var SettingsStore = require('../stores/SettingsStore');
 var SettingActions = require('../actions/SettingActions');
 
-var Settings = React.createClass({
+var SettingsDropdown = React.createClass({
   getInitialState: function() {
     return {settings: {userName: SettingsStore.getUserName()}};
   },
@@ -43,4 +43,4 @@ var Settings = React.createClass({
   }
 });
 
-module.exports = Settings;
+module.exports = SettingsDropdown;
