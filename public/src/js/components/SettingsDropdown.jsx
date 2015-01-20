@@ -9,6 +9,9 @@ var SettingsDropdown = React.createClass({
     return {settings: {userName: SettingsStore.getUserName()}};
   },
   componentDidMount: function() {
+    var userNameInputElement = this.refs.userNameInput.getDOMNode();
+    userNameInputElement.focus();
+    userNameInputElement.select();
     SettingsStore.addChangeListener(this._onSettingsChange);
   },
   componentWillUnmount: function() {
@@ -26,7 +29,7 @@ var SettingsDropdown = React.createClass({
         <input type="button" className="close-botton" onClick={this.props.onClose}/>
         <form onSubmit={this._submitEdit}>
           <label>Username:</label>
-          <input typ="text" onChange={this._updateUserName} value={this.state.settings.userName}/>
+          <input typ="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>
         </form>
         <div className="dialog-footer">
           <input type="button" onClick={this._submitEdit} value="Save"/>
