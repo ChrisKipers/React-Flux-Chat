@@ -7,12 +7,14 @@ var ESCAPE_KEY_CODE = 27;
 
 var TextRenderer = React.createClass({
   getInitialState: function() {
-    return {editing: false};
+    return {editing: false, text: ''};
   },
   _submitEdit: function(event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.text);
-    this._exitEnter();
+    if (this.state.text.trim() !== '') {
+      this.props.onSubmit(this.state.text);
+      this._exitEnter();
+    }
   },
   _enterEdit: function() {
     this._setPartialState({editing: true, text: ""}, function() {
