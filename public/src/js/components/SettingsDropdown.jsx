@@ -19,8 +19,10 @@ var SettingsDropdown = React.createClass({
   },
   _submitEdit: function(event) {
     event.preventDefault();
-    SettingActions.setUserNameFromUI(this.state.settings.userName);
-    this.props.onClose();
+    if (this.state.settings.userName.trim() !== '') {
+      SettingActions.setUserNameFromUI(this.state.settings.userName);
+      this.props.onClose();
+    }
   },
   render: function() {
     return (
@@ -29,7 +31,7 @@ var SettingsDropdown = React.createClass({
         <input type="button" className="close-botton" onClick={this.props.onClose}/>
         <form onSubmit={this._submitEdit}>
           <label>Username:</label>
-          <input typ="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>
+          <input type="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>
         </form>
         <div className="dialog-footer">
           <input type="button" onClick={this._submitEdit} value="Save"/>

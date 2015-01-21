@@ -19,7 +19,6 @@ var ChatRoom = React.createClass({
   },
   _submitMessage: function(e) {
     e.preventDefault();
-    console.log('hello:' + this.refs.messageInput.getDOMNode().value);
     var messageText = this.refs.messageInput.getDOMNode().value;
     if (messageText.trim().length > 0) {
       var newMessage = {
