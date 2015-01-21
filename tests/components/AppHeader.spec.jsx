@@ -5,12 +5,12 @@ var $ = require('jquery');
 
 describe('The AppHeader component', function () {
   var target, targetEl;
-  beforeEach(function() {
+  beforeEach(function () {
     target = ReactTestUtils.renderIntoDocument(<AppHeader />);
     targetEl = target.getDOMNode();
   });
 
-  describe('displays', function() {
+  describe('displays', function () {
     it('the title', function () {
       expect($(targetEl).find('.title').text()).toBe('React + Flux Chat');
     });
@@ -24,12 +24,12 @@ describe('The AppHeader component', function () {
     expect(isSettingsDropDownOpen()).toBe(false);
   });
 
-  it('opens the settings drop down with the settings icon is clicked and the settings drop down was closed', function() {
+  it('opens the settings drop down with the settings icon is clicked and the settings drop down was closed', function () {
     clickSettingsIcon();
     expect(isSettingsDropDownOpen()).toBe(true);
   });
 
-  it('closes the settings drop down with the settings icon is clicked and the settings drop down was open', function() {
+  it('closes the settings drop down with the settings icon is clicked and the settings drop down was open', function () {
     clickSettingsIcon();
     expect(isSettingsDropDownOpen()).toBe(true);
     clickSettingsIcon();

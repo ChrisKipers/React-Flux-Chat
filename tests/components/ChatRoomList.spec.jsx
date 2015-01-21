@@ -6,7 +6,7 @@ var $ = require('jquery');
 describe('The ChatRoom component', function () {
   var target, targetEl, messagesByRoom, rooms;
 
-  describe('displays', function() {
+  describe('displays', function () {
     it('empty list when there are no rooms', function () {
       rooms = [];
       target = ReactTestUtils.renderIntoDocument(<ChatRoomList rooms={rooms} />);
@@ -28,7 +28,7 @@ describe('The ChatRoom component', function () {
     });
   });
 
-  it('triggers a room change event when a room is clicked', function() {
+  it('triggers a room change event when a room is clicked', function () {
     rooms = ['General', 'Alternative'];
     var changeRoom = jasmine.createSpy('changeRoom');
     target = ReactTestUtils.renderIntoDocument(<ChatRoomList rooms={rooms} onRoomSelect={changeRoom}/>);

@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 describe('The ChatRoom component', function () {
   var target, targetEl, messages, room, userName;
-  beforeEach(function() {
+  beforeEach(function () {
     messages = [
       {author: 'Author 1', content: 'Content 1', date: Date.now()},
       {author: 'Author 2', content: 'Content 2', date: Date.now()}
@@ -18,7 +18,7 @@ describe('The ChatRoom component', function () {
     targetEl = target.getDOMNode();
   });
 
-  describe('displays', function() {
+  describe('displays', function () {
     it('the room name', function () {
       expect($(targetEl).find('.chat-room-name').text()).toBe(room);
     });
@@ -28,28 +28,28 @@ describe('The ChatRoom component', function () {
     });
   });
 
-  describe('has a message input', function() {
+  describe('has a message input', function () {
     var messageInput;
     var inputForm;
-    beforeEach(function() {
+    beforeEach(function () {
       messageInput = target.refs.messageInput.getDOMNode();
       inputForm = $(targetEl).find('form')[0];
       spyOn(MessageActions, 'submitMessage');
     });
 
-    it('that does not submit an empty message', function() {
+    it('that does not submit an empty message', function () {
       ReactTestUtils.Simulate.submit(inputForm);
       expect(MessageActions.submitMessage.calls.count()).toBe(0);
     });
 
-    it('submits a message with content', function() {
+    it('submits a message with content', function () {
       var content = 'New message content';
       messageInput.value = content;
       ReactTestUtils.Simulate.submit(inputForm);
       expect(MessageActions.submitMessage.calls.count()).toBe(1);
     });
 
-    it('submits a properly formed comment', function() {
+    it('submits a properly formed comment', function () {
       var content = 'New message content';
       messageInput.value = content;
 
