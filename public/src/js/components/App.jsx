@@ -27,12 +27,13 @@ var App = React.createClass({
 
   render: function() {
     var messagesForActiveChatRoom = this.state.messages[this.state.room] || [];
+    var rooms = Object.keys(this.state.messages);
     return (
       <div>
         <AppHeader />
         <div className="app-content">
           <div className="chat-side-bar">
-            <ChatRoomList onRoomSelect={this._changeRoom}/>
+            <ChatRoomList rooms={rooms} onRoomSelect={this._changeRoom}/>
             <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
             <UserList />
           </div>
