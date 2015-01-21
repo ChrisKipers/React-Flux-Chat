@@ -9,20 +9,28 @@ var MessageActions = require('./../actions/MessageActions');
 var AppHeader = require('./AppHeader.jsx');
 var SettingsStore = require('../stores/SettingsStore');
 var MessageStore = require('../stores/MessageStore');
+var UserStore = require('../stores/UserStore');
 
 var App = React.createClass({
   getInitialState: function() {
-    return {userName: SettingsStore.getUserName(), room: 'General', messages: MessageStore.getAll()};
+    return {
+      userName: SettingsStore.getUserName(),
+      room: 'General',
+      messages: MessageStore.getAll(),
+      users: UserStore.getUsers()
+    };
   },
 
   componentDidMount: function() {
     MessageStore.addChangeListener(this._onMessagesChange);
     SettingsStore.addChangeListener(this._onSettingsChange);
+    UserStore.addChangeListener(this._onUsersChange);
   },
 
   componentWillUnmount: function() {
     MessageStore.removeChangeListener(this._onMessagesChange);
-    SettingsStore.addChangeListener(this._onSettingsChange);
+    SettingsStore.removeChangeListener(this._onSettingsChange);
+    UserStore.removeChangeListener(this._onUsersChange);
   },
 
   render: function() {
@@ -35,7 +43,7 @@ var App = React.createClass({
           <div className="chat-side-bar">
             <ChatRoomList rooms={rooms} onRoomSelect={this._changeRoom}/>
             <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
-            <UserList />
+            <UserList users={this.state.users} />
           </div>
           <div className="chat-room-col">
             <ChatRoom room={this.state.room} userName={this.state.userName} messages={messagesForActiveChatRoom}/>
@@ -57,9 +65,8 @@ var App = React.createClass({
   _onSettingsChange: function() {
     this.setState({userName: SettingsStore.getUserName()});
   },
-  _toggleSettingVisibility: function() {
-    var isSettingsOpen = this.state.areSettingsShown;
-    this.setState({areSettingsShown: !isSettingsOpen});
+  _onUsersChange: function() {
+    this.setState({users: UserStore.getUsers()});
   }
 });
 
