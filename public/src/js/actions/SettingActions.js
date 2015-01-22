@@ -1,17 +1,17 @@
 'use strict';
 var AppDispatcher = require('../AppDispatcher');
-var Constants = require('../constants');
+var ACTIONS = require('../constants').ACTIONS;
 
 var SettingActions = {
   setUserNameFromUI: function(userName) {
     AppDispatcher.dispatch({
-      actionType: Constants.SET_USER_NAME_FROM_UI,
+      actionType: ACTIONS.SET_USER_NAME_FROM_UI,
       userName: userName
     });
   },
   setUserFromServer: function(user) {
     AppDispatcher.dispatch({
-      actionType: Constants.SET_USER_FROM_SERVER,
+      actionType: ACTIONS.SET_USER_FROM_SERVER,
       user: user
     });
   }

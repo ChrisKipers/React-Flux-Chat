@@ -1,7 +1,7 @@
 'use strict';
-var AppDispatcher = require('../AppDispatcher.js');
+var AppDispatcher = require('../AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var Constants = require('../constants.js');
+var ACTIONS = require('../constants').ACTIONS;
 var assign = require('object-assign');
 var service = require('../service');
 
@@ -37,12 +37,12 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function(action) {
     switch(action.actionType) {
-      case Constants.SET_USER_NAME_FROM_UI:
+      case ACTIONS.SET_USER_NAME_FROM_UI:
           setUserName(action.userName);
           service.submitNewUserName(action.userName);
           SettingsStore.emitChange();
         break;
-      case Constants.SET_USER_FROM_SERVER:
+      case ACTIONS.SET_USER_FROM_SERVER:
           setUser(action.user);
           SettingsStore.emitChange();
         break;

@@ -1,11 +1,11 @@
 'use strict';
 var AppDispatcher = require('../AppDispatcher');
-var Constants = require('../constants');
+var ACTIONS = require('../constants').ACTIONS;
 
 var UserActions = {
   setUsers: function(users) {
     AppDispatcher.dispatch({
-      actionType: Constants.SET_USERS,
+      actionType: ACTIONS.SET_USERS,
       users: users
     });
   }

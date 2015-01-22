@@ -1,35 +1,35 @@
 'use strict';
 var AppDispatcher = require('../AppDispatcher');
-var Constants = require('../constants');
+var ACTIONS = require('../constants').ACTIONS;
 
 var MessageActions = {
   submitMessage: function(message) {
     AppDispatcher.dispatch({
-      actionType: Constants.SUBMIT_MESSAGE,
+      actionType: ACTIONS.SUBMIT_MESSAGE,
       message: message
     });
   },
   submitRoom: function(roomName) {
     AppDispatcher.dispatch({
-      actionType: Constants.SUBMIT_ROOM,
+      actionType: ACTIONS.SUBMIT_ROOM,
       room: roomName
     });
   },
   addMessage: function(message) {
     AppDispatcher.dispatch({
-      actionType: Constants.ADD_MESSAGE,
+      actionType: ACTIONS.ADD_MESSAGE,
       message: message
     });
   },
   addRoom: function(roomName) {
     AppDispatcher.dispatch({
-      actionType: Constants.ADD_ROOM,
+      actionType: ACTIONS.ADD_ROOM,
       room: roomName
     });
   },
   setMessages: function(allMessages) {
     AppDispatcher.dispatch({
-      actionType: Constants.SET_MESSAGES,
+      actionType: ACTIONS.SET_MESSAGES,
       allMessages: allMessages
     });
   }

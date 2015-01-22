@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var Constants = require('./public/src/js/constants');
+var ACTIONS = require('./public/src/js/constants').ACTIONS;
 var config = require('./config/config');
 var _ = require('lodash');
 var Q = require('q');
@@ -54,28 +54,28 @@ io.on('connection', function (socket) {
 
   Q.all([RoomPersistence.getChatRooms(), UserPersistence.getUser(socket.userId)])
     .then(function (results) {
-      socket.emit(Constants.SET_MESSAGES, results[0]);
-      socket.emit(Constants.SET_USER_FROM_SERVER, results[1]);
+      socket.emit(ACTIONS.SET_MESSAGES, results[0]);
+      socket.emit(ACTIONS.SET_USER_FROM_SERVER, results[1]);
     });
 
   emitUsers();
 
-  socket.on(Constants.SUBMIT_MESSAGE, function (message) {
+  socket.on(ACTIONS.SUBMIT_MESSAGE, function (message) {
     RoomPersistence.addMessage(message)
       .then(function (newMessage) {
-        io.emit(Constants.ADD_MESSAGE, newMessage);
+        io.emit(ACTIONS.ADD_MESSAGE, newMessage);
       });
   });
 
-  socket.on(Constants.SUBMIT_ROOM, function (room) {
+  socket.on(ACTIONS.SUBMIT_ROOM, function (room) {
     RoomPersistence.addRoom(room)
       .then(function () {
-        io.emit(Constants.ADD_ROOM, room);
+        io.emit(ACTIONS.ADD_ROOM, room);
       });
 
   });
 
-  socket.on(Constants.SET_USER_NAME_FROM_UI, function (userName) {
+  socket.on(ACTIONS.SET_USER_NAME_FROM_UI, function (userName) {
     UserPersistence.getUser(socket.userId)
       .then(function(user) {
         var updatedUser = _.extend(user, {
@@ -94,7 +94,7 @@ io.on('connection', function (socket) {
 function emitUsers() {
   UserPersistence.getAllUsers()
     .then(function (allUsers) {
-      io.emit(Constants.SET_USERS, allUsers);
+      io.emit(ACTIONS.SET_USERS, allUsers);
     });
 
 }

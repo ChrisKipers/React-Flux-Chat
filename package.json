@@ -57,6 +57,7 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "karma-es5-shim": "0.0.4",
     "jquery": "^2.1.3",
-    "karma-chrome-launcher": "^0.1.7"
+    "karma-chrome-launcher": "^0.1.7",
+    "gulp-jasmine": "^2.0.0"
   }
 }

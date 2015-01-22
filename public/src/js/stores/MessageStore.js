@@ -1,7 +1,7 @@
 'use strict';
-var AppDispatcher = require('../AppDispatcher.js');
+var AppDispatcher = require('../AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var Constants = require('../constants.js');
+var ACTIONS = require('../constants').ACTIONS;
 var assign = require('object-assign');
 var service = require('../service');
 
@@ -44,21 +44,21 @@ var MessageStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function (action) {
     switch (action.actionType) {
-      case Constants.ADD_MESSAGE:
+      case ACTIONS.ADD_MESSAGE:
         addMessage(action.message, action.message.room);
         MessageStore.emitChange();
         break;
-      case Constants.ADD_ROOM:
+      case ACTIONS.ADD_ROOM:
         addRoom(action.room);
         MessageStore.emitChange();
         break;
-      case Constants.SUBMIT_MESSAGE:
+      case ACTIONS.SUBMIT_MESSAGE:
         service.submitMessage(action.message);
         break;
-      case Constants.SUBMIT_ROOM:
+      case ACTIONS.SUBMIT_ROOM:
         service.submitNewRoom(action.room);
         break;
-      case Constants.SET_MESSAGES:
+      case ACTIONS.SET_MESSAGES:
         setAllMessages(action.allMessages);
         MessageStore.emitChange();
         break;
