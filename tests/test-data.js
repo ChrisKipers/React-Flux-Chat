@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var Guid = require('guid');
 
 function getUsers(numberOfTestUsersOrUndefined) {
   var numberOfTestUsers = numberOfTestUsersOrUndefined || 3;
@@ -23,7 +24,8 @@ function getMessagesForUsersByRoom(roomsOrUndefined, numberOfMessagesForUsersOrU
           content: 'This is message ' + messageIndex + ' for user ' + user.userName,
           date: Date.now(),
           userId: user._id,
-          room: room
+          room: room,
+          _id: Guid.raw()
         };
       })
     }));

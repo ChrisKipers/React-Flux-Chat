@@ -1,4 +1,5 @@
 var utils = require('../../utils');
+var _ = require('lodash');
 
 var chatRooms = {
   General: []
@@ -11,8 +12,11 @@ function addRoom(room) {
 }
 
 function addMessage(message) {
-  chatRooms[message.room].push(message);
-  return utils.getPromiseFromValue(message);
+  var messageWithId = _.extend({}, message, {
+    _id: utils.getNewId()
+  });
+  chatRooms[message.room].push(messageWithId);
+  return utils.getPromiseFromValue(messageWithId);
 }
 
 function getChatRooms() {

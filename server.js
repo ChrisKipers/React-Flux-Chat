@@ -69,8 +69,8 @@ io.on('connection', function (socket) {
 
   socket.on(Constants.SUBMIT_ROOM, function (room) {
     RoomPersistence.addRoom(room)
-      .then(function (newRoom) {
-        io.emit(Constants.ADD_ROOM, newRoom);
+      .then(function () {
+        io.emit(Constants.ADD_ROOM, room);
       });
 
   });
