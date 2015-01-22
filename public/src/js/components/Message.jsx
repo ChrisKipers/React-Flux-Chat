@@ -12,10 +12,10 @@ var Message = React.createClass({
           {this.props.author}
         </div>
         <div className="content">
-          {this.props.content}
           <span className="date-time">
             {formatedDate}
           </span>
+          <span>{this.props.content}</span>
         </div>
       </div>
     );
