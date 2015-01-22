@@ -8,9 +8,12 @@ var SettingActions = require('../../public/src/js/actions/SettingActions');
 var $ = require('jquery');
 
 describe('The SettingsDropDown component', function () {
-  var target, targetEl, inputEl, onCloseSpy, userName = 'Test User';
+  var target, targetEl, inputEl, onCloseSpy, user = {
+    userName: 'Test User',
+    _id: '1'
+  };
   beforeEach(function () {
-    spyOn(SettingsStore, 'getUserName').and.returnValue(userName);
+    spyOn(SettingsStore, 'getUser').and.returnValue(user);
     spyOn(SettingActions, 'setUserNameFromUI');
     onCloseSpy = jasmine.createSpy('onCloseSpy');
 
@@ -20,7 +23,7 @@ describe('The SettingsDropDown component', function () {
   });
 
   it('is initialized with the user name from the settings store', function () {
-    expect(inputEl.value).toBe(userName);
+    expect(inputEl.value).toBe(user.userName);
   });
 
   it('triggers a close event when the close button is clicked', function () {

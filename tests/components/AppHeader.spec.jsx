@@ -1,11 +1,14 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
 var AppHeader = require('../../public/src/js/components/AppHeader.jsx');
+var SettingsStore = require('../../public/src/js/stores/SettingsStore');
 var $ = require('jquery');
+var TestData = require('../test-data');
 
 describe('The AppHeader component', function () {
   var target, targetEl;
   beforeEach(function () {
+    spyOn(SettingsStore, 'getUser').and.returnValue(TestData.getUsers(0)[0]);
     target = ReactTestUtils.renderIntoDocument(<AppHeader />);
     targetEl = target.getDOMNode();
   });

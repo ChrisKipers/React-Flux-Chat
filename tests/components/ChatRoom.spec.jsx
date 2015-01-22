@@ -4,17 +4,21 @@ var ChatRoom = require('../../public/src/js/components/ChatRoom.jsx');
 var $ = require('jquery');
 var MessageActions = require('../../public/src/js/actions/MessageActions');
 var _ = require('lodash');
+var TestData = require('../test-data');
 
 describe('The ChatRoom component', function () {
-  var target, targetEl, messages, room, userName;
+  var target, targetEl, messages, room, user;
   beforeEach(function () {
     messages = [
       {author: 'Author 1', content: 'Content 1', date: Date.now()},
       {author: 'Author 2', content: 'Content 2', date: Date.now()}
     ];
     room = 'General';
-    userName = 'Chris';
-    target = ReactTestUtils.renderIntoDocument(<ChatRoom room={room} messages={messages} userName={userName}/>);
+    user = {
+      userName: 'Chris',
+      _id: '1'
+    };
+    target = ReactTestUtils.renderIntoDocument(<ChatRoom room={room} messages={messages} user={user}/>);
     targetEl = target.getDOMNode();
   });
 
@@ -62,7 +66,7 @@ describe('The ChatRoom component', function () {
       expect(_.omit(submittedMessage, 'date')).toEqual({
         room: room,
         content: content,
-        author: userName
+        userId: user._id
       });
 
       var isSubmittedDateBetweenSubmitStartAndSubmitEnd =

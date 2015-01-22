@@ -24,7 +24,7 @@ var ChatRoom = React.createClass({
       var newMessage = {
         room: this.props.room,
         content: messageText,
-        author: this.props.userName,
+        userId: this.props.user._id,
         date: Date.now()
       };
       MessageActions.submitMessage(newMessage);

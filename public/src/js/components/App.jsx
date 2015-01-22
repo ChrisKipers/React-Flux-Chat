@@ -1,6 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
+var _ = require('lodash');
 var ChatRoom = require('./ChatRoom.jsx');
 var ChatRoomList = require('./ChatRoomList.jsx');
 var UserList = require('./UserList.jsx');
@@ -14,7 +15,7 @@ var UserStore = require('../stores/UserStore');
 var App = React.createClass({
   getInitialState: function() {
     return {
-      userName: SettingsStore.getUserName(),
+      user: SettingsStore.getUser(),
       room: 'General',
       messages: MessageStore.getAll(),
       users: UserStore.getUsers()
@@ -34,7 +35,7 @@ var App = React.createClass({
   },
 
   render: function() {
-    var messagesForActiveChatRoom = this.state.messages[this.state.room] || [];
+    var messagesForActiveChatRoomWithAuthorName = this._getMessagesWithUserNameByRoom(this.state.room);
     var rooms = Object.keys(this.state.messages);
     return (
       <div>
@@ -46,7 +47,7 @@ var App = React.createClass({
             <UserList users={this.state.users} />
           </div>
           <div className="chat-room-col">
-            <ChatRoom room={this.state.room} userName={this.state.userName} messages={messagesForActiveChatRoom}/>
+            <ChatRoom room={this.state.room} user={this.state.user} messages={messagesForActiveChatRoomWithAuthorName}/>
           </div>
         </div>
       </div>
@@ -63,10 +64,21 @@ var App = React.createClass({
     this.setState({messages: MessageStore.getAll()});
   },
   _onSettingsChange: function() {
-    this.setState({userName: SettingsStore.getUserName()});
+    this.setState({user: SettingsStore.getUser()});
   },
   _onUsersChange: function() {
     this.setState({users: UserStore.getUsers()});
+  },
+  _getMessagesWithUserNameByRoom: function (roomName) {
+    var messagesForActiveChatRoom = this.state.messages[roomName] || [];
+    var usersById = _.indexBy(this.state.users, '_id');
+    var messagesForActiveChatRoomWithAuthorName = messagesForActiveChatRoom.map(function(message) {
+      var author = usersById[message.userId] || {};
+      return _.extend({}, message, {
+        author: author.userName || 'Unknown'
+      });
+    }.bind(this));
+    return messagesForActiveChatRoomWithAuthorName;
   }
 });
 

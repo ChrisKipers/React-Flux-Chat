@@ -9,10 +9,10 @@ var SettingActions = {
       userName: userName
     });
   },
-  setUserNameFromServer: function(userName) {
+  setUserFromServer: function(user) {
     AppDispatcher.dispatch({
-      actionType: Constants.SET_USER_NAME_FROM_SERVER,
-      userName: userName
+      actionType: Constants.SET_USER_FROM_SERVER,
+      user: user
     });
   }
 };

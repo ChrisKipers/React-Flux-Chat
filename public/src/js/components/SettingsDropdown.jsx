@@ -6,7 +6,7 @@ var SettingActions = require('../actions/SettingActions');
 
 var SettingsDropdown = React.createClass({
   getInitialState: function() {
-    return {settings: {userName: SettingsStore.getUserName()}};
+    return {settings: {userName: SettingsStore.getUser().userName}};
   },
   componentDidMount: function() {
     var userNameInputElement = this.refs.userNameInput.getDOMNode();
@@ -44,7 +44,7 @@ var SettingsDropdown = React.createClass({
     this.setState({settings: {userName: newUserName}});
   },
   _onSettingsChange: function() {
-    this.setState({settings: {userName: SettingsStore.getUserName()}});
+    this.setState({settings: {userName: SettingsStore.getUser().userName}});
   }
 });
 

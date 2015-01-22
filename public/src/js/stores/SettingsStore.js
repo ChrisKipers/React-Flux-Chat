@@ -7,16 +7,20 @@ var service = require('../service');
 
 var CHANGE_EVENT = 'change';
 
-var _userName;
+var _user;
 
-function setUserName(newUserName) {
-  _userName = newUserName;
+function setUser(user) {
+  _user = user;
+}
+
+function setUserName(userName) {
+  _user.userName = userName;
 }
 
 var SettingsStore = assign({}, EventEmitter.prototype, {
 
-  getUserName: function() {
-    return _userName;
+  getUser: function() {
+    return _user;
   },
 
   emitChange: function() {
@@ -38,8 +42,8 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
           service.submitNewUserName(action.userName);
           SettingsStore.emitChange();
         break;
-      case Constants.SET_USER_NAME_FROM_SERVER:
-          setUserName(action.userName);
+      case Constants.SET_USER_FROM_SERVER:
+          setUser(action.user);
           SettingsStore.emitChange();
         break;
     }

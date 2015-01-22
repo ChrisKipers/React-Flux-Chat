@@ -1,6 +1,7 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
 var $ = require('jquery');
+var TestData = require('../test-data');
 
 var App = require('../../public/src/js/components/App.jsx');
 
@@ -18,22 +19,16 @@ var UserStore = require('../../public/src/js/stores/UserStore');
 var MessageActions = require('../../public/src/js/actions/MessageActions');
 
 describe('The App component', function () {
-  var target, targetEl, userName, users, messages;
+  var target, targetEl, user, users, messages, currentRoom;
 
   beforeEach(function () {
-    userName = 'Test User';
-    users = ['Test User', 'User 2'];
-    messages = {
-      General: [{
-        author: 'Test User',
-        content: 'This is a message',
-        date: Date.now(),
-        room: 'General'
-      }]
-    };
+    currentRoom = 'General';
+    users = TestData.getUsers(3);
+    user = users[0];
+    messages = TestData.getMessagesForUsersByRoom([currentRoom], 3, users);
 
-    spyOn(SettingsStore, 'getUserName').and.callFake(function() {
-      return userName;
+    spyOn(SettingsStore, 'getUser').and.callFake(function() {
+      return user;
     });
     spyOn(MessageStore, 'getAll').and.callFake(function() {
       return messages;
@@ -132,12 +127,13 @@ describe('The App component', function () {
       expect(chatRoomComponent.props.room).toEqual(target.state.room);
     });
 
-    it('is passed the correct userName property', function () {
-      expect(chatRoomComponent.props.userName).toEqual(target.state.userName);
+    it('is passed the correct user property', function () {
+      expect(chatRoomComponent.props.user).toEqual(target.state.user);
     });
 
     it('is passed the correct messages property', function () {
-      expect(chatRoomComponent.props.messages).toEqual(target.state.messages[target.state.room]);
+      var transformedMessages = target._getMessagesWithUserNameByRoom(target.state.room);
+      expect(chatRoomComponent.props.messages).toEqual(transformedMessages);
     });
   });
 
@@ -164,12 +160,15 @@ describe('The App component', function () {
 
   describe('responds to SettingsStore updates', function() {
     beforeEach(function() {
-      userName = 'New User Name';
+      user = {
+        _id: '1',
+        userName: 'New User Name'
+      };
     });
 
     it('by updating its states messages', function () {
       SettingsStore.emitChange();
-      expect(target.state.userName).toBe(userName);
+      expect(target.state.user).toBe(user);
     });
   });
 

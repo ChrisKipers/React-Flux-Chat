@@ -6,7 +6,7 @@ var UserList = React.createClass({
   render: function() {
     var roomComponents = this.props.users.map(function(user) {
       return (
-        <li>{user}</li>
+        <li>{user.userName}</li>
       );
     });
     return (

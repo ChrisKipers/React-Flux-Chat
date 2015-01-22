@@ -15,7 +15,16 @@ describe('The UserList component', function () {
     });
 
     it('users when users are not empty', function () {
-      users = ['Chris', 'Danny'];
+      users = [
+        {
+          _id: '1',
+          userName: 'Chris'
+        },
+        {
+          _id: '2',
+          userName: 'Danny'
+        }
+      ];
       target = ReactTestUtils.renderIntoDocument(<UserList users={users} />);
       targetEl = target.getDOMNode();
       var userElements = $(targetEl).find('li');
@@ -23,7 +32,7 @@ describe('The UserList component', function () {
       expect(userElements.length).toBe(users.length);
 
       for (var i = 0; i < userElements.length && i < users.length; i++) {
-        expect(userElements[i].textContent).toBe(users[i]);
+        expect(userElements[i].textContent).toBe(users[i].userName);
       }
     });
   });

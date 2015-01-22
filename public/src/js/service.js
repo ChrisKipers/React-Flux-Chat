@@ -16,8 +16,8 @@ socket.on('connect', function() {
   socket.on(Constants.SET_MESSAGES, function(allMessages) {
     MessageActions.setMessages(allMessages);
   });
-  socket.on(Constants.SET_USER_NAME_FROM_SERVER, function(userName) {
-    SettingActions.setUserNameFromServer(userName);
+  socket.on(Constants.SET_USER_FROM_SERVER, function(user) {
+    SettingActions.setUserFromServer(user);
   });
   socket.on(Constants.SET_USERS, function(users) {
     UserActions.setUsers(users);

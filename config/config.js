@@ -12,5 +12,6 @@ if (process.env.NODE_ENV === 'prod') {
 module.exports = {
   port: process.env.PORT || 3000,
   jsFiles: jsFiles,
-  cssFiles: cssFiles
+  cssFiles: cssFiles,
+  sessionSecret: process.env.SECRET || 'terrible-secret-1234'
 };

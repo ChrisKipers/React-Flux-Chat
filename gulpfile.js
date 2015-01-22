@@ -53,7 +53,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('lint', function () {
-  var serverJSFile = gulp.src('./app.js');
+  var serverJSFile = gulp.src('./server.js');
   var jsFilePipe = gulp.src('./public/src/js/**/*.js');
   var jsxFilePipe = gulp.src('./public/src/js/**/*.jsx').pipe(react());
   return es.merge(serverJSFile, jsFilePipe, jsxFilePipe)
@@ -86,9 +86,10 @@ gulp.task('watch', function () {
   gulp.watch('./public/src/js/**/*.jsx', ['lint', 'browserify']);
   gulp.watch('./public/src/scss/**/*.scss', ['sass']);
 
-  return karma.server.start({
-    configFile: __dirname + '/config/karma.conf.js'
-  });
+  //Doesn't work right
+  //return karma.server.start({
+  //  configFile: __dirname + '/config/karma.conf.js'
+  //});
 });
 
 gulp.task('test', function () {
@@ -103,7 +104,7 @@ gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'sass']);
 gulp.task('build', ['uglify-js', 'uglify-css']);
 
 function getFrontendDependencies() {
-  var backendOnlyDependencies = ['jade', 'express', 'socket.io', 'sillyname'];
+  var backendOnlyDependencies = ['jade', 'express', 'socket.io', 'sillyname', 'guid', 'cookie-parser', 'express-session', 'q'];
   var dependencyNames = Object.keys(package.dependencies);
   return dependencyNames.filter(function (dependencyName) {
     return backendOnlyDependencies.indexOf(dependencyName) === -1;
