@@ -1,9 +1,12 @@
 'use strict';
 var io = require('socket.io-client');
+
+var ACTIONS = require('./constants').ACTIONS;
+
 var ChatRoomActions = require('./actions/ChatRoomActions');
 var SettingActions = require('./actions/SettingActions');
 var UserActions = require('./actions/UserActions');
-var ACTIONS = require('./constants').ACTIONS;
+
 
 var socket = io();
 socket.on('connect', function() {

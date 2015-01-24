@@ -3,9 +3,9 @@
 var React = require('react');
 var _ = require('lodash');
 
-var ChatRoomActions = require('../actions/ChatRoomActions');
-
 var ESCAPE_KEY_CODE = 27;
+
+var ChatRoomActions = require('../actions/ChatRoomActions');
 
 var TextRenderer = React.createClass({
   getInitialState: function() {

@@ -2,13 +2,13 @@
 /*jshint quotmark:false */
 var React = require('react');
 var _ = require('lodash');
+
 var ChatRoomHeader = require('./ChatRoomHeader.jsx');
 var ChatRoomActions = require('../actions/ChatRoomActions');
 var MessageList = require('./MessageList.jsx');
 
 var UserStore = require('../stores/UserStore');
 var SettingsStore = require('../stores/SettingsStore');
-
 
 var ChatRoom = React.createClass({
   getInitialState: function () {

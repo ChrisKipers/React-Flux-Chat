@@ -2,7 +2,9 @@
 /*jshint quotmark:false */
 var React = require('react');
 var moment = require('moment');
+
 var TextRenderer = require('./TextRenderer.jsx');
+
 var ChatRoomActions = require('../actions/ChatRoomActions');
 
 var Message = React.createClass({

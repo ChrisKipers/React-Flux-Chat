@@ -7,7 +7,6 @@ var CreateRoomInput = require('./CreateRoomInput.jsx');
 var UserList = require('./UserList.jsx');
 
 var UserStore = require('../stores/UserStore');
-var AppStore = require('../stores/AppStore');
 
 var NavigationPanel = React.createClass({
   getInitialState: function () {

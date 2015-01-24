@@ -2,9 +2,11 @@
 /*jshint quotmark:false */
 var React = require('react');
 var _ = require('lodash');
+
 var ListItemWrapper = require('./ListItemWrapper.jsx');
 
 var ChatRoomStore = require('../stores/ChatRoomStore');
+
 var ChatRoomActions = require('../actions/ChatRoomActions');
 
 var ChatRoomList = React.createClass({

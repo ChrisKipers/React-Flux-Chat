@@ -1,8 +1,9 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
-var Message = require('./Message.jsx');
 var _ = require('lodash');
+
+var Message = require('./Message.jsx');
 
 var MessageList = React.createClass({
   componentDidMount: function() {

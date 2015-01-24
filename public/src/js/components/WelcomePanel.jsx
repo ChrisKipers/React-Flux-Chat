@@ -1,7 +1,9 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
+
 var SettingsStore = require('../stores/SettingsStore');
+
 var SettingActions = require('../actions/SettingActions');
 
 var WelcomePanel = React.createClass({

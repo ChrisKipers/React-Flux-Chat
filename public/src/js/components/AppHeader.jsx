@@ -1,6 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
+
 var SettingsDropdown = require('./SettingsDropdown.jsx');
 
 var AppHeader = React.createClass({
