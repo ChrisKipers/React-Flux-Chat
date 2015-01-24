@@ -6,19 +6,20 @@ var ACTIONS = require('./constants').ACTIONS;
 var ChatRoomActions = require('./actions/ChatRoomActions');
 var SettingActions = require('./actions/SettingActions');
 var UserActions = require('./actions/UserActions');
+var MessageActions = require('./actions/MessageActions');
 
 
 var socket = io();
 socket.on('connect', function() {
   socket.on(ACTIONS.ADD_MESSAGE, function(message) {
-    ChatRoomActions.addMessage(message);
+    MessageActions.addMessage(message);
   });
   socket.on(ACTIONS.ADD_ROOM, function(room) {
     ChatRoomActions.addRoom(room);
   });
   socket.on(ACTIONS.INITIALIZE_STORES, function(initalizationData) {
     SettingActions.setUserFromServer(initalizationData.user);
-    ChatRoomActions.setMessages(initalizationData.roomsById);
+    ChatRoomActions.setRooms(initalizationData.roomsById);
     UserActions.setUsers(initalizationData.users);
   });
   socket.on(ACTIONS.SET_USERS, function(users) {
@@ -28,7 +29,7 @@ socket.on('connect', function() {
     ChatRoomActions.addRoomSuccess(room);
   });
   socket.on(ACTIONS.UPDATE_MESSAGE, function (message) {
-    ChatRoomActions.updateMessage(message);
+    MessageActions.updateMessage(message);
   });
   socket.on(ACTIONS.UPDATE_ROOM, function (room) {
     ChatRoomActions.updateRoom(room);

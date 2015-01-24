@@ -3,23 +3,11 @@ var ACTIONS = require('../constants').ACTIONS;
 
 var AppDispatcher = require('../AppDispatcher');
 
-var MessageActions = {
-  submitMessage: function(message) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.SUBMIT_MESSAGE,
-      message: message
-    });
-  },
+var ChatRoomActions = {
   submitRoom: function(roomName) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.SUBMIT_ROOM,
       room: roomName
-    });
-  },
-  addMessage: function(message) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.ADD_MESSAGE,
-      message: message
     });
   },
   addRoom: function(room) {
@@ -34,24 +22,10 @@ var MessageActions = {
       room: room
     });
   },
-  setMessages: function(allRooms) {
+  setRooms: function(allRooms) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.SET_ROOMS,
       allRooms: allRooms
-    });
-  },
-  updateMessageContentFromUI: function(messageId, roomId, newContent) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.SUBMIT_MESSAGE_UPDATE,
-      content: newContent,
-      messageId: messageId,
-      roomId: roomId
-    });
-  },
-  updateMessage: function(message) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.UPDATE_MESSAGE,
-      message: message
     });
   },
   updateRoomFromUI: function(roomId, newName) {
@@ -87,4 +61,4 @@ var MessageActions = {
   }
 };
 
-module.exports = MessageActions;
+module.exports = ChatRoomActions;

@@ -5,7 +5,7 @@ var moment = require('moment');
 
 var TextRenderer = require('./TextRenderer.jsx');
 
-var ChatRoomActions = require('../actions/ChatRoomActions');
+var MessageActions = require('../actions/MessageActions');
 
 var Message = React.createClass({
   render: function () {
@@ -27,7 +27,7 @@ var Message = React.createClass({
     );
   },
   _updateMessage: function(newContent) {
-    ChatRoomActions.updateMessageContentFromUI(this.props._id, this.props.roomId, newContent);
+    MessageActions.updateMessageContentFromUI(this.props._id, this.props.roomId, newContent);
   }
 });
 

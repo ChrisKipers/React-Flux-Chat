@@ -4,7 +4,7 @@ var React = require('react');
 var _ = require('lodash');
 
 var ChatRoomHeader = require('./ChatRoomHeader.jsx');
-var ChatRoomActions = require('../actions/ChatRoomActions');
+var MessageActions = require('../actions/MessageActions');
 var MessageList = require('./MessageList.jsx');
 
 var UserStore = require('../stores/UserStore');
@@ -47,7 +47,7 @@ var ChatRoom = React.createClass({
         userId: this.state.user._id,
         date: Date.now()
       };
-      ChatRoomActions.submitMessage(newMessage);
+      MessageActions.submitMessage(newMessage);
     }
     this.refs.messageInput.getDOMNode().value = "";
   },
