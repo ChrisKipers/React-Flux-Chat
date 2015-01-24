@@ -1,17 +1,18 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
-var MessageActions = require('../actions/MessageActions');
+var ChatRoomHeader = require('./ChatRoomHeader.jsx');
+var ChatRoomActions = require('../actions/ChatRoomActions');
 var MessageList = require('./MessageList.jsx');
-
 
 var ChatRoom = React.createClass({
   render: function() {
+    var isRoomEditable = this.props.room.creatorId === this.props.user._id;
     return (
       <div className="chat-room">
-        <div className="chat-room-name">{this.props.room}</div>
-        <MessageList messages={this.props.messages} />
-        <form onSubmit={this._submitMessage}>
+        <ChatRoomHeader room={this.props.room} editable={isRoomEditable}/>
+        <MessageList messages={this.props.room.messages} user={this.props.user}/>
+        <form onSubmit={this._submitMessage} className="new-message-form">
           <input type="text" placeholder="Enter Message" ref="messageInput" />
         </form>
       </div>
@@ -22,12 +23,12 @@ var ChatRoom = React.createClass({
     var messageText = this.refs.messageInput.getDOMNode().value;
     if (messageText.trim().length > 0) {
       var newMessage = {
-        room: this.props.room,
+        roomId: this.props.room._id,
         content: messageText,
         userId: this.props.user._id,
         date: Date.now()
       };
-      MessageActions.submitMessage(newMessage);
+      ChatRoomActions.submitMessage(newMessage);
     }
     this.refs.messageInput.getDOMNode().value = "";
   }

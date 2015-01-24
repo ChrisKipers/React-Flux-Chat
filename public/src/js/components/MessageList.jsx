@@ -21,10 +21,11 @@ var MessageList = React.createClass({
   },
   render: function() {
     var messageComponents = this.props.messages.map(function(message) {
+      var isEditable = message.userId === this.props.user._id;
       return (
-        <Message {...message}/>
+        <Message {...message} editable={isEditable} key={message._id}/>
       );
-    });
+    }.bind(this));
     return (
       <div className="message-list" onScroll={this._onScroll}>
         {messageComponents}

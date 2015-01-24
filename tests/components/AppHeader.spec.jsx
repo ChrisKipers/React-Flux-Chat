@@ -8,7 +8,7 @@ var TestData = require('../test-data');
 describe('The AppHeader component', function () {
   var target, targetEl;
   beforeEach(function () {
-    spyOn(SettingsStore, 'getUser').and.returnValue(TestData.getUsers(0)[0]);
+    spyOn(SettingsStore, 'getUser').and.returnValue(TestData.getTestUser());
     target = ReactTestUtils.renderIntoDocument(<AppHeader />);
     targetEl = target.getDOMNode();
   });

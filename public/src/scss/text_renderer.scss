@@ -1,0 +1,15 @@
+@import 'theme';
+
+.text-renderer-view.editable {
+  &:hover {
+    background: $EDITABLE_BACKGROUND_COLOR;
+    background-image: url(../../assets/images/icons/edit.png);
+    background-repeat: no-repeat;
+    background-position: center right;
+  }
+}
+
+.text-renderer-view, .text-renderer-edit {
+  padding: 5px 0 5px 0;
+  width: 100%;
+}

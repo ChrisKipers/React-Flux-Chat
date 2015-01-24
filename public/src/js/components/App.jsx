@@ -6,79 +6,115 @@ var ChatRoom = require('./ChatRoom.jsx');
 var ChatRoomList = require('./ChatRoomList.jsx');
 var UserList = require('./UserList.jsx');
 var CreateRoomInput = require('./CreateRoomInput.jsx');
-var MessageActions = require('./../actions/MessageActions');
+var ChatRoomActions = require('./../actions/ChatRoomActions');
 var AppHeader = require('./AppHeader.jsx');
+var WelcomePanel = require('./WelcomePanel.jsx');
+var LoadingScreen = require('./LoadingScreen.jsx');
 var SettingsStore = require('../stores/SettingsStore');
-var MessageStore = require('../stores/MessageStore');
+var ChatRoomStore = require('../stores/ChatRoomStore');
 var UserStore = require('../stores/UserStore');
 
 var App = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return {
       user: SettingsStore.getUser(),
-      room: 'General',
-      messages: MessageStore.getAll(),
-      users: UserStore.getUsers()
+      roomsById: ChatRoomStore.getAll(),
+      usersById: this._getUsersById()
     };
   },
 
-  componentDidMount: function() {
-    MessageStore.addChangeListener(this._onMessagesChange);
+  componentDidMount: function () {
+    ChatRoomStore.on(ChatRoomStore.events.CHANGE, this._onMessagesChange);
+    ChatRoomStore.on(ChatRoomStore.events.ADD_SUCCESS, this._changeRoom);
     SettingsStore.addChangeListener(this._onSettingsChange);
     UserStore.addChangeListener(this._onUsersChange);
   },
 
-  componentWillUnmount: function() {
-    MessageStore.removeChangeListener(this._onMessagesChange);
+  componentWillUnmount: function () {
+    ChatRoomStore.removeListener(ChatRoomStore.events.CHANGE, this._onMessagesChange);
+    ChatRoomStore.removeListener(ChatRoomStore.events.ADD_SUCCESS, this._changeRoom);
     SettingsStore.removeChangeListener(this._onSettingsChange);
     UserStore.removeChangeListener(this._onUsersChange);
   },
 
-  render: function() {
-    var messagesForActiveChatRoomWithAuthorName = this._getMessagesWithUserNameByRoom(this.state.room);
-    var rooms = Object.keys(this.state.messages);
+  render: function () {
+    var isLoading = this._isLoading();
+    var bodyComponent;
+    if (isLoading) {
+      bodyComponent = this._getLoadingBody();
+    } else {
+      bodyComponent = this._getChatBody();
+    }
     return (
       <div>
         <AppHeader />
         <div className="app-content">
-          <div className="chat-side-bar">
-            <ChatRoomList rooms={rooms} onRoomSelect={this._changeRoom}/>
-            <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
-            <UserList users={this.state.users} />
-          </div>
-          <div className="chat-room-col">
-            <ChatRoom room={this.state.room} user={this.state.user} messages={messagesForActiveChatRoomWithAuthorName}/>
-          </div>
+            {bodyComponent}
         </div>
       </div>
     );
   },
-  _changeRoom: function(room) {
-    this.setState({room: room});
+  _changeRoom: function (room) {
+    this.setState({room: room._id});
   },
-  _createNewChatRoom: function(room) {
-    MessageActions.submitRoom(room);
-    this._changeRoom(room);
+  _createNewChatRoom: function (roomName) {
+    ChatRoomActions.submitRoom(roomName);
   },
-  _onMessagesChange: function() {
-    this.setState({messages: MessageStore.getAll()});
+  _onMessagesChange: function () {
+    this.setState({roomsById: ChatRoomStore.getAll()});
   },
-  _onSettingsChange: function() {
+  _onSettingsChange: function () {
     this.setState({user: SettingsStore.getUser()});
   },
-  _onUsersChange: function() {
-    this.setState({users: UserStore.getUsers()});
+  _onUsersChange: function () {
+    this.setState({usersById: this._getUsersById()});
   },
-  _getMessagesWithUserNameByRoom: function (roomName) {
-    var messagesForActiveChatRoom = this.state.messages[roomName] || [];
-    var usersById = _.indexBy(this.state.users, '_id');
-    var messagesForActiveChatRoomWithAuthorName = messagesForActiveChatRoom.map(function(message) {
-      var author = usersById[message.userId] || {};
+  _getUsersById: function () {
+    return _.indexBy(UserStore.getUsers(), '_id');
+  },
+  _mergeRoomWithUserData: function (room) {
+    var messagesWithUserData = room.messages.map(function (message) {
+      var messagesUser = this.state.usersById[message.userId] || {};
       return _.extend({}, message, {
-        author: author.userName || 'Unknown'
+        user: messagesUser
       });
     }.bind(this));
-    return messagesForActiveChatRoomWithAuthorName;
+    var creator = this.state.usersById[room.creatorId];
+    return _.extend({}, room, {
+      messages: messagesWithUserData,
+      creator: creator
+    });
+  },
+  _isLoading: function () {
+    return !_.every([UserStore, ChatRoomStore, SettingsStore], function (store) {
+      return store.isInitialized();
+    });
+  },
+  _getChatBody: function () {
+    var mainViewComponent;
+    if (!this.state.room) {
+      mainViewComponent = <WelcomePanel user={this.state.user}/>;
+    } else {
+      var activeRoomWithUserData = this._mergeRoomWithUserData(this.state.roomsById[this.state.room]);
+      mainViewComponent = <ChatRoom room={activeRoomWithUserData} user={this.state.user}/>;
+    }
+    var rooms = _.values(this.state.roomsById);
+    var users = _.values(this.state.usersById);
+    return (
+      <div>
+        <div className="chat-side-bar">
+          <ChatRoomList rooms={rooms} onRoomSelect={this._changeRoom}/>
+          <CreateRoomInput text="Create Room" onSubmit={this._createNewChatRoom} />
+          <UserList users={users} />
+        </div>
+        <div className = "chat-room-col" >
+            {mainViewComponent}
+        </div>
+      </div>
+    );
+  },
+  _getLoadingBody: function () {
+    return <LoadingScreen />;
   }
 });
 

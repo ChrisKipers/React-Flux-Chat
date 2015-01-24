@@ -1,12 +1,13 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
+var ListItemWrapper = require('./ListItemWrapper.jsx');
 
 var ChatRoomList = React.createClass({
   render: function() {
     var roomComponents = this.props.rooms.map(function(room) {
       return (
-        <li onClick={this._selectRoom}>{room}</li>
+        <ListItemWrapper onClick={this._selectRoom.bind(this, room)} key={room._id}>{room.name}</ListItemWrapper>
       );
     }.bind(this));
     return (
@@ -15,8 +16,7 @@ var ChatRoomList = React.createClass({
       </ul>
     );
   },
-  _selectRoom: function(e) {
-    var room = e.target.innerHTML;
+  _selectRoom: function(room) {
     this.props.onRoomSelect(room);
   }
 });

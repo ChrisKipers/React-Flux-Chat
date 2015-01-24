@@ -22,12 +22,20 @@ describe('The MessageList component', function () {
     beforeEach(function() {
       messages = [
         {
-          author: 'Author 1',
+          userId: '1',
+          user: {
+            _id: '1',
+            userName: 'Chris'
+          },
           content: 'Content 1',
           date: Date.now()
         },
         {
-          author: 'Author 2',
+          userId: '2',
+          user: {
+            _id: '2',
+            userName: 'Timothy'
+          },
           content: 'Content 2',
           date: Date.now()
         }

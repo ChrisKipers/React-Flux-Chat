@@ -6,13 +6,16 @@
 @import 'message';
 @import 'settings';
 @import 'side_bar';
+@import 'welcome_panel';
+@import 'text_renderer';
 
 body {
   font-family: 'Open Sans', sans-serif;
 }
 
-div, form, input {
+div, form, input, header {
   box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 .app-content {

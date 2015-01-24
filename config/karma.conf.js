@@ -4,6 +4,7 @@ module.exports = function (config) {
       '../tests/**/*.spec.js',
       '../tests/**/*.spec.jsx'
     ],
+    autoWatch: true,
     frameworks: ['browserify', 'jasmine', 'es5-shim'],
     preprocessors: {
       '../tests/**/*.spec.js': ['browserify'],

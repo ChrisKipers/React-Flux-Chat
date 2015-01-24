@@ -13,14 +13,25 @@ $chat_room_title_height: 60px;
   right: 0;
 }
 
-.chat-room-name {
+.chat-room-header {
   background: $LIGHT_BACKGROUND_COLOR;
   border-bottom: 1px solid $BORDER_COLOR;
-  padding: 20px;
+  padding: 10px;
   text-align: left;
-  font-size: 20px;
   color: $PRIMARY_HEADER_COLOR;
   height: $chat_room_title_height;
+
+  .chat-room-name {
+    margin-bottom: 3px;
+    .text-renderer-view, .text-renderer-edit {
+      height: 30px;
+      font-size: 20px;
+    }
+  }
+
+  .details {
+    font-size: 10px;
+  }
 }
 
 .chat-room {
@@ -32,7 +43,7 @@ $chat_room_title_height: 60px;
     overflow: auto;
   }
 
-  form {
+  form.new-message-form {
     border-top: 1px solid $BORDER_COLOR;
     position: absolute;
     height: 45px;

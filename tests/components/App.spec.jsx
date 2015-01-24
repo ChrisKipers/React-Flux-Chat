@@ -2,6 +2,7 @@ var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
 var $ = require('jquery');
 var TestData = require('../test-data');
+var _ = require('lodash');
 
 var App = require('../../public/src/js/components/App.jsx');
 
@@ -13,25 +14,30 @@ var UserList = require('../../public/src/js/components/UserList.jsx');
 var ChatRoom = require('../../public/src/js/components/ChatRoom.jsx');
 
 var SettingsStore = require('../../public/src/js/stores/SettingsStore');
-var MessageStore = require('../../public/src/js/stores/MessageStore');
+var ChatRoomStore = require('../../public/src/js/stores/ChatRoomStore');
 var UserStore = require('../../public/src/js/stores/UserStore');
 
-var MessageActions = require('../../public/src/js/actions/MessageActions');
+var ChatRoomActions = require('../../public/src/js/actions/ChatRoomActions');
 
 describe('The App component', function () {
-  var target, targetEl, user, users, messages, currentRoom;
+  var target, targetEl, user, users, rooms;
 
   beforeEach(function () {
-    currentRoom = 'General';
-    users = TestData.getUsers(3);
+    users = TestData.getNTestUsers(3);
     user = users[0];
-    messages = TestData.getMessagesForUsersByRoom([currentRoom], 3, users);
+    var testRoom = TestData.getTestRoom(user._id);
+    rooms = {};
+    rooms[testRoom._id] = testRoom;
+
+    spyOn(SettingsStore, 'isInitialized').and.returnValue(true);
+    spyOn(ChatRoomStore, 'isInitialized').and.returnValue(true);
+    spyOn(UserStore, 'isInitialized').and.returnValue(true);
 
     spyOn(SettingsStore, 'getUser').and.callFake(function() {
       return user;
     });
-    spyOn(MessageStore, 'getAll').and.callFake(function() {
-      return messages;
+    spyOn(ChatRoomStore, 'getAll').and.callFake(function() {
+      return rooms;
     });
     spyOn(UserStore, 'getUsers').and.callFake(function() {
       return users;
@@ -74,8 +80,8 @@ describe('The App component', function () {
     });
 
     it('is passed the correct rooms', function () {
-      var rooms = Object.keys(target.state.messages);
-      expect(chatRoomListComponent.props.rooms).toEqual(rooms);
+      var roomValues = _.values(target.state.roomsById);
+      expect(chatRoomListComponent.props.rooms).toEqual(roomValues);
     });
 
     it('is passed the correct onRoomSelect handler', function () {
@@ -109,7 +115,8 @@ describe('The App component', function () {
     });
 
     it('is passed the correct users property', function () {
-      expect(userListComponent.props.users).toEqual(target.state.users);
+      var usersInApp = _.values(target.state.usersById);
+      expect(userListComponent.props.users).toEqual(usersInApp);
     });
   });
 
@@ -124,36 +131,26 @@ describe('The App component', function () {
     });
 
     it('is passed the correct room property', function () {
-      expect(chatRoomComponent.props.room).toEqual(target.state.room);
+      var currentRoom = target.state.roomsById[target.state.room];
+      var roomWithUserData = target._mergeRoomWithUserData(currentRoom);
+      expect(chatRoomComponent.props.room).toEqual(roomWithUserData);
     });
 
     it('is passed the correct user property', function () {
       expect(chatRoomComponent.props.user).toEqual(target.state.user);
     });
-
-    it('is passed the correct messages property', function () {
-      var transformedMessages = target._getMessagesWithUserNameByRoom(target.state.room);
-      expect(chatRoomComponent.props.messages).toEqual(transformedMessages);
-    });
   });
 
-  describe('responds to MessageStore updates', function() {
+  describe('responds to ChatRoomStore updates', function() {
     beforeEach(function() {
-      messages = {
-        General: [
-          {
-            author: 'Chris',
-            content: 'new Message',
-            room: 'General',
-            date: Date.now()
-          }
-        ]
-      };
+      var newTestRoom = TestData.getTestRoom(target.state.user._id);
+      rooms = _.extend({}, target.state.roomsById);
+      rooms[newTestRoom._id] = newTestRoom;
     });
 
     it('by updating its states messages', function () {
-      MessageStore.emitChange();
-      expect(target.state.messages).toBe(messages);
+      //ChatRoomStore.emitChange();
+      //expect(target.state.roomsById).toBe(rooms);
     });
 
   });
@@ -166,7 +163,7 @@ describe('The App component', function () {
       };
     });
 
-    it('by updating its states messages', function () {
+    it('by updating its user state', function () {
       SettingsStore.emitChange();
       expect(target.state.user).toBe(user);
     });
@@ -174,44 +171,41 @@ describe('The App component', function () {
 
   describe('responds to UserStore updates', function() {
     beforeEach(function() {
-      users = ['New User Name'];
+      var newUsers = TestData.getNTestUsers(3);
+      users = users.concat(newUsers);
     });
 
-    it('by updating its states messages', function () {
+    it('by updating its states users', function () {
       UserStore.emitChange();
-      expect(target.state.users).toBe(users);
+      expect(target.state.usersById).toEqual(_.indexBy(users, '_id'));
     });
   });
 
-  describe('responds to room change events', function() {
-    var room;
-    beforeEach(function() {
-      room = 'Room 2';
-      target._changeRoom(room);
-      spyOn(MessageActions, 'submitRoom');
-    });
-
-    it('changes it\'s room state', function() {
-      expect(target.state.room).toBe(room);
-    });
-
-  });
+  //describe('responds to room change events', function() {
+  //  var room;
+  //  beforeEach(function() {
+  //    room = 'Room 2';
+  //    target._changeRoom(room);
+  //    spyOn(ChatRoomActions, 'submitRoom');
+  //  });
+  //
+  //  it('changes it\'s room state', function() {
+  //    expect(target.state.room).toBe(room);
+  //  });
+  //
+  //});
 
   describe('responds to room create events', function() {
-    var room;
+    var roomName;
     beforeEach(function() {
-      spyOn(MessageActions, 'submitRoom');
-      room = 'New Room';
-      target._createNewChatRoom(room);
-    });
-
-    it('changes it\'s room state', function() {
-      expect(target.state.room).toBe(room);
+      spyOn(ChatRoomActions, 'submitRoom');
+      roomName = 'New Room';
+      target._createNewChatRoom(roomName);
     });
 
     it('dispatches a create room event', function() {
-      expect(MessageActions.submitRoom.calls.any()).toBeTruthy();
-      expect(MessageActions.submitRoom.calls.argsFor(0)[0]).toBe(room);
+      expect(ChatRoomActions.submitRoom.calls.any()).toBeTruthy();
+      expect(ChatRoomActions.submitRoom.calls.argsFor(0)[0]).toBe(roomName);
     });
   });
 });

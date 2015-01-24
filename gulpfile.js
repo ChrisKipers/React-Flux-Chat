@@ -85,11 +85,12 @@ gulp.task('watch', function () {
   gulp.watch('./public/src/js/**/*.js', ['lint', 'browserify']);
   gulp.watch('./public/src/js/**/*.jsx', ['lint', 'browserify']);
   gulp.watch('./public/src/scss/**/*.scss', ['sass']);
+});
 
-  //Doesn't work right
-  //return karma.server.start({
-  //  configFile: __dirname + '/config/karma.conf.js'
-  //});
+gulp.task('watch-tests', function () {
+  return karma.server.start({
+    configFile: __dirname + '/config/karma.conf.js'
+  });
 });
 
 gulp.task('test', function () {

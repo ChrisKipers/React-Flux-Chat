@@ -52,10 +52,14 @@ io.use(function (socket, next) {
 
 io.on('connection', function (socket) {
 
-  Q.all([RoomPersistence.getChatRooms(), UserPersistence.getUser(socket.userId)])
+  Q.all([RoomPersistence.getChatRooms(), UserPersistence.getUser(socket.userId), UserPersistence.getAllUsers()])
     .then(function (results) {
-      socket.emit(ACTIONS.SET_MESSAGES, results[0]);
-      socket.emit(ACTIONS.SET_USER_FROM_SERVER, results[1]);
+      var initializationData = {
+        user: results[1],
+        roomsById: results[0],
+        users: results[2]
+      };
+      socket.emit(ACTIONS.INITIALIZE_STORES, initializationData);
     });
 
   emitUsers();
@@ -67,12 +71,27 @@ io.on('connection', function (socket) {
       });
   });
 
-  socket.on(ACTIONS.SUBMIT_ROOM, function (room) {
-    RoomPersistence.addRoom(room)
-      .then(function () {
-        io.emit(ACTIONS.ADD_ROOM, room);
+  socket.on(ACTIONS.SUBMIT_ROOM, function (roomName) {
+    RoomPersistence.createGeneralRoom(socket.userId, roomName)
+      .then(function (newRoom) {
+        socket.emit(ACTIONS.ADD_ROOM_SUCCESS, newRoom);
+        socket.broadcast.emit(ACTIONS.ADD_ROOM, newRoom);
       });
 
+  });
+
+  socket.on(ACTIONS.SUBMIT_MESSAGE_UPDATE, function(message) {
+    RoomPersistence.updateMessage(message)
+      .then(function(updatedMessage) {
+        io.emit(ACTIONS.UPDATE_MESSAGE, updatedMessage);
+      });
+  });
+
+  socket.on(ACTIONS.SUBMIT_ROOM_UPDATE, function(room) {
+    RoomPersistence.updateRoom(room)
+      .then(function(updatedRoom) {
+        io.emit(ACTIONS.UPDATE_ROOM, updatedRoom);
+      });
   });
 
   socket.on(ACTIONS.SET_USER_NAME_FROM_UI, function (userName) {
@@ -85,6 +104,9 @@ io.on('connection', function (socket) {
       })
       .then(emitUsers);
   });
+
+
+
 
   socket.on('disconnect', function () {
     //removeUser(socket.id);

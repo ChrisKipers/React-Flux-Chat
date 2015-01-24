@@ -4,14 +4,17 @@ var moment = require('moment');
 var $ = require('jquery');
 
 describe('The Message component', function () {
-  var author = 'Chris Kipers';
+  var user = {
+    userName: 'Chris Kipers',
+    _id: '1'
+  };
   var date = Date.now();
   var content = 'This is the content of the message';
-  var message = React.addons.TestUtils.renderIntoDocument(<Message author={author} content={content} date={date} />);
+  var message = React.addons.TestUtils.renderIntoDocument(<Message user={user} content={content} date={date} />);
   var messageElement = message.getDOMNode();
 
   it('renders the author\'s name', function () {
-    expect($(messageElement).find('.author').text()).toBe(author);
+    expect($(messageElement).find('.author').text()).toBe(user.userName);
   });
 
   it('renders the content', function () {

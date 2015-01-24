@@ -1,0 +1,39 @@
+@import 'theme';
+
+.welcome-panel {
+  padding: 15px;
+  h1 {
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 30px;
+    color: $HEADER_BACKGROUND_COLOR;
+  }
+  p {
+    margin-bottom: 15px;
+  }
+
+  input {
+    padding: 2px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border: none;
+    font-size: 20px;
+    color: $HEADER_BACKGROUND_COLOR;
+    &:focus {
+      outline: none;
+    }
+
+    &:focus, &:hover {
+      border-bottom: 4px solid $HEADER_BACKGROUND_COLOR;
+    }
+  }
+
+  .settings-icon {
+    background: $HEADER_BACKGROUND_COLOR;
+    background-image: url(../../assets/images/icons/settings.png);
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-size: cover;
+  }
+}
