@@ -33,7 +33,15 @@ var WelcomePanel = React.createClass({
           If you wish to edit your username later on, click the <span className="settings-icon"></span> icon in the top right corner.
         </p>
         <p>
-          To get started click on a chat room in the sidebar!
+          You can lock a chat room to your window by double clicking on the room name in the left panel! You can lock as many
+          rooms as you would like, this allows you to chat in multiple rooms at the same time!
+        </p>
+        <p>
+          You can also edit the content of any of your messages by clicking the message content. You can also edit the name of any of the
+          rooms you created by clicking on the room name in the chat room header.
+        </p>
+        <p>
+          To get started click on a chat room in the sidebar! Enjoy!
         </p>
       </div>
     );
