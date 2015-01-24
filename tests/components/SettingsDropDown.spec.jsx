@@ -27,7 +27,7 @@ describe('The SettingsDropDown component', function () {
   });
 
   it('triggers a close event when the close button is clicked', function () {
-    var closeButton = $(targetEl).find('.close-botton')[0];
+    var closeButton = $(targetEl).find('.close-button')[0];
     ReactTestUtils.Simulate.click(closeButton);
     expect(onCloseSpy.calls.any()).toBeTruthy();
   });

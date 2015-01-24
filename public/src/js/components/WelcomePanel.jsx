@@ -4,7 +4,7 @@ var React = require('react');
 var SettingsStore = require('../stores/SettingsStore');
 var SettingActions = require('../actions/SettingActions');
 
-var EmptyChatRoom = React.createClass({
+var WelcomePanel = React.createClass({
   getInitialState: function () {
     return {userName: SettingsStore.getUser().userName};
   },
@@ -46,4 +46,4 @@ var EmptyChatRoom = React.createClass({
   }
 });
 
-module.exports = EmptyChatRoom;
+module.exports = WelcomePanel;

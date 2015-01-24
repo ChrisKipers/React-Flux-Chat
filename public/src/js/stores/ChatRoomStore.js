@@ -8,8 +8,7 @@ var service = require('../service');
 var _ = require('lodash');
 
 var events = {
-  CHANGE: 'CHANGE',
-  ADD_SUCCESS: 'ADD_SUCCESS'
+  CHANGE: 'CHANGE'
 };
 
 var initialized = false;
@@ -40,7 +39,7 @@ function setRooms(allRoomsById) {
   _roomById = allRoomsById;
 }
 
-var MessageStore = assign({}, EventEmitter.prototype, {
+var ChatRoomStore = assign({}, EventEmitter.prototype, {
 
   isInitialized: function () {
     return initialized;
@@ -58,11 +57,11 @@ var MessageStore = assign({}, EventEmitter.prototype, {
     switch (action.actionType) {
       case ACTIONS.ADD_MESSAGE:
         addMessage(action.message);
-        MessageStore.emitChange();
+        ChatRoomStore.emitChange();
         break;
       case ACTIONS.ADD_ROOM:
         addRoom(action.room);
-        MessageStore.emitChange();
+        ChatRoomStore.emitChange();
         break;
       case ACTIONS.SUBMIT_MESSAGE:
         service.submitMessage(action.message);
@@ -73,26 +72,25 @@ var MessageStore = assign({}, EventEmitter.prototype, {
       case ACTIONS.SET_ROOMS:
         initialized = true;
         setRooms(action.allRooms);
-        MessageStore.emitChange();
+        ChatRoomStore.emitChange();
         break;
       case ACTIONS.ADD_ROOM_SUCCESS:
         addRoom(action.room);
-        MessageStore.emitChange();
-        MessageStore.emit(events.ADD_SUCCESS, action.room);
+        ChatRoomStore.emitChange();
         break;
       case ACTIONS.SUBMIT_MESSAGE_UPDATE:
         service.submitMessageUpdate(action.messageId, action.roomId, action.content);
         break;
       case ACTIONS.UPDATE_MESSAGE:
         updateMessage(action.message);
-        MessageStore.emitChange();
+        ChatRoomStore.emitChange();
         break;
       case ACTIONS.SUBMIT_ROOM_UPDATE:
         service.submitRoomUpdate(action.roomId, action.name);
         break;
       case ACTIONS.UPDATE_ROOM:
         updateRoom(action.room);
-        MessageStore.emitChange();
+        ChatRoomStore.emitChange();
         break;
     }
 
@@ -101,6 +99,6 @@ var MessageStore = assign({}, EventEmitter.prototype, {
 
 });
 
-MessageStore.events = events;
+ChatRoomStore.events = events;
 
-module.exports = MessageStore;
+module.exports = ChatRoomStore;

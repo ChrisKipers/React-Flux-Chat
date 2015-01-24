@@ -58,16 +58,6 @@ describe('The App component', function () {
     });
   });
 
-  describe('has an AppHeader component', function() {
-    var appHeaderComponent;
-    beforeEach(function() {
-      appHeaderComponent = ReactTestUtils.findRenderedComponentWithType(target, AppHeader);
-    });
-
-    it('is rendered', function() {
-      expect(appHeaderComponent).toBeTruthy();
-    });
-  });
 
   describe('has an ChatRoomList component', function() {
     var chatRoomListComponent;

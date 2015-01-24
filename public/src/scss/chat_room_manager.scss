@@ -1,0 +1,20 @@
+@import 'layout_constants';
+
+$MAX_NUMBER_OF_CHAT_ROOMS_OPEN: 10;
+
+.chat-room-manager {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow-x: scroll;
+
+  &.multiple-rooms {
+    @for $i from 1 through $MAX_NUMBER_OF_CHAT_ROOMS_OPEN {
+      .chat-room:nth-child(#{$i + 1}) {
+        left: $i * $MULTI_CHAT_ROOM_WIDTH;
+      }
+    }
+  }
+}

@@ -1,7 +1,9 @@
 @import 'theme';
 @import 'layout_constants';
+@import 'icons';
 
 $chat_room_title_height: 60px;
+$unlock_button_dimension: 25px;
 
 .chat-room-col {
   display: inline-block;
@@ -23,9 +25,22 @@ $chat_room_title_height: 60px;
 
   .chat-room-name {
     margin-bottom: 3px;
+
     .text-renderer-view, .text-renderer-edit {
       height: 30px;
       font-size: 20px;
+    }
+  }
+
+  &.locked {
+    .chat-room-name {
+      width: calc(100% - #{$unlock_button_dimension});
+      float: left;
+    }
+
+    .close-button {
+      float: right;
+      @include close-button($unlock_button_dimension);
     }
   }
 
@@ -35,6 +50,16 @@ $chat_room_title_height: 60px;
 }
 
 .chat-room {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+
+  .multiple-rooms & {
+    width: $MULTI_CHAT_ROOM_WIDTH;
+    border-right: 1px solid $BORDER_COLOR;
+  }
+
   .message-list {
     position: absolute;
     top: $chat_room_title_height;

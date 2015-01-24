@@ -3,6 +3,8 @@
 var React = require('react');
 var _ = require('lodash');
 
+var ChatRoomActions = require('../actions/ChatRoomActions');
+
 var ESCAPE_KEY_CODE = 27;
 
 var TextRenderer = React.createClass({
@@ -12,7 +14,7 @@ var TextRenderer = React.createClass({
   _submitEdit: function(event) {
     event.preventDefault();
     if (this.state.text.trim() !== '') {
-      this.props.onSubmit(this.state.text);
+      ChatRoomActions.submitRoom(this.state.text);
       this._exitEnter();
     }
   },

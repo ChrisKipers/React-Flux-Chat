@@ -1,5 +1,6 @@
 @import 'theme';
 @import 'layout_constants';
+@import 'icons';
 
 .settings-dropdown {
   position: absolute;
@@ -64,16 +65,13 @@
     }
   }
 
-  .close-botton {
+  .close-button {
     position: absolute;
     top: 0;
     right: 0;
     background: transparent;
     border: none;
-    background-image: url(../../assets/images/icons/close.png);
-    background-size: cover;
-    width: 20px;
-    height: 20px;
+    @include close-button(20px);
 
     &:focus {
       outline: none;

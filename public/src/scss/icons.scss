@@ -1,0 +1,6 @@
+@mixin close-button($dimension) {
+  background-image: url(../../assets/images/icons/close.png);
+  background-size: cover;
+  width: $dimension;
+  height: $dimension;
+}

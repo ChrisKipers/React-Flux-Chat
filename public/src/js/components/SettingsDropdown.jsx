@@ -28,7 +28,7 @@ var SettingsDropdown = React.createClass({
     return (
       <div className="settings-dropdown">
         <h1>Settings</h1>
-        <input type="button" className="close-botton" onClick={this.props.onClose}/>
+        <input type="button" className="close-button" onClick={this.props.onClose}/>
         <form onSubmit={this._submitEdit}>
           <label>Username:</label>
           <input type="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>

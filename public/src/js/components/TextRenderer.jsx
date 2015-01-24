@@ -47,7 +47,7 @@ var TextRenderer = React.createClass({
           <input type="text" value={this.state.text} className="text-renderer-edit"
             onChange={this._updateEditText} ref="textInput"
             onKeyDown={this._keyDown}
-             />
+            onBlur={this._exitEnter} />
         </form>
       );
     } else {
