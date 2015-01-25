@@ -21,6 +21,13 @@ app.use(sessionMiddleware);
 
 
 app.get('/', function (req, res) {
+  function render() {
+    res.render('index', {
+      jsFiles: config.jsFiles,
+      cssFiles: config.cssFiles
+    });
+  }
+
   if (req.session.userId === undefined) {
     UserPersistence.createNewUser()
       .then(function (newUser) {
@@ -29,13 +36,6 @@ app.get('/', function (req, res) {
       });
   } else {
     render();
-  }
-
-  function render() {
-    res.render('index', {
-      jsFiles: config.jsFiles,
-      cssFiles: config.cssFiles
-    });
   }
 });
 
@@ -49,6 +49,14 @@ io.use(function (socket, next) {
   socket.userId = socket.request.session.userId;
   next();
 });
+
+function emitUsers() {
+  UserPersistence.getAllUsers()
+    .then(function (allUsers) {
+      io.emit(ACTIONS.SET_USERS, allUsers);
+    });
+
+}
 
 io.on('connection', function (socket) {
 
@@ -112,14 +120,6 @@ io.on('connection', function (socket) {
     //removeUser(socket.id);
   });
 });
-
-function emitUsers() {
-  UserPersistence.getAllUsers()
-    .then(function (allUsers) {
-      io.emit(ACTIONS.SET_USERS, allUsers);
-    });
-
-}
 
 http.listen(config.port, function () {
   console.log('listening on *:' + config.port);

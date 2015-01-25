@@ -4,7 +4,7 @@ var _ = require('lodash');
 var AppDispatcher = require('../AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ACTIONS = require('../constants').ACTIONS;
-var APP_MODES = require('../constants').APP_MODES
+var APP_MODES = require('../constants').APP_MODES;
 var assign = require('object-assign');
 
 var ChatRoomStore = require('./ChatRoomStore');
@@ -16,6 +16,8 @@ var CHANGE_EVENT = 'change';
 var _initialized = false;
 
 var _activeChatRooms = [];
+
+var AppStore;
 
 function setInitialized() {
   var oldInitialized = _initialized;
@@ -45,7 +47,7 @@ function unlockRoom(roomId) {
   });
 }
 
-var AppStore = assign({}, EventEmitter.prototype, {
+AppStore = assign({}, EventEmitter.prototype, {
 
   isInitialized: function () {
     return _initialized;
