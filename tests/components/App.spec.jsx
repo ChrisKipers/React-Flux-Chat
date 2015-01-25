@@ -1,6 +1,5 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
-var $ = require('jquery');
 var _ = require('lodash');
 
 var APP_MODES = require('../../public/src/js/constants').APP_MODES;
