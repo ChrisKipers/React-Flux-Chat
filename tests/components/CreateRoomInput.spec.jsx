@@ -1,15 +1,19 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
+
 var CreateRoomInput = require('../../public/src/js/components/CreateRoomInput.jsx');
+
+var ChatRoomActions = require('../../public/src/js/actions/ChatRoomActions');
+
 var $ = require('jquery');
 
 describe('The CreateRoomInput component', function () {
-  var target, targetEl, submitRoomSpy;
+  var target, targetEl;
 
   beforeEach(function () {
-    submitRoomSpy = jasmine.createSpy('submitRoomSpy');
-    target = ReactTestUtils.renderIntoDocument(<CreateRoomInput onSubmit={submitRoomSpy} />);
+    target = ReactTestUtils.renderIntoDocument(<CreateRoomInput />);
     targetEl = target.getDOMNode();
+    spyOn(ChatRoomActions, 'submitRoom');
   });
 
   describe('in display mode', function () {
@@ -39,14 +43,14 @@ describe('The CreateRoomInput component', function () {
 
     it('does not create a room with an empty name', function () {
       ReactTestUtils.Simulate.submit(formEl);
-      expect(submitRoomSpy.calls.any()).toBeFalsy();
+      expect(ChatRoomActions.submitRoom.calls.any()).toBeFalsy();
     });
 
     it('does create a room with name', function () {
       var newRoomName = 'New Room!';
       ReactTestUtils.Simulate.change(inputFieldEl, {target: {value: newRoomName}});
       ReactTestUtils.Simulate.submit(formEl);
-      expect(submitRoomSpy.calls.argsFor(0)[0]).toBe(newRoomName);
+      expect(ChatRoomActions.submitRoom.calls.argsFor(0)[0]).toBe(newRoomName);
     });
 
     describe('exits edit mode', function () {
