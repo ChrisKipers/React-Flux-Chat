@@ -15,12 +15,12 @@ var ChatRoomManager = React.createClass({
 
   componentDidMount: function () {
     AppStore.addChangeListener(this._updateActiveChatRooms);
-    ChatRoomStore.on(ChatRoomStore.events.CHANGE, this._onRoomChange);
+    ChatRoomStore.addChangeListener(this._onRoomChange);
   },
 
   componentWillUnmount: function () {
     AppStore.removeChangeListener(this._updateActiveChatRooms);
-    ChatRoomStore.removeListener(ChatRoomStore.events.CHANGE, this._onRoomChange);
+    ChatRoomStore.removeChangeListener(this._onRoomChange);
   },
 
   render: function () {

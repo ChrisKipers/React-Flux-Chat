@@ -7,9 +7,7 @@ var service = require('../service');
 
 var _ = require('lodash');
 
-var events = {
-  CHANGE: 'CHANGE'
-};
+var CHANGE_EVENT = 'CHANGE';
 
 var initialized = false;
 
@@ -50,7 +48,15 @@ var ChatRoomStore = assign({}, EventEmitter.prototype, {
   },
 
   emitChange: function () {
-    this.emit(events.CHANGE);
+    this.emit(CHANGE_EVENT);
+  },
+
+  addChangeListener: function (callback) {
+    this.on(CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function (callback) {
+    this.removeListener(CHANGE_EVENT, callback);
   },
 
   dispatcherIndex: AppDispatcher.register(function (action) {
@@ -98,7 +104,5 @@ var ChatRoomStore = assign({}, EventEmitter.prototype, {
   })
 
 });
-
-ChatRoomStore.events = events;
 
 module.exports = ChatRoomStore;

@@ -17,6 +17,7 @@ var ChatRoom = React.createClass({
   componentDidMount: function () {
     SettingsStore.addChangeListener(this._onSettingsChange);
     UserStore.addChangeListener(this._onUsersChange);
+    this.refs.messageInput.getDOMNode().focus();
   },
 
   componentWillUnmount: function () {

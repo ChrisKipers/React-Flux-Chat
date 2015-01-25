@@ -14,10 +14,10 @@ var ChatRoomList = React.createClass({
     return {roomsById: ChatRoomStore.getAll()};
   },
   componentDidMount: function () {
-    ChatRoomStore.on(ChatRoomStore.events.CHANGE, this._onRoomsChange);
+    ChatRoomStore.addChangeListener(this._onRoomsChange);
   },
   componentWillUnmount: function () {
-    ChatRoomStore.removeListener(ChatRoomStore.events.CHANGE, this._onRoomsChange);
+    ChatRoomStore.removeChangeListener(this._onRoomsChange);
   },
   _onRoomsChange: function () {
     this.setState({roomsById: ChatRoomStore.getAll()});
