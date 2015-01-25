@@ -18,7 +18,7 @@ describe('The Message component', function () {
   });
 
   it('renders the content', function () {
-    expect($(messageElement).find('.content > span').text()).toContain(content);
+    expect($(messageElement).find('.content').text()).toContain(content);
   });
 
   it('renders the formatted date', function () {
