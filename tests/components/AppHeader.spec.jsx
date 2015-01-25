@@ -1,8 +1,12 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
-var AppHeader = require('../../public/src/js/components/AppHeader.jsx');
-var SettingsStore = require('../../public/src/js/stores/SettingsStore');
 var $ = require('jquery');
+
+var AppHeader = require('../../public/src/js/components/AppHeader.jsx');
+var SettingsDropdown = require('../../public/src/js/components/SettingsDropdown.jsx');
+
+var SettingsStore = require('../../public/src/js/stores/SettingsStore');
+
 var TestData = require('../test-data');
 
 describe('The AppHeader component', function () {
@@ -40,7 +44,7 @@ describe('The AppHeader component', function () {
   });
 
   function isSettingsDropDownOpen() {
-    return $(targetEl).find('.settings-dropdown').length === 1;
+    return ReactTestUtils.scryRenderedComponentsWithType(target, SettingsDropdown).length === 1;
   }
 
   function clickSettingsIcon() {

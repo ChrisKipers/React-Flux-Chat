@@ -1,201 +1,99 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
 var $ = require('jquery');
-var TestData = require('../test-data');
 var _ = require('lodash');
+
+var APP_MODES = require('../../public/src/js/constants').APP_MODES;
 
 var App = require('../../public/src/js/components/App.jsx');
 
 // Composite components that we will be checking for inclusion of
 var AppHeader = require('../../public/src/js/components/AppHeader.jsx');
-var ChatRoomList = require('../../public/src/js/components/ChatRoomList.jsx');
-var CreateRoomInput = require('../../public/src/js/components/CreateRoomInput.jsx');
-var UserList = require('../../public/src/js/components/UserList.jsx');
-var ChatRoom = require('../../public/src/js/components/ChatRoom.jsx');
+var LoadingScreen = require('../../public/src/js/components/LoadingScreen.jsx');
+var ChatRoomManager = require('../../public/src/js/components/ChatRoomManager.jsx');
+var WelcomePanel = require('../../public/src/js/components/WelcomePanel.jsx');
 
+var AppStore = require('../../public/src/js/stores/AppStore');
 var SettingsStore = require('../../public/src/js/stores/SettingsStore');
-var ChatRoomStore = require('../../public/src/js/stores/ChatRoomStore');
-var UserStore = require('../../public/src/js/stores/UserStore');
 
-var ChatRoomActions = require('../../public/src/js/actions/ChatRoomActions');
+var TestData = require('../test-data');
+
 
 describe('The App component', function () {
-  var target, targetEl, user, users, rooms;
+  var target, targetEl;
 
-  beforeEach(function () {
-    users = TestData.getNTestUsers(3);
-    user = users[0];
-    var testRoom = TestData.getTestRoom(user._id);
-    rooms = {};
-    rooms[testRoom._id] = testRoom;
-
-    spyOn(SettingsStore, 'isInitialized').and.returnValue(true);
-    spyOn(ChatRoomStore, 'isInitialized').and.returnValue(true);
-    spyOn(UserStore, 'isInitialized').and.returnValue(true);
-
-    spyOn(SettingsStore, 'getUser').and.callFake(function() {
-      return user;
-    });
-    spyOn(ChatRoomStore, 'getAll').and.callFake(function() {
-      return rooms;
-    });
-    spyOn(UserStore, 'getUsers').and.callFake(function() {
-      return users;
-    });
-
-    target = ReactTestUtils.renderIntoDocument(<App />);
-    targetEl = target.getDOMNode();
-  });
-
-  describe('has an AppHeader component', function() {
-    var appHeaderComponent;
+  describe('is not initialized', function() {
     beforeEach(function() {
-      appHeaderComponent = ReactTestUtils.findRenderedComponentWithType(target, AppHeader);
+      spyOn(AppStore, 'isInitialized').and.returnValue(false);
+      target = ReactTestUtils.renderIntoDocument(<App />);
+      targetEl = target.getDOMNode();
     });
 
-    it('is rendered', function() {
-      expect(appHeaderComponent).toBeTruthy();
+    it('it renders the application header', function() {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, AppHeader)).toBeTruthy();
+    });
+
+    it('it renders the loading screen', function () {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, LoadingScreen)).toBeTruthy();
+    });
+
+    it('it does not render the chat manager', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, ChatRoomManager).length).toBe(0);
+    });
+
+    it('it does not render the welcome panel', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, WelcomePanel).length).toBe(0);
     });
   });
 
-
-  describe('has an ChatRoomList component', function() {
-    var chatRoomListComponent;
+  describe('is initialized and in WELCOME mode', function() {
     beforeEach(function() {
-      chatRoomListComponent = ReactTestUtils.findRenderedComponentWithType(target, ChatRoomList);
+      spyOn(AppStore, 'isInitialized').and.returnValue(true);
+      spyOn(AppStore, 'getMode').and.returnValue(APP_MODES.WELCOME);
+      spyOn(SettingsStore, 'getUser').and.returnValue(TestData.getTestUser());
+      target = ReactTestUtils.renderIntoDocument(<App />);
+      targetEl = target.getDOMNode();
     });
 
-    it('is rendered', function() {
-      expect(chatRoomListComponent).toBeTruthy();
+    it('it renders the application header', function() {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, AppHeader)).toBeTruthy();
     });
 
-    it('is passed the correct rooms', function () {
-      var roomValues = _.values(target.state.roomsById);
-      expect(chatRoomListComponent.props.rooms).toEqual(roomValues);
+    it('it does not render the loading screen', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, LoadingScreen).length).toBe(0);
     });
 
-    it('is passed the correct onRoomSelect handler', function () {
-      expect(chatRoomListComponent.props.onRoomSelect).toEqual(target._changeRoom);
+    it('it does not render the chat manager', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, ChatRoomManager).length).toBe(0);
+    });
+
+    it('it renders the welcome panel', function () {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, WelcomePanel)).toBeTruthy();
     });
   });
 
-  describe('has an CreateRoomInput component', function() {
-    var createRoomInputComponent;
+  describe('is initialized and in CHAT mode', function() {
     beforeEach(function() {
-      createRoomInputComponent = ReactTestUtils.findRenderedComponentWithType(target, CreateRoomInput);
+      spyOn(AppStore, 'isInitialized').and.returnValue(true);
+      spyOn(AppStore, 'getMode').and.returnValue(APP_MODES.CHAT);
+      target = ReactTestUtils.renderIntoDocument(<App />);
+      targetEl = target.getDOMNode();
     });
 
-    it('is rendered', function() {
-      expect(createRoomInputComponent).toBeTruthy();
+    it('it renders the application header', function() {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, AppHeader)).toBeTruthy();
     });
 
-    it('is passed the correct onSubmit handler', function () {
-      expect(createRoomInputComponent.props.onSubmit).toEqual(target._createNewChatRoom);
-    });
-  });
-
-  describe('has an UserList component', function() {
-    var userListComponent;
-    beforeEach(function() {
-      userListComponent = ReactTestUtils.findRenderedComponentWithType(target, UserList);
+    it('it does not render the loading screen', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, LoadingScreen).length).toBe(0);
     });
 
-    it('is rendered', function() {
-      expect(userListComponent).toBeTruthy();
+    it('it renders the chat manager', function () {
+      expect(ReactTestUtils.findRenderedComponentWithType(target, ChatRoomManager)).toBeTruthy();
     });
 
-    it('is passed the correct users property', function () {
-      var usersInApp = _.values(target.state.usersById);
-      expect(userListComponent.props.users).toEqual(usersInApp);
-    });
-  });
-
-  describe('has an ChatRoom component', function() {
-    var chatRoomComponent;
-    beforeEach(function() {
-      chatRoomComponent = ReactTestUtils.findRenderedComponentWithType(target, ChatRoom);
-    });
-
-    it('is rendered', function() {
-      expect(chatRoomComponent).toBeTruthy();
-    });
-
-    it('is passed the correct room property', function () {
-      var currentRoom = target.state.roomsById[target.state.room];
-      var roomWithUserData = target._mergeRoomWithUserData(currentRoom);
-      expect(chatRoomComponent.props.room).toEqual(roomWithUserData);
-    });
-
-    it('is passed the correct user property', function () {
-      expect(chatRoomComponent.props.user).toEqual(target.state.user);
-    });
-  });
-
-  describe('responds to ChatRoomStore updates', function() {
-    beforeEach(function() {
-      var newTestRoom = TestData.getTestRoom(target.state.user._id);
-      rooms = _.extend({}, target.state.roomsById);
-      rooms[newTestRoom._id] = newTestRoom;
-    });
-
-    it('by updating its states messages', function () {
-      //ChatRoomStore.emitChange();
-      //expect(target.state.roomsById).toBe(rooms);
-    });
-
-  });
-
-  describe('responds to SettingsStore updates', function() {
-    beforeEach(function() {
-      user = {
-        _id: '1',
-        userName: 'New User Name'
-      };
-    });
-
-    it('by updating its user state', function () {
-      SettingsStore.emitChange();
-      expect(target.state.user).toBe(user);
-    });
-  });
-
-  describe('responds to UserStore updates', function() {
-    beforeEach(function() {
-      var newUsers = TestData.getNTestUsers(3);
-      users = users.concat(newUsers);
-    });
-
-    it('by updating its states users', function () {
-      UserStore.emitChange();
-      expect(target.state.usersById).toEqual(_.indexBy(users, '_id'));
-    });
-  });
-
-  //describe('responds to room change events', function() {
-  //  var room;
-  //  beforeEach(function() {
-  //    room = 'Room 2';
-  //    target._changeRoom(room);
-  //    spyOn(ChatRoomActions, 'submitRoom');
-  //  });
-  //
-  //  it('changes it\'s room state', function() {
-  //    expect(target.state.room).toBe(room);
-  //  });
-  //
-  //});
-
-  describe('responds to room create events', function() {
-    var roomName;
-    beforeEach(function() {
-      spyOn(ChatRoomActions, 'submitRoom');
-      roomName = 'New Room';
-      target._createNewChatRoom(roomName);
-    });
-
-    it('dispatches a create room event', function() {
-      expect(ChatRoomActions.submitRoom.calls.any()).toBeTruthy();
-      expect(ChatRoomActions.submitRoom.calls.argsFor(0)[0]).toBe(roomName);
+    it('it does not render the welcome panel', function () {
+      expect(ReactTestUtils.scryRenderedComponentsWithType(target, WelcomePanel).length).toBe(0);
     });
   });
 });
