@@ -3,7 +3,7 @@ var ReactTestUtils = React.addons.TestUtils;
 var CreateRoomInput = require('../../public/src/js/components/CreateRoomInput.jsx');
 var $ = require('jquery');
 
-describe('The ChatRoom component', function () {
+describe('The CreateRoomInput component', function () {
   var target, targetEl, submitRoomSpy;
 
   beforeEach(function () {

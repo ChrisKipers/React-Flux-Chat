@@ -1,44 +1,78 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
-var ChatRoomList = require('../../public/src/js/components/ChatRoomList.jsx');
 var $ = require('jquery');
+var _ = require('lodash');
+
+var ChatRoomList = require('../../public/src/js/components/ChatRoomList.jsx');
+
+var ChatRoomStore = require('../../public/src/js/stores/ChatRoomStore');
+
+var ChatRoomActions = require('../../public/src/js/actions/ChatRoomActions');
+
 
 var TestData = require('../test-data');
 
 describe('The ChatRoomList component', function () {
-  var target, targetEl, messagesByRoom, rooms;
+  var target, targetEl, rooms;
 
   describe('displays', function () {
     it('empty list when there are no rooms', function () {
-      rooms = [];
-      target = ReactTestUtils.renderIntoDocument(<ChatRoomList rooms={rooms} />);
+      rooms = {};
+      spyOn(ChatRoomStore, 'getAll').and.returnValue(rooms);
+      target = ReactTestUtils.renderIntoDocument(<ChatRoomList />);
       targetEl = target.getDOMNode();
-      expect($(targetEl).find('li').length).toBe(rooms.length);
+      expect($(targetEl).find('li').length).toBe(_.values(rooms).length);
     });
 
     it('rooms when rooms are not empty', function () {
-      rooms = [TestData.getTestRoom('1'), TestData.getTestRoom('2')];
-      target = ReactTestUtils.renderIntoDocument(<ChatRoomList rooms={rooms} />);
+      var roomOne = TestData.getTestRoom('1'), roomTwo = TestData.getTestRoom('2');
+      rooms = {};
+      rooms[roomOne._id] = roomOne;
+      rooms[roomTwo._id] = roomTwo;
+      spyOn(ChatRoomStore, 'getAll').and.returnValue(rooms);
+      target = ReactTestUtils.renderIntoDocument(<ChatRoomList />);
       targetEl = target.getDOMNode();
       var roomElements = $(targetEl).find('li');
 
-      expect(roomElements.length).toBe(rooms.length);
+      var roomValues = _.values(rooms);
 
-      for (var i = 0; i < roomElements.length && i < rooms.length; i++) {
-        expect(roomElements[i].textContent).toBe(rooms[i].name);
+      expect(roomElements.length).toBe(roomValues.length);
+
+      for (var i = 0; i < roomElements.length && i < roomValues.length; i++) {
+        expect(roomElements[i].textContent).toBe(roomValues[i].name);
       }
     });
   });
 
-  it('triggers a room change event when a room is clicked', function () {
-    var roomOne = TestData.getTestRoom('1');
-    rooms = [roomOne, TestData.getTestRoom('2')];
-    var changeRoom = jasmine.createSpy('changeRoom');
-    target = ReactTestUtils.renderIntoDocument(<ChatRoomList rooms={rooms} onRoomSelect={changeRoom}/>);
-    targetEl = target.getDOMNode();
-    var firstRoomElement = $(targetEl).find('li')[0];
-    ReactTestUtils.Simulate.click(firstRoomElement);
+  describe('triggers an event', function () {
+    var roomValues, roomOne, roomTwo;
+    beforeEach(function() {
+      roomOne = TestData.getTestRoom('1'), roomTwo = TestData.getTestRoom('2');
+      rooms = {};
+      rooms[roomOne._id] = roomOne;
+      rooms[roomTwo._id] = roomTwo;
+      roomValues = _.values(rooms);
 
-    expect(changeRoom.calls.argsFor(0)[0]).toBe(roomOne);
+      spyOn(ChatRoomStore, 'getAll').and.returnValue(rooms);
+
+      target = ReactTestUtils.renderIntoDocument(<ChatRoomList />);
+      targetEl = target.getDOMNode();
+    });
+
+    it('to enter a room on click', function () {
+      spyOn(ChatRoomActions, 'enterRoom');
+      var firstRoomElement = $(targetEl).find('li')[0];
+      ReactTestUtils.Simulate.click(firstRoomElement);
+      expect(ChatRoomActions.enterRoom.calls.count()).toBe(1);
+      expect(ChatRoomActions.enterRoom.calls.argsFor(0)[0]).toBe(roomOne._id);
+    });
+
+    it('to lock a room on double click', function () {
+      spyOn(ChatRoomActions, 'lockRoom');
+      var firstRoomElement = $(targetEl).find('li')[0];
+      ReactTestUtils.Simulate.doubleClick(firstRoomElement);
+      expect(ChatRoomActions.lockRoom.calls.count()).toBe(1);
+      expect(ChatRoomActions.lockRoom.calls.argsFor(0)[0]).toBe(roomOne._id);
+    });
   });
 });
