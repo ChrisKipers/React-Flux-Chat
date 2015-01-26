@@ -105,7 +105,7 @@ gulp.task('compile', ['lint', 'browserify-lib', 'browserify', 'sass']);
 gulp.task('build', ['uglify-js', 'uglify-css']);
 
 function getFrontendDependencies() {
-  var backendOnlyDependencies = ['jade', 'express', 'socket.io', 'sillyname', 'guid', 'cookie-parser', 'express-session', 'q'];
+  var backendOnlyDependencies = ['jade', 'express', 'socket.io', 'sillyname', 'guid', 'cookie-parser', 'express-session', 'q', 'mongoose', 'mongoose-q', 'connect-mongo'];
   var dependencyNames = Object.keys(package.dependencies);
   return dependencyNames.filter(function (dependencyName) {
     return backendOnlyDependencies.indexOf(dependencyName) === -1;

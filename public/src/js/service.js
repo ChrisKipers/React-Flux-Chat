@@ -25,6 +25,9 @@ socket.on('connect', function() {
   socket.on(ACTIONS.SET_USERS, function(users) {
     UserActions.setUsers(users);
   });
+  socket.on(ACTIONS.UPDATE_USER, function(user) {
+    UserActions.updateUser(user);
+  });
   socket.on(ACTIONS.ADD_ROOM_SUCCESS, function(room) {
     ChatRoomActions.addRoomSuccess(room);
   });

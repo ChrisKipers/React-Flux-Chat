@@ -17,8 +17,9 @@ function addRoom(room) {
   _roomById[room._id] = room;
 }
 
-function updateRoom(room) {
-  _roomById[room._id] = room;
+function updateRoom(updatedRoom) {
+  var existingRoom = _roomById[updatedRoom._id];
+  _roomById[updatedRoom._id] = _.extend(existingRoom, updatedRoom);
 }
 
 function addMessage(message) {
@@ -34,7 +35,7 @@ function updateMessage(updatedMessage) {
 }
 
 function setRooms(allRoomsById) {
-  _roomById = allRoomsById;
+  _roomById = _.indexBy(allRoomsById, '_id');
 }
 
 var ChatRoomStore = assign({}, EventEmitter.prototype, {

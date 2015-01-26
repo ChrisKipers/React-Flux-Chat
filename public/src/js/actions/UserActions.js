@@ -9,6 +9,12 @@ var UserActions = {
       actionType: ACTIONS.SET_USERS,
       users: users
     });
+  },
+  updateUser: function(user) {
+    AppDispatcher.dispatch({
+      actionType: ACTIONS.UPDATE_USER,
+      user: user
+    });
   }
 };
 

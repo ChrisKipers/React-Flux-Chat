@@ -53,6 +53,12 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
         setUser(action.user);
         SettingsStore.emitChange();
         break;
+      case ACTIONS.UPDATE_USER:
+        if (action.user._id === _user._id) {
+          setUser(action.user);
+          SettingsStore.emitChange();
+        }
+        break;
     }
 
     return true;

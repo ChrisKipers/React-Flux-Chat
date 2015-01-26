@@ -9,12 +9,35 @@ var config = require('./config/config');
 var _ = require('lodash');
 var Q = require('q');
 
-var RoomPersistence = require('./src/persistence/RoomPersistence');
-var UserPersistence = require('./src/persistence/UserPersistence');
+// Most load models to ensure they are used correctly
+var mongoose = require('mongoose-q')(require('mongoose'));
+['chat-room', 'message', 'user'].forEach(function (model) {
+  require('./src/models/' + model);
+});
+
+mongoose.connect(config.db);
+
+var ChatRoom = mongoose.model('ChatRoom');
+var User = mongoose.model('User');
+
+var RoomController = require('./src/controllers/room-controller');
+var MessageController = require('./src/controllers/message-controller');
+var UserController = require('./src/controllers/user-controller');
 
 var session = require('express-session');
+var mongoStore = require('connect-mongo')({
+  session: session
+});
 var cookieParser = require('cookie-parser');
-var sessionMiddleware = session({secret: config.sessionSecret});
+var sessionMiddleware = session({
+  secret: config.sessionSecret,
+  saveUninitialized: true,
+  resave: true,
+  store: new mongoStore({
+    url: config.db
+  })
+});
+
 app.set('view engine', 'jade');
 app.use(cookieParser());
 app.use(sessionMiddleware);
@@ -29,9 +52,10 @@ app.get('/', function (req, res) {
   }
 
   if (req.session.userId === undefined) {
-    UserPersistence.createNewUser()
-      .then(function (newUser) {
-        req.session.userId = newUser._id;
+    var newUser = new User({});
+    newUser.saveQ()
+      .then(function (savedUser) {
+        req.session.userId = savedUser._id;
         render();
       });
   } else {
@@ -51,7 +75,7 @@ io.use(function (socket, next) {
 });
 
 function emitUsers() {
-  UserPersistence.getAllUsers()
+  User.findQ()
     .then(function (allUsers) {
       io.emit(ACTIONS.SET_USERS, allUsers);
     });
@@ -60,7 +84,7 @@ function emitUsers() {
 
 io.on('connection', function (socket) {
 
-  Q.all([RoomPersistence.getChatRooms(), UserPersistence.getUser(socket.userId), UserPersistence.getAllUsers()])
+  Q.all([ChatRoom.find().populate('messages').execQ(), User.findByIdQ(socket.userId), User.findQ()])
     .then(function (results) {
       var initializationData = {
         user: results[1],
@@ -72,49 +96,9 @@ io.on('connection', function (socket) {
 
   emitUsers();
 
-  socket.on(ACTIONS.SUBMIT_MESSAGE, function (message) {
-    RoomPersistence.addMessage(message)
-      .then(function (newMessage) {
-        io.emit(ACTIONS.ADD_MESSAGE, newMessage);
-      });
-  });
-
-  socket.on(ACTIONS.SUBMIT_ROOM, function (roomName) {
-    RoomPersistence.createGeneralRoom(socket.userId, roomName)
-      .then(function (newRoom) {
-        socket.emit(ACTIONS.ADD_ROOM_SUCCESS, newRoom);
-        socket.broadcast.emit(ACTIONS.ADD_ROOM, newRoom);
-      });
-
-  });
-
-  socket.on(ACTIONS.SUBMIT_MESSAGE_UPDATE, function(message) {
-    RoomPersistence.updateMessage(message)
-      .then(function(updatedMessage) {
-        io.emit(ACTIONS.UPDATE_MESSAGE, updatedMessage);
-      });
-  });
-
-  socket.on(ACTIONS.SUBMIT_ROOM_UPDATE, function(room) {
-    RoomPersistence.updateRoom(room)
-      .then(function(updatedRoom) {
-        io.emit(ACTIONS.UPDATE_ROOM, updatedRoom);
-      });
-  });
-
-  socket.on(ACTIONS.SET_USER_NAME_FROM_UI, function (userName) {
-    UserPersistence.getUser(socket.userId)
-      .then(function(user) {
-        var updatedUser = _.extend(user, {
-          userName: userName
-        });
-        return UserPersistence.setUser(updatedUser);
-      })
-      .then(emitUsers);
-  });
-
-
-
+  RoomController.respond(io, socket);
+  UserController.respond(io, socket);
+  MessageController.respond(io, socket);
 
   socket.on('disconnect', function () {
     //removeUser(socket.id);

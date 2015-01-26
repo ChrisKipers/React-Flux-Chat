@@ -13,5 +13,6 @@ module.exports = {
   port: process.env.PORT || 3000,
   jsFiles: jsFiles,
   cssFiles: cssFiles,
-  sessionSecret: process.env.SECRET || 'terrible-secret-1234'
+  sessionSecret: process.env.SECRET || 'terrible-secret-1234',
+  db: process.env.MONGOHQ_URL || process.env.MONGOLAB_URI || 'mongodb://localhost/react-flux-chat'
 };
