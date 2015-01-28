@@ -1,9 +1,11 @@
 'use strict';
+/* global window  */
 var _ = require('lodash');
 
 var AppDispatcher = require('../AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ACTIONS = require('../constants').ACTIONS;
+var RESPONSIVE_BREAK_POINTS = require('../constants').RESPONSIVE_BREAK_POINTS;
 var APP_MODES = require('../constants').APP_MODES;
 var assign = require('object-assign');
 
@@ -21,6 +23,10 @@ var _activeChatRooms = [];
 
 var AppStore;
 
+function isMobile() {
+  return window.outerWidth < RESPONSIVE_BREAK_POINTS.MOBILE;
+}
+
 function setInitialized() {
   var oldInitialized = _initialized;
   _initialized = ChatRoomStore.isInitialized() && UserStore.isInitialized() && SettingsStore.isInitialized();
@@ -35,6 +41,10 @@ function enterRoom(roomId) {
       return room.isLocked;
     });
     _activeChatRooms.push({roomId: roomId, isLocked: false});
+
+    if (isMobile()) {
+      _isNavShowing = false;
+    }
   }
 }
 

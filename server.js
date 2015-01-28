@@ -6,7 +6,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var ACTIONS = require('./public/src/js/constants').ACTIONS;
 var config = require('./config/config');
-var _ = require('lodash');
 var Q = require('q');
 
 // Most load models to ensure they are used correctly

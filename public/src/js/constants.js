@@ -28,5 +28,8 @@ module.exports = {
   APP_MODES: {
     CHAT: 'CHAT',
     WELCOME: 'WELCOME'
+  },
+  RESPONSIVE_BREAK_POINTS: {
+    MOBILE: 767
   }
 };
