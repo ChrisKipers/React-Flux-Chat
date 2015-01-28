@@ -43,4 +43,13 @@ header {
       background-size: cover;
     }
   }
+
+  .list-icon {
+    background-image: url(../../assets/images/icons/list.svg);
+    background-size: cover;
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    float: left;
+  }
 }

@@ -15,6 +15,8 @@ var CHANGE_EVENT = 'change';
 
 var _initialized = false;
 
+var _isNavShowing = true;
+
 var _activeChatRooms = [];
 
 var AppStore;
@@ -61,6 +63,10 @@ AppStore = assign({}, EventEmitter.prototype, {
     return _activeChatRooms.length > 0 ? APP_MODES.CHAT : APP_MODES.WELCOME;
   },
 
+  isNavShowing: function () {
+    return _isNavShowing;
+  },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
@@ -102,6 +108,10 @@ AppStore = assign({}, EventEmitter.prototype, {
       case ACTIONS.ADD_ROOM_SUCCESS:
         AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
         enterRoom(action.room._id);
+        AppStore.emitChange();
+        break;
+      case ACTIONS.TOGGLE_NAV:
+        _isNavShowing = !_isNavShowing;
         AppStore.emitChange();
         break;
     }

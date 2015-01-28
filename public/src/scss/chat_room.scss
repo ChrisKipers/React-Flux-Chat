@@ -8,11 +8,26 @@ $unlock_button_dimension: 25px;
 .chat-room-col {
   display: inline-block;
   box-sizing: border-box;
-  width: calc(100% - #{$SIDE_BAR_WIDTH});
+  width: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
   right: 0;
+
+  .nav-open & {
+    width: calc(100% - #{$SIDE_BAR_WIDTH});
+  }
+}
+
+//Mobile in portrait
+@media screen and (max-width:767px){
+  .nav-open {
+    //Create off canvas effect
+    .chat-room-col {
+      width: 100%;
+      left: $SIDE_BAR_WIDTH;
+    }
+  }
 }
 
 .chat-room-header {

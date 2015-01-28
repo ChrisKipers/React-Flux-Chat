@@ -1,6 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react');
+var cx = require('react/addons').addons.classSet;
 
 var APP_MODES = require('../constants').APP_MODES;
 
@@ -48,9 +49,13 @@ var App = React.createClass({
     } else {
       mainViewComponent = <WelcomePanel />;
     }
+    var navigationPanel = this.state.isNavShowing ? <NavigationPanel /> : null;
+    var classes = cx({
+      'nav-open': this.state.isNavShowing
+    });
     return (
-      <div>
-        <NavigationPanel />
+      <div className={classes}>
+        {navigationPanel}
         <div className = "chat-room-col" >
           {mainViewComponent}
         </div>
@@ -61,7 +66,7 @@ var App = React.createClass({
     return <LoadingScreen />;
   },
   _appStoreUpdateListener: function () {
-    this.setState({isInitialized: AppStore.isInitialized(), mode: AppStore.getMode()});
+    this.setState({isInitialized: AppStore.isInitialized(), mode: AppStore.getMode(), isNavShowing: AppStore.isNavShowing()});
   }
 });
 
