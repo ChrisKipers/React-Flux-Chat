@@ -2,6 +2,7 @@
 /*jshint quotmark:false */
 var React = require('react');
 var _ = require('lodash');
+var dimensions = require('../utils/dimensions');
 
 var ChatRoomHeader = require('./ChatRoomHeader.jsx');
 var MessageActions = require('../actions/MessageActions');
@@ -17,7 +18,9 @@ var ChatRoom = React.createClass({
   componentDidMount: function () {
     SettingsStore.addChangeListener(this._onSettingsChange);
     UserStore.addChangeListener(this._onUsersChange);
-    this.refs.messageInput.getDOMNode().focus();
+    if (!dimensions.isCompact()) {
+      this.refs.messageInput.getDOMNode().focus();
+    }
   },
 
   componentWillUnmount: function () {

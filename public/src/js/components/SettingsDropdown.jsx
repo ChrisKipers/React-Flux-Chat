@@ -2,6 +2,8 @@
 /*jshint quotmark:false */
 var React = require('react');
 
+var dimensions = require('../utils/dimensions');
+
 var SettingsStore = require('../stores/SettingsStore');
 
 var SettingActions = require('../actions/SettingActions');
@@ -14,7 +16,9 @@ var SettingsDropdown = React.createClass({
     var userNameInputElement = this.refs.userNameInput.getDOMNode();
     userNameInputElement.focus();
     userNameInputElement.select();
-    SettingsStore.addChangeListener(this._onSettingsChange);
+    if (!dimensions.isCompact()) {
+      SettingsStore.addChangeListener(this._onSettingsChange);
+    }
   },
   componentWillUnmount: function() {
     SettingsStore.removeChangeListener(this._onSettingsChange);
