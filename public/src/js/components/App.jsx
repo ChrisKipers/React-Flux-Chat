@@ -9,13 +9,14 @@ var AppHeader = require('./AppHeader.jsx');
 var WelcomePanel = require('./WelcomePanel.jsx');
 var LoadingScreen = require('./LoadingScreen.jsx');
 var NavigationPanel = require('./NavigationPanel.jsx');
+var SettingsPanel = require('./SettingsPanel.jsx');
 var ChatRoomManager = require('./ChatRoomManager.jsx');
 
 var AppStore = require('../stores/AppStore');
 
 var App = React.createClass({
   getInitialState: function () {
-    return {isInitialized: AppStore.isInitialized(), mode: AppStore.getMode()};
+    return this._stateFromAppStore();
   },
 
   componentDidMount: function () {
@@ -49,9 +50,13 @@ var App = React.createClass({
     } else {
       mainViewComponent = <WelcomePanel />;
     }
+
     var navigationPanel = this.state.isNavShowing ? <NavigationPanel /> : null;
+    var settingsPanel = this.state.isSettingsShowing ? <SettingsPanel /> : null;
+
     var classes = cx({
-      'nav-open': this.state.isNavShowing
+      'nav-open': this.state.isNavShowing,
+      'settings-open': this.state.isSettingsShowing
     });
     return (
       <div className={classes}>
@@ -59,6 +64,7 @@ var App = React.createClass({
         <div className = "chat-room-col" >
           {mainViewComponent}
         </div>
+        {settingsPanel}
       </div>
     );
   },
@@ -66,11 +72,15 @@ var App = React.createClass({
     return <LoadingScreen />;
   },
   _appStoreUpdateListener: function () {
-    this.setState({
+    this.setState(this._stateFromAppStore());
+  },
+  _stateFromAppStore: function() {
+    return {
       isInitialized: AppStore.isInitialized(),
       mode: AppStore.getMode(),
-      isNavShowing: AppStore.isNavShowing()
-    });
+      isNavShowing: AppStore.isNavShowing(),
+      isSettingsShowing: AppStore.isSettingsShowing()
+    };
   }
 });
 

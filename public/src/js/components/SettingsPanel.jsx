@@ -8,16 +8,18 @@ var SettingsStore = require('../stores/SettingsStore');
 
 var SettingActions = require('../actions/SettingActions');
 
+var AppActions = require('../actions/AppActions');
+
 var SettingsDropdown = React.createClass({
   getInitialState: function() {
     return {settings: {userName: SettingsStore.getUser().userName}};
   },
   componentDidMount: function() {
-    var userNameInputElement = this.refs.userNameInput.getDOMNode();
-    userNameInputElement.focus();
-    userNameInputElement.select();
+    SettingsStore.addChangeListener(this._onSettingsChange);
     if (!dimensions.isCompact()) {
-      SettingsStore.addChangeListener(this._onSettingsChange);
+      var userNameInputElement = this.refs.userNameInput.getDOMNode();
+      userNameInputElement.focus();
+      userNameInputElement.select();
     }
   },
   componentWillUnmount: function() {
@@ -27,14 +29,13 @@ var SettingsDropdown = React.createClass({
     event.preventDefault();
     if (this.state.settings.userName.trim() !== '') {
       SettingActions.setUserNameFromUI(this.state.settings.userName);
-      this.props.onClose();
+      AppActions.toggleSettings();
     }
   },
   render: function() {
     return (
-      <div className="settings-dropdown">
+      <div className="settings-panel">
         <h1>Settings</h1>
-        <input type="button" className="close-button" onClick={this.props.onClose}/>
         <form onSubmit={this._submitEdit}>
           <label>Username:</label>
           <input type="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>

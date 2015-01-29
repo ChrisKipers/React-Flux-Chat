@@ -9,6 +9,11 @@ var AppActions = {
       actionType: ACTIONS.TOGGLE_NAV
     });
   },
+  toggleSettings: function() {
+    AppDispatcher.dispatch({
+      actionType: ACTIONS.TOGGLE_SETTINGS
+    });
+  },
   enterRoom: function(roomId) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.ENTER_ROOM,

@@ -33,15 +33,13 @@ header {
     font-size: 25px;
   }
 
-  .settings-header-section {
+  .settings-icon {
     float: right;
-    .settings-icon {
-      background-image: url(../../assets/images/icons/settings.png);
-      display: inline-block;
-      width: 25px;
-      height: 25px;
-      background-size: cover;
-    }
+    background-image: url(../../assets/images/icons/settings.png);
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    background-size: cover;
   }
 
   .list-icon {

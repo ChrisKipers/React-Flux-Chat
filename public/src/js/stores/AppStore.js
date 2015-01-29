@@ -18,6 +18,8 @@ var _initialized = false;
 
 var _isNavShowing = !dimensions.isCompact();
 
+var _isSettingsShowing = false;
+
 var _roomStates = [];
 
 var AppStore;
@@ -48,6 +50,20 @@ function addStateToNewRoom(newRoom) {
   _roomStates.push(createNewRoomState(newRoom));
 }
 
+function toggleNav() {
+  _isNavShowing = !_isNavShowing;
+  if(_isNavShowing && dimensions.isCompact()) {
+    _isSettingsShowing = false;
+  }
+}
+
+function toggleSettings() {
+  _isSettingsShowing = !_isSettingsShowing;
+  if(_isSettingsShowing && dimensions.isCompact()) {
+    _isNavShowing = false;
+  }
+}
+
 function enterRoom(roomId) {
   _roomStates.forEach(function(roomState) {
     if (roomState.roomId === roomId) {
@@ -60,6 +76,7 @@ function enterRoom(roomId) {
 
   if (dimensions.isCompact()) {
     _isNavShowing = false;
+    _isSettingsShowing = false;
   }
 }
 
@@ -96,6 +113,10 @@ AppStore = assign({}, EventEmitter.prototype, {
 
   isNavShowing: function () {
     return _isNavShowing;
+  },
+
+  isSettingsShowing: function() {
+    return _isSettingsShowing;
   },
 
   emitChange: function () {
@@ -149,7 +170,11 @@ AppStore = assign({}, EventEmitter.prototype, {
         AppStore.emitChange();
         break;
       case ACTIONS.TOGGLE_NAV:
-        _isNavShowing = !_isNavShowing;
+        toggleNav();
+        AppStore.emitChange();
+        break;
+      case ACTIONS.TOGGLE_SETTINGS:
+        toggleSettings();
         AppStore.emitChange();
         break;
       case ACTIONS.ADD_MESSAGE:

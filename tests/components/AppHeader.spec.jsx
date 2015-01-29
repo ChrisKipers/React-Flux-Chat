@@ -3,7 +3,7 @@ var ReactTestUtils = React.addons.TestUtils;
 var $ = require('jquery');
 
 var AppHeader = require('../../public/src/js/components/AppHeader.jsx');
-var SettingsDropdown = require('../../public/src/js/components/SettingsDropdown.jsx');
+var SettingsDropdown = require('../../public/src/js/components/SettingsPanel.jsx');
 
 var SettingsStore = require('../../public/src/js/stores/SettingsStore');
 

@@ -2,25 +2,14 @@
 @import 'layout_constants';
 @import 'icons';
 
-.settings-dropdown {
+.settings-panel {
+  background: $LIGHT_BACKGROUND_COLOR;
+  width: $SIDE_BAR_WIDTH;
   position: absolute;
-  z-index: 1;
-  right: 12px;
-  top: 44px;
-  border: 1px solid $BORDER_COLOR;
-  box-shadow: 2px 4px 20px #000000;
-  width: 300px;
-
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: -10px;
-    border-style: solid;
-    right: 0;
-    border-width: 0 10px 10px;
-    border-color: $LIGHT_BACKGROUND_COLOR transparent;
-  }
+  top: 0;
+  bottom: 0;
+  right: 0;
+  border-left: 1px solid $BORDER_COLOR;
 
   h1, .dialog-footer {
     background-color: $LIGHT_BACKGROUND_COLOR;
@@ -32,6 +21,9 @@
   }
 
   .dialog-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     input {
       width: 100%;
       padding: 5px;
@@ -48,7 +40,6 @@
   }
 
   form {
-    background-color: #FFFFFF;
     padding: 15px;
 
     label {
@@ -62,19 +53,6 @@
       padding: 5px;
       border-radius: 5px;
       font-size: 15px;
-    }
-  }
-
-  .close-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    background: transparent;
-    border: none;
-    @include close-button(20px);
-
-    &:focus {
-      outline: none;
     }
   }
 }

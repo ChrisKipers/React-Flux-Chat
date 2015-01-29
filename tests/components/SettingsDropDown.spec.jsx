@@ -1,7 +1,7 @@
 var React = require('react/addons');
 var ReactTestUtils = React.addons.TestUtils;
 
-var SettingsDropDown = require('../../public/src/js/components/SettingsDropDown.jsx');
+var SettingsDropDown = require('../../public/src/js/components/SettingsPanel.jsx');
 var SettingsStore = require('../../public/src/js/stores/SettingsStore');
 var SettingActions = require('../../public/src/js/actions/SettingActions');
 
