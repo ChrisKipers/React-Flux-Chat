@@ -1,7 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
-var cx = require('react/addons').addons.classSet;
+var React = require('react/addons');
+var cx = React.addons.classSet;
 
 var APP_MODES = require('../constants').APP_MODES;
 
@@ -66,7 +66,11 @@ var App = React.createClass({
     return <LoadingScreen />;
   },
   _appStoreUpdateListener: function () {
-    this.setState({isInitialized: AppStore.isInitialized(), mode: AppStore.getMode(), isNavShowing: AppStore.isNavShowing()});
+    this.setState({
+      isInitialized: AppStore.isInitialized(),
+      mode: AppStore.getMode(),
+      isNavShowing: AppStore.isNavShowing()
+    });
   }
 });
 

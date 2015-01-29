@@ -1,6 +1,6 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
+var React = require('react/addons');
 
 var ListItemWrapper = React.createClass({
   render: function() {

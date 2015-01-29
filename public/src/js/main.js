@@ -1,6 +1,6 @@
 'use strict';
 /* global document */
-var React = require('react');
+var React = require('react/addons');
 var App = require('./components/App.jsx');
 
 React.render(

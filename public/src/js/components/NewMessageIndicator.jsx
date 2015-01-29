@@ -1,6 +1,6 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
+var React = require('react/addons');
 
 var NewMessageIndicator = React.createClass({
   render: function () {

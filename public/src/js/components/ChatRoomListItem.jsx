@@ -1,7 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
-var cx = require('react/addons').addons.classSet;
+var React = require('react/addons');
+var cx = React.addons.classSet;
 
 var NewMessageIndicator = require('./NewMessageIndicator.jsx');
 

@@ -1,6 +1,6 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
+var React = require('react/addons');
 var _ = require('lodash');
 
 var ESCAPE_KEY_CODE = 27;

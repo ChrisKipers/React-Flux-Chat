@@ -1,6 +1,6 @@
 'use strict';
 /*jshint quotmark:false */
-var React = require('react');
+var React = require('react/addons');
 var moment = require('moment');
 
 var TextRenderer = require('./TextRenderer.jsx');
