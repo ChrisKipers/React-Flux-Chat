@@ -2,6 +2,10 @@
 
 .welcome-panel {
   padding: 15px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
   h1 {
     padding-bottom: 15px;
     text-align: center;

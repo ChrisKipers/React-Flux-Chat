@@ -16,7 +16,7 @@ var CHANGE_EVENT = 'change';
 
 var _initialized = false;
 
-var _isNavShowing = true;
+var _isNavShowing = !dimensions.isCompact();
 
 var _roomStates = [];
 
