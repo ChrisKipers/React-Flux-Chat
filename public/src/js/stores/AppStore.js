@@ -18,7 +18,7 @@ var _initialized = false;
 
 var _isNavShowing = true;
 
-var _activeChatRooms = [];
+var _roomStates = [];
 
 var AppStore;
 
@@ -30,28 +30,48 @@ function setInitialized() {
   }
 }
 
-function enterRoom(roomId) {
-  if (!_.find(_activeChatRooms, {roomId: roomId})) {
-    _activeChatRooms = _activeChatRooms.filter(function(room) {
-      return room.isLocked;
-    });
-    _activeChatRooms.push({roomId: roomId, isLocked: false});
+function createNewRoomState(room) {
+  return {
+    roomId: room._id,
+    active: false,
+    locked: false,
+    missedMessages: 0
+  };
+}
 
-    if (dimensions.isCompact()) {
-      _isNavShowing = false;
+function initializeRoomState(rooms) {
+  _roomStates = rooms.map(createNewRoomState);
+
+}
+
+function addStateToNewRoom(newRoom) {
+  _roomStates.push(createNewRoomState(newRoom));
+}
+
+function enterRoom(roomId) {
+  _roomStates.forEach(function(roomState) {
+    if (roomState.roomId === roomId) {
+      roomState.active = true;
+      roomState.missedMessages = 0;
+    } else if (!roomState.locked) {
+      roomState.active = false;
     }
+  });
+
+  if (dimensions.isCompact()) {
+    _isNavShowing = false;
   }
 }
 
 function lockRoom(roomId) {
-  var roomInfo = _.find(_activeChatRooms, {roomId: roomId});
-  roomInfo.isLocked = true;
+  var roomState = _.find(_roomStates, {roomId: roomId});
+  roomState.locked = true;
 }
 
 function unlockRoom(roomId) {
-  _activeChatRooms = _activeChatRooms.filter(function(room) {
-    return room.roomId !== roomId;
-  });
+  var roomState = _.find(_roomStates, {roomId: roomId});
+  roomState.locked = false;
+  roomState.active = false;
 }
 
 AppStore = assign({}, EventEmitter.prototype, {
@@ -61,11 +81,17 @@ AppStore = assign({}, EventEmitter.prototype, {
   },
 
   getActiveChatRooms: function() {
-    return _activeChatRooms;
+    return _roomStates.filter(function(roomState) {
+      return roomState.active;
+    });
+  },
+
+  getChatRoomStates: function() {
+    return _roomStates;
   },
 
   getMode: function() {
-    return _activeChatRooms.length > 0 ? APP_MODES.CHAT : APP_MODES.WELCOME;
+    return this.getActiveChatRooms().length > 0 ? APP_MODES.CHAT : APP_MODES.WELCOME;
   },
 
   isNavShowing: function () {
@@ -88,7 +114,13 @@ AppStore = assign({}, EventEmitter.prototype, {
     switch (action.actionType) {
       case ACTIONS.SET_ROOMS:
         AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        initializeRoomState(action.allRooms);
         setInitialized();
+        break;
+      case ACTIONS.ADD_ROOM:
+        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        addStateToNewRoom(action.room);
+        AppStore.emitChange();
         break;
       case ACTIONS.SET_USERS:
         AppDispatcher.waitFor([UserStore.dispatcherIndex]);
@@ -112,12 +144,21 @@ AppStore = assign({}, EventEmitter.prototype, {
         break;
       case ACTIONS.ADD_ROOM_SUCCESS:
         AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        addStateToNewRoom(action.room);
         enterRoom(action.room._id);
         AppStore.emitChange();
         break;
       case ACTIONS.TOGGLE_NAV:
         _isNavShowing = !_isNavShowing;
         AppStore.emitChange();
+        break;
+      case ACTIONS.ADD_MESSAGE:
+        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        var roomState = _.find(_roomStates, {roomId: action.message.roomId});
+        if (!roomState.active) {
+          roomState.missedMessages++;
+          AppStore.emitChange();
+        }
         break;
     }
 

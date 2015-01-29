@@ -5,6 +5,7 @@ var cx = require('react/addons').addons.classSet;
 var moment = require('moment');
 
 var ChatRoomActions = require('../actions/ChatRoomActions');
+var AppActions = require('../actions/AppActions');
 var TextRenderer = require('./TextRenderer.jsx');
 
 var ChatRoomHeader = React.createClass({
@@ -32,7 +33,7 @@ var ChatRoomHeader = React.createClass({
     ChatRoomActions.updateRoomFromUI(this.props.room._id, roomName);
   },
   _unlockRoom: function() {
-    ChatRoomActions.unlockRoom(this.props.room._id);
+    AppActions.unlockRoom(this.props.room._id);
   }
 });
 

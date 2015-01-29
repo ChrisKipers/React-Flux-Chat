@@ -33,7 +33,7 @@ var ChatRoomManager = React.createClass({
       <ChatRoom
         key={activeChatRoomInfo.roomId}
         room={this.state.roomsById[activeChatRoomInfo.roomId]}
-        locked={activeChatRoomInfo.isLocked} />
+        locked={activeChatRoomInfo.locked} />
       );
     }.bind(this));
     return (

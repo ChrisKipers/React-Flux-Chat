@@ -1,0 +1,33 @@
+@import "theme";
+
+.list-icon {
+  background-image: url(../../assets/images/icons/list.svg);
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+
+  .new-message-indicator {
+    display: none;
+  }
+
+  &.missing-messages {
+    .new-message-indicator {
+      $newMessageIndicatorDimension: 20px;
+      display: block;
+      width: $newMessageIndicatorDimension;
+      height: $newMessageIndicatorDimension;
+      text-align: center;
+      font-size: 10px;
+      padding: 3px;
+      background: $NEW_MESSAGE_INDICATION_COLOR;
+      color: white;
+      line-height: $newMessageIndicatorDimension - 3px;
+      border-radius: $newMessageIndicatorDimension / 2;
+      position: relative;
+      top: -1 * $newMessageIndicatorDimension / 2;
+      right: -1 * $newMessageIndicatorDimension / 2;
+    }
+  }
+
+}

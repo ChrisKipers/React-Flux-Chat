@@ -3,46 +3,40 @@
 var React = require('react');
 var _ = require('lodash');
 
-var ListItemWrapper = require('./ListItemWrapper.jsx');
+var ChatRoomListItem = require('./ChatRoomListItem.jsx');
 
 var ChatRoomStore = require('../stores/ChatRoomStore');
-
-var ChatRoomActions = require('../actions/ChatRoomActions');
+var AppStore = require('../stores/AppStore');
 
 var ChatRoomList = React.createClass({
   getInitialState: function () {
-    return {roomsById: ChatRoomStore.getAll()};
+    return {roomsById: ChatRoomStore.getAll(), roomStateById: _.indexBy(AppStore.getChatRoomStates(), 'roomId')};
   },
   componentDidMount: function () {
     ChatRoomStore.addChangeListener(this._onRoomsChange);
+    AppStore.addChangeListener(this._onRoomStateChange);
   },
   componentWillUnmount: function () {
     ChatRoomStore.removeChangeListener(this._onRoomsChange);
+    AppStore.removeChangeListener(this._onRoomStateChange);
   },
   _onRoomsChange: function () {
     this.setState({roomsById: ChatRoomStore.getAll()});
   },
+  _onRoomStateChange: function () {
+    this.setState({roomStateById: _.indexBy(AppStore.getChatRoomStates(), 'roomId')});
+  },
   render: function() {
     var rooms = _.values(this.state.roomsById);
     var roomComponents = rooms.map(function(room) {
-      //@todo Bind directly to ChatRoomAction
-      var onClick = this._selectRoom.bind(this, room);
-      var onDoubleClick = this._lockRoom.bind(this, room);
-      return (
-        <ListItemWrapper onClick={onClick} onDoubleClick={onDoubleClick} key={room._id}>{room.name}</ListItemWrapper>
-      );
+      var roomState = this.state.roomStateById[room._id];
+      return <ChatRoomListItem {...roomState} name={room.name} roomId={room._id} key={room._id} />;
     }.bind(this));
     return (
       <ul className="room-list">
         {roomComponents}
       </ul>
     );
-  },
-  _selectRoom: function(room) {
-    ChatRoomActions.enterRoom(room._id);
-  },
-  _lockRoom: function(room) {
-    ChatRoomActions.lockRoom(room._id);
   }
 });
 

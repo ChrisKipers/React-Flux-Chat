@@ -3,8 +3,7 @@
 var React = require('react');
 
 var SettingsDropdown = require('./SettingsDropdown.jsx');
-
-var AppActions = require('../actions/AppActions');
+var ToggleNavigationButton = require('./ToggleNavigationButton.jsx');
 
 var AppHeader = React.createClass({
   getInitialState: function() {
@@ -15,7 +14,7 @@ var AppHeader = React.createClass({
       <SettingsDropdown onClose={this._closeSettings} /> : undefined;
     return (
       <header>
-        <span className="list-icon" onClick={AppActions.toggleNav}></span>
+        <ToggleNavigationButton />
         <span className="title">React + Flux Chat</span>
         <span className="settings-header-section">
           <span className="settings-icon" onClick={this._toggleSettingVisibility}></span>

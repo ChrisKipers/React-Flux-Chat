@@ -1,0 +1,31 @@
+@import 'theme';
+
+$MISSED_MESSAGE_WIDTH: 30px;
+
+.chat-room-list-item {
+  &.active {
+    background-color: $LIGHT_BACKGROUND_HOVER_COLOR;
+  }
+  &.missing-messages {
+    background-color: lighten($NEW_MESSAGE_INDICATION_COLOR, 20);
+    &:hover {
+      background-color: $NEW_MESSAGE_INDICATION_COLOR;
+    }
+    .new-message-indicator {
+      display: inline-block;
+    }
+    .room-name {
+      max-width: calc(100% - #{$MISSED_MESSAGE_WIDTH});
+    }
+  }
+  .new-message-indicator {
+    display: none;
+    float: right;
+    width: $MISSED_MESSAGE_WIDTH
+  }
+  .room-name {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
