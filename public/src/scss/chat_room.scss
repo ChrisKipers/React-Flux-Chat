@@ -26,19 +26,26 @@ $unlock_button_dimension: 25px;
 
 //Mobile in portrait
 @media screen and (max-width:767px){
-  .nav-open {
-    //Create off canvas effect
-    .chat-room-col {
-      right: -1 * $SIDE_BAR_WIDTH;
-      left: $SIDE_BAR_WIDTH;
-    }
-  }
 
   .settings-open {
     //Create off canvas effect
     .chat-room-col {
       left: -1 * $SIDE_BAR_WIDTH;
       right: $SIDE_BAR_WIDTH;
+    }
+  }
+
+  .nav-open {
+    //This should not happen on mobile, but could happen in resizing on desktop
+    &.settings-open {
+      .settings-panel {
+        display: none;
+      }
+    }
+    //Create off canvas effect
+    .chat-room-col {
+      right: -1 * $SIDE_BAR_WIDTH;
+      left: $SIDE_BAR_WIDTH;
     }
   }
 }

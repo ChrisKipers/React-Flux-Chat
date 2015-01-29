@@ -35,7 +35,6 @@ var SettingsDropdown = React.createClass({
   render: function() {
     return (
       <div className="settings-panel">
-        <h1>Settings</h1>
         <form onSubmit={this._submitEdit}>
           <label>Username:</label>
           <input type="text" onChange={this._updateUserName} value={this.state.settings.userName} ref="userNameInput"/>
