@@ -1,11 +1,15 @@
 @import "theme";
 
 .list-icon {
-  background-image: url(../../assets/images/icons/list.svg);
+  background-image: url(../../assets/images/icons/list.png);
   background-size: cover;
   width: 25px;
   height: 25px;
   display: inline-block;
+
+  &.active {
+    background-image: url(../../assets/images/icons/list-active.png);
+  }
 
   .new-message-indicator {
     display: none;

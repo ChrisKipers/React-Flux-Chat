@@ -40,6 +40,10 @@ header {
     width: 25px;
     height: 25px;
     background-size: cover;
+
+    &.active {
+      background-image: url(../../assets/images/icons/settings-active.png);
+    }
   }
 
   .list-icon {
