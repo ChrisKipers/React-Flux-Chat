@@ -46,7 +46,6 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
       case ACTIONS.SET_USER_NAME_FROM_UI:
         setUserName(action.userName);
         service.submitNewUserName(action.userName);
-        SettingsStore.emitChange();
         break;
       case ACTIONS.SET_USER_FROM_SERVER:
         initialized = true;
@@ -58,6 +57,12 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
           setUser(action.user);
           SettingsStore.emitChange();
         }
+        break;
+      case ACTIONS.JOIN_ROOM:
+        service.joinRoom(action.roomId);
+        break;
+      case ACTIONS.LEAVE_ROOM:
+        service.leaveRoom(action.roomId);
         break;
     }
 

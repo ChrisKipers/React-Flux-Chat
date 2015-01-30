@@ -15,6 +15,18 @@ var SettingActions = {
       actionType: ACTIONS.SET_USER_FROM_SERVER,
       user: user
     });
+  },
+  joinRoom: function(roomId) {
+    AppDispatcher.dispatch({
+      actionType: ACTIONS.JOIN_ROOM,
+      roomId: roomId
+    });
+  },
+  leaveRoom: function(roomId) {
+    AppDispatcher.dispatch({
+      actionType: ACTIONS.LEAVE_ROOM,
+      roomId: roomId
+    });
   }
 };
 

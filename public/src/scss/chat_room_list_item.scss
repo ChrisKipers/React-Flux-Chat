@@ -1,6 +1,7 @@
 @import 'theme';
+@import 'icons';
 
-$MISSED_MESSAGE_WIDTH: 30px;
+$MISSED_MESSAGE_WIDTH: 50px;
 
 .chat-room-list-item {
   &.active {
@@ -10,18 +11,27 @@ $MISSED_MESSAGE_WIDTH: 30px;
   &.missing-messages {
     -webkit-animation: newPulse 2s infinite; /* Chrome, Safari, Opera */
     animation: newPulse 2s infinite;
-    .new-message-indicator {
-      display: inline-block;
+    .action-icons {
+      .new-message-indicator {
+        display: inline-block;
+      }
     }
     .room-name {
       max-width: calc(100% - #{$MISSED_MESSAGE_WIDTH});
     }
   }
-  .new-message-indicator {
-    display: none;
+  .action-icons {
     float: right;
-    width: $MISSED_MESSAGE_WIDTH
+    width: $MISSED_MESSAGE_WIDTH;
+    .new-message-indicator {
+      display: none;
+    }
+    .close-button {
+      float: right;
+      @include close-button(20px);
+    }
   }
+
   .room-name {
     display: inline-block;
     overflow: hidden;

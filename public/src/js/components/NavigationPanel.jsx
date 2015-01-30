@@ -5,6 +5,7 @@ var React = require('react/addons');
 var ChatRoomList = require('./ChatRoomList.jsx');
 var CreateRoomInput = require('./CreateRoomInput.jsx');
 var UserList = require('./UserList.jsx');
+var SearchBox = require('./SearchBox.jsx');
 
 var UserStore = require('../stores/UserStore');
 
@@ -27,6 +28,7 @@ var NavigationPanel = React.createClass({
     return (
       <div>
         <div className="chat-side-bar">
+          <SearchBox />
           <ChatRoomList />
           <CreateRoomInput text="Create Room" />
           <UserList users={this.state.users} />

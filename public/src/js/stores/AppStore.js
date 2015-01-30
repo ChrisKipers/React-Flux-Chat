@@ -80,6 +80,12 @@ function enterRoom(roomId) {
   }
 }
 
+function leaveRoom(roomId) {
+  _roomStates = _roomStates.filter(function(roomState) {
+    return roomState.roomId !== roomId;
+  });
+}
+
 function lockRoom(roomId) {
   var roomState = _.find(_roomStates, {roomId: roomId});
   roomState.locked = true;
@@ -153,6 +159,14 @@ AppStore = assign({}, EventEmitter.prototype, {
         break;
       case ACTIONS.ENTER_ROOM:
         enterRoom(action.roomId);
+        AppStore.emitChange();
+        break;
+      case ACTIONS.JOIN_ROOM:
+        enterRoom(action.roomId);
+        AppStore.emitChange();
+        break;
+      case ACTIONS.LEAVE_ROOM:
+        leaveRoom(action.roomId);
         AppStore.emitChange();
         break;
       case ACTIONS.LOCK_ROOM:

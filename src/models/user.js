@@ -1,7 +1,7 @@
 'use strict';
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  generateName = require('sillyname');;
+  generateName = require('sillyname');
 
 var UserSchema = new Schema({
   userName: {
@@ -12,7 +12,11 @@ var UserSchema = new Schema({
   created: {
     type: Date,
     default: Date.now
-  }
+  },
+  rooms: [{
+    type: Schema.ObjectId,
+    ref: 'ChatRoom'
+  }]
 });
 
 mongoose.model('User', UserSchema);

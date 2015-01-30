@@ -67,10 +67,20 @@ function submitRoomUpdate(roomId, name) {
   });
 }
 
+function joinRoom(roomId) {
+  socket.emit(ACTIONS.JOIN_ROOM, roomId);
+}
+
+function leaveRoom(roomId) {
+  socket.emit(ACTIONS.LEAVE_ROOM, roomId);
+}
+
 module.exports = {
   submitMessage: submitMessage,
   submitNewRoom: submitNewRoom,
   submitNewUserName: submitNewUserName,
   submitMessageUpdate: submitMessageUpdate,
-  submitRoomUpdate: submitRoomUpdate
+  submitRoomUpdate: submitRoomUpdate,
+  joinRoom: joinRoom,
+  leaveRoom: leaveRoom
 };

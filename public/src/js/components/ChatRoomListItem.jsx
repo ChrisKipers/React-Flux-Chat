@@ -6,6 +6,7 @@ var cx = React.addons.classSet;
 var NewMessageIndicator = require('./NewMessageIndicator.jsx');
 
 var AppActions = require('../actions/AppActions');
+var SettingActions = require('../actions/SettingActions');
 
 var ChatRoomListItem = React.createClass({
   render: function () {
@@ -23,9 +24,16 @@ var ChatRoomListItem = React.createClass({
       <li className={classes} onClick={enterRoom} onDoubleClick={lockRoom}>
         <span className="room-name">{this.props.name}
         </span>
-        <NewMessageIndicator missedMessages={this.props.missedMessages}/>
+        <div className="action-icons">
+          <NewMessageIndicator missedMessages={this.props.missedMessages}/>
+          <div className="close-button" onClick={this._leaveRoom}></div>
+        </div>
       </li>
     );
+  },
+  _leaveRoom: function(e) {
+    e.stopPropagation();
+    SettingActions.leaveRoom(this.props.roomId);
   }
 });
 

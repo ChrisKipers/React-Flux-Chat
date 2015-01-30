@@ -1,0 +1,33 @@
+@import 'theme';
+$borderProperties: 1px solid $BORDER_COLOR;
+
+.search-box {
+  padding: 15px;
+  .search-box-wrapper {
+    position: relative;
+    input {
+      width: 100%;
+      margin-bottom: 5px;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    .search-results {
+      border-radius: 5px;
+      width: 100%;
+      position: absolute;
+      border: $borderProperties;
+      box-shadow: 0px 2px 2px #000000;
+
+      .user-search-result, .chat-room-search-result, .no-search-results {
+        background: $LIGHT_BACKGROUND_COLOR;
+        padding: 10px;
+        border-top: $borderProperties;
+
+        &:hover {
+          background: $LIGHT_BACKGROUND_HOVER_COLOR;
+        }
+      }
+    }
+  }
+}
