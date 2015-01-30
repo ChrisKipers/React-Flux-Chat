@@ -35,15 +35,6 @@ header {
 
   .settings-icon {
     float: right;
-    background-image: url(../../assets/images/icons/settings.png);
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    background-size: cover;
-
-    &.active {
-      background-image: url(../../assets/images/icons/settings-active.png);
-    }
   }
 
   .list-icon {

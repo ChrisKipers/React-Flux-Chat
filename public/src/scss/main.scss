@@ -5,12 +5,13 @@
 @import 'header';
 @import 'message';
 @import 'settings';
-@import 'side_bar';
+@import 'navigation_panel';
 @import 'welcome_panel';
 @import 'text_renderer';
 @import 'chat_room_manager';
 @import 'chat_room_list_item';
 @import 'toggle_navigation_button';
+@import 'toggle_settings_button';
 
 body {
   font-family: 'Open Sans', sans-serif;

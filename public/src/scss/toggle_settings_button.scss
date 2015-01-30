@@ -1,0 +1,12 @@
+.settings-icon {
+  background-image: url(../../assets/images/icons/settings.png);
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  background-size: cover;
+  cursor: pointer;
+
+  &.active , &:hover {
+    background-image: url(../../assets/images/icons/settings-active.png);
+  }
+}

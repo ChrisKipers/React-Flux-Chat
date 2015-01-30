@@ -6,8 +6,9 @@
   width: 25px;
   height: 25px;
   display: inline-block;
+  cursor: pointer;
 
-  &.active {
+  &.active, &:hover {
     background-image: url(../../assets/images/icons/list-active.png);
   }
 

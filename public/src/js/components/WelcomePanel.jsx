@@ -2,6 +2,10 @@
 /*jshint quotmark:false */
 var React = require('react/addons');
 
+var ToggleSettingsButton = require('./ToggleSettingsButton.jsx');
+
+var ToggleNavigationButton = require('./ToggleNavigationButton.jsx');
+
 var SettingsStore = require('../stores/SettingsStore');
 
 var SettingActions = require('../actions/SettingActions');
@@ -30,7 +34,7 @@ var WelcomePanel = React.createClass({
           <input value={this.state.userName} type="text" onChange={this._onUserNameInputChange}/>
         </p>
         <p>
-          If you wish to edit your username later on, click the <span className="settings-icon"></span> icon in the top right corner.
+          If you wish to edit your username later on, click the <ToggleSettingsButton /> icon in the top right corner.
         </p>
         <p>
           You can lock a chat room to your window by double clicking on the room name in the left panel! You can lock as many
@@ -41,7 +45,9 @@ var WelcomePanel = React.createClass({
           rooms you created by clicking on the room name in the chat room header.
         </p>
         <p>
-          To get started click on a chat room in the sidebar! Enjoy!
+          To get started click on a chat room in the sidebar!
+          If you do not see the chat room sidebar, click the <ToggleNavigationButton /> in the top left corner.
+
         </p>
       </div>
     );

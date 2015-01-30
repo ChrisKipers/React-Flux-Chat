@@ -32,12 +32,7 @@
     }
   }
 
-  .settings-icon {
-    background: $HEADER_BACKGROUND_COLOR;
-    background-image: url(../../assets/images/icons/settings.png);
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-    background-size: cover;
+  .settings-icon, .list-icon {
+    background-color: $HEADER_BACKGROUND_COLOR;
   }
 }
