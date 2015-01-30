@@ -1,0 +1,18 @@
+@import 'theme';
+
+$ANIMATE_START_COLOR: lighten($NEW_MESSAGE_INDICATION_COLOR, 20);
+$ANIMATE_MID_COLOR: lighten($NEW_MESSAGE_INDICATION_COLOR, 15);
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes newPulse {
+  0%   {background: $ANIMATE_START_COLOR;}
+  50%  {background: $ANIMATE_MID_COLOR;}
+  100% {background: $ANIMATE_START_COLOR;}
+}
+
+/* Standard syntax */
+@keyframes newPulse{
+  0%   {background: $ANIMATE_START_COLOR;}
+  50%  {background: $ANIMATE_MID_COLOR;}
+  100% {background: $ANIMATE_START_COLOR;}
+}

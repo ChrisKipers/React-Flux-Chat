@@ -6,11 +6,10 @@ $MISSED_MESSAGE_WIDTH: 30px;
   &.active {
     background-color: $LIGHT_BACKGROUND_HOVER_COLOR;
   }
+
   &.missing-messages {
-    background-color: lighten($NEW_MESSAGE_INDICATION_COLOR, 20);
-    &:hover {
-      background-color: $NEW_MESSAGE_INDICATION_COLOR;
-    }
+    -webkit-animation: newPulse 2s infinite; /* Chrome, Safari, Opera */
+    animation: newPulse 2s infinite;
     .new-message-indicator {
       display: inline-block;
     }
