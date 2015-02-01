@@ -18,6 +18,7 @@ mongoose.connect(config.db);
 
 var ChatRoom = mongoose.model('ChatRoom');
 var User = mongoose.model('User');
+var Message = mongoose.model('Message');
 
 var RoomController = require('./src/controllers/room-controller');
 var MessageController = require('./src/controllers/message-controller');
@@ -81,14 +82,35 @@ function emitUsers() {
 
 }
 
-io.on('connection', function (socket) {
+function getInitializationDataPromise(userId) {
+  return User.findByIdQ(userId)
+    .then(function (user) {
+      var roomQuery = {
+        $or: [
+          {isPrivate: false},
+          {creatorId: user._id},
+          {recipientId: user._id}
+        ]
+      };
+      var messageQuery = {
+        roomId: {$in: user.rooms}
+      };
+      var userPromise = Q.defer();
+      userPromise.resolve(user);
+      return Q.all([ChatRoom.findQ(roomQuery), Message.findQ(messageQuery), User.findQ(), userPromise.promise]);
+    });
+}
 
-  Q.all([ChatRoom.find().populate('messages').execQ(), User.findByIdQ(socket.userId), User.findQ()])
+io.on('connection', function (socket) {
+  emitUsers();
+
+  getInitializationDataPromise(socket.userId)
     .then(function (results) {
       var initializationData = {
-        user: results[1],
-        roomsById: results[0],
-        users: results[2]
+        rooms: results[0],
+        messages: results[1],
+        users: results[2],
+        user: results[3]
       };
       socket.emit(ACTIONS.INITIALIZE_STORES, initializationData);
     });

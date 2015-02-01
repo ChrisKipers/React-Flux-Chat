@@ -12,7 +12,7 @@ module.exports.respond = function (io, socket) {
     var newMessage = new Message(message);
     newMessage.saveQ()
       .then(function (savedMessage) {
-        io.emit(ACTIONS.ADD_MESSAGE, savedMessage);
+        io.emit(getAddMessageEventName(message.roomId), savedMessage);
       });
   }
 
@@ -25,27 +25,37 @@ module.exports.respond = function (io, socket) {
       room.recipientId : room.creatorId;
     User.findOneQ({_id: targetUsersId})
       .then(function(targetUser) {
+        var allClients = io.sockets.sockets;
+        var targetClient = _.find(allClients, {userId: targetUsersId.toString()});
         //If room is not visible, we need to make it visible so that the user
         //Knows we are chatting with him
         if (!_.find(targetUser.rooms, room._id)) {
           User.findOneAndUpdateQ({_id: targetUsersId}, {$addToSet: {rooms: room._id}})
             .then(function(updatedUser) {
               //todo this needs to account for users on multiple socketrs
-              var allClients = io.sockets.sockets;
-              var targetClient = _.find(allClients, {userId: targetUsersId.toString()});
               if (targetClient) {
-                targetClient.emit(ACTIONS.ADD_PRIVATE_ROOM, room, function () {
-                  io.emit(ACTIONS.UPDATE_USER, updatedUser);
-                  messageInsertPromise.then(function(savedMessage) {
-                    socket.emit(ACTIONS.ADD_MESSAGE, savedMessage);
-                    targetClient.emit(ACTIONS.ADD_MESSAGE, savedMessage);
+                Message.findQ({roomId: room._id})
+                  .then(function(messages) {
+                    var addRoomPayload = {
+                      room: room,
+                      messages: messages
+                    };
+                    targetClient.emit(ACTIONS.ADD_PRIVATE_ROOM, addRoomPayload, function () {
+                      io.emit(ACTIONS.UPDATE_USER, updatedUser);
+                      messageInsertPromise.then(function(savedMessage) {
+                        socket.emit(getAddMessageEventName(savedMessage.roomId), savedMessage);
+                        targetClient.emit(getAddMessageEventName(savedMessage.roomId), savedMessage);
+                      });
+                    })
                   });
-                })
               }
             });
         } else {
           messageInsertPromise.then(function(savedMessage) {
-            socket.emit(ACTIONS.ADD_MESSAGE, savedMessage);
+            socket.emit(getAddMessageEventName(savedMessage.roomId), savedMessage);
+            if (targetClient) {
+              targetClient.emit(getAddMessageEventName(savedMessage.roomId), savedMessage);
+            }
           });
         }
       })
@@ -69,7 +79,15 @@ module.exports.respond = function (io, socket) {
         return message.saveQ();
       })
       .then(function (message) {
-        io.emit(ACTIONS.UPDATE_MESSAGE, message);
+        io.emit(getUpdateMessageEventName(message.roomId), message);
       });
   });
 };
+
+function getAddMessageEventName(roomId) {
+  return ACTIONS.ADD_MESSAGE + ':' + roomId.toString();
+}
+
+function getUpdateMessageEventName(roomId) {
+  return ACTIONS.UPDATE_MESSAGE + ':' + roomId.toString();
+}

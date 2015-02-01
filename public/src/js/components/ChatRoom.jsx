@@ -11,14 +11,20 @@ var MessageList = require('./MessageList.jsx');
 
 var UserStore = require('../stores/UserStore');
 var SettingsStore = require('../stores/SettingsStore');
+var MessageStore = require('../stores/MessageStore');
 
 var ChatRoom = React.createClass({
   getInitialState: function () {
-    return {users: UserStore.getUsers(), user: SettingsStore.getUser()};
+    return {
+      users: UserStore.getUsers(),
+      user: SettingsStore.getUser(),
+      messages: MessageStore.getAllMessages()[this.props.room._id]
+    };
   },
   componentDidMount: function () {
     SettingsStore.addChangeListener(this._onSettingsChange);
     UserStore.addChangeListener(this._onUsersChange);
+    MessageStore.addChangeListener(this._onMessageChange);
     if (!dimensions.isCompact()) {
       this.refs.messageInput.getDOMNode().focus();
     }
@@ -27,6 +33,7 @@ var ChatRoom = React.createClass({
   componentWillUnmount: function () {
     UserStore.removeChangeListener(this._onUsersChange);
     SettingsStore.removeChangeListener(this._onSettingsChange);
+    MessageStore.removeChangeListener(this._onMessageChange);
   },
 
   render: function() {
@@ -64,15 +71,16 @@ var ChatRoom = React.createClass({
   _onUsersChange: function() {
     this.setState({users: UserStore.getUsers()});
   },
-
   _onSettingsChange: function() {
     this.setState({user: SettingsStore.getUser()});
   },
-
+  _onMessageChange: function() {
+    this.setState({messages: MessageStore.getAllMessages()[this.props.room._id]});
+  },
   _mergeRoomWithUserData: function () {
     var room = this.props.room;
     var usersById = _.indexBy(this.state.users, '_id');
-    var messagesWithUserData = room.messages.map(function (message) {
+    var messagesWithUserData = this.state.messages.map(function (message) {
       var messagesUser = usersById[message.userId] || {};
       return _.extend({}, message, {
         user: messagesUser

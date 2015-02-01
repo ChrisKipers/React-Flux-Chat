@@ -22,22 +22,18 @@ var ChatRoomActions = {
       room: room
     });
   },
-  addPrivateRoom: function (room) {
+  addPrivateRoom: function (room, messages) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.ADD_PRIVATE_ROOM,
-      room: room
+      room: room,
+      messages: messages
     });
   },
-  addRoomSuccess: function (room) {
+  addRoomSuccess: function (room, messagesOrUndefined) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.ADD_ROOM_SUCCESS,
-      room: room
-    });
-  },
-  setRooms: function (allRooms) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.SET_ROOMS,
-      allRooms: allRooms
+      room: room,
+      messagesOrUndefined: messagesOrUndefined
     });
   },
   updateRoomFromUI: function (roomId, newName) {

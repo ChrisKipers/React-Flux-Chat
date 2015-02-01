@@ -11,6 +11,7 @@ var assign = require('object-assign');
 var ChatRoomStore = require('./ChatRoomStore');
 var UserStore = require('./UserStore');
 var SettingsStore = require('./SettingsStore');
+var MessageStore = require('./MessageStore');
 
 var CHANGE_EVENT = 'change';
 
@@ -23,14 +24,6 @@ var _isSettingsShowing = false;
 var _roomStates = [];
 
 var AppStore;
-
-function setInitialized() {
-  var oldInitialized = _initialized;
-  _initialized = ChatRoomStore.isInitialized() && UserStore.isInitialized() && SettingsStore.isInitialized();
-  if (oldInitialized !== _initialized) {
-    AppStore.emitChange();
-  }
-}
 
 function createNewRoomState(roomId) {
   return {
@@ -47,22 +40,28 @@ function addStateToNewRoom(roomId) {
   }
 }
 
+function setInitialRoomStates(rooms) {
+  rooms.map(function (room) {
+    return room._id;
+  }).forEach(addStateToNewRoom);
+}
+
 function toggleNav() {
   _isNavShowing = !_isNavShowing;
-  if(_isNavShowing && dimensions.isCompact()) {
+  if (_isNavShowing && dimensions.isCompact()) {
     _isSettingsShowing = false;
   }
 }
 
 function toggleSettings() {
   _isSettingsShowing = !_isSettingsShowing;
-  if(_isSettingsShowing && dimensions.isCompact()) {
+  if (_isSettingsShowing && dimensions.isCompact()) {
     _isNavShowing = false;
   }
 }
 
 function enterRoom(roomId) {
-  _roomStates.forEach(function(roomState) {
+  _roomStates.forEach(function (roomState) {
     if (roomState.roomId === roomId) {
       roomState.active = true;
       roomState.missedMessages = 0;
@@ -78,7 +77,7 @@ function enterRoom(roomId) {
 }
 
 function leaveRoom(roomId) {
-  _roomStates = _roomStates.filter(function(roomState) {
+  _roomStates = _roomStates.filter(function (roomState) {
     return roomState.roomId !== roomId;
   });
 }
@@ -100,17 +99,17 @@ AppStore = assign({}, EventEmitter.prototype, {
     return _initialized;
   },
 
-  getActiveChatRooms: function() {
-    return _roomStates.filter(function(roomState) {
+  getActiveChatRooms: function () {
+    return _roomStates.filter(function (roomState) {
       return roomState.active;
     });
   },
 
-  getChatRoomStates: function() {
+  getChatRoomStates: function () {
     return _roomStates;
   },
 
-  getMode: function() {
+  getMode: function () {
     return this.getActiveChatRooms().length > 0 ? APP_MODES.CHAT : APP_MODES.WELCOME;
   },
 
@@ -118,7 +117,7 @@ AppStore = assign({}, EventEmitter.prototype, {
     return _isNavShowing;
   },
 
-  isSettingsShowing: function() {
+  isSettingsShowing: function () {
     return _isSettingsShowing;
   },
 
@@ -136,24 +135,24 @@ AppStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function (action) {
     switch (action.actionType) {
-      case ACTIONS.SET_ROOMS:
-        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
-        setInitialized();
-        break;
-      case ACTIONS.SET_USERS:
-        AppDispatcher.waitFor([UserStore.dispatcherIndex]);
-        setInitialized();
-        break;
-      case ACTIONS.SET_USER_FROM_SERVER:
-        AppDispatcher.waitFor([SettingsStore.dispatcherIndex]);
-        action.user.rooms.forEach(addStateToNewRoom);
-        setInitialized();
+      case ACTIONS.INITIALIZE_STORES:
+        AppDispatcher.waitFor([
+          ChatRoomStore.dispatcherIndex,
+          UserStore.dispatcherIndex,
+          SettingsStore.dispatcherIndex,
+          MessageStore.dispatcherIndex
+        ]);
+        setInitialRoomStates(action.rooms);
+
+        _initialized = true;
+        AppStore.emitChange();
         break;
       case ACTIONS.ENTER_ROOM:
         enterRoom(action.roomId);
         AppStore.emitChange();
         break;
-      case ACTIONS.JOIN_ROOM:
+      case ACTIONS.JOIN_ROOM_SUCCESS:
+        AppDispatcher.waitFor([MessageStore.dispatcherIndex]);
         addStateToNewRoom(action.roomId);
         enterRoom(action.roomId);
         AppStore.emitChange();
@@ -171,13 +170,13 @@ AppStore = assign({}, EventEmitter.prototype, {
         AppStore.emitChange();
         break;
       case ACTIONS.ADD_ROOM_SUCCESS:
-        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex, MessageStore.dispatcherIndex]);
         addStateToNewRoom(action.room._id);
         enterRoom(action.room._id);
         AppStore.emitChange();
         break;
       case ACTIONS.ADD_PRIVATE_ROOM:
-        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex]);
+        AppDispatcher.waitFor([ChatRoomStore.dispatcherIndex, MessageStore.dispatcherIndex]);
         addStateToNewRoom(action.room._id);
         AppStore.emitChange();
         break;

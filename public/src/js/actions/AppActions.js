@@ -1,4 +1,6 @@
 'use strict';
+var _ = require('lodash');
+
 var ACTIONS = require('../constants').ACTIONS;
 
 var AppDispatcher = require('../AppDispatcher');
@@ -31,6 +33,11 @@ var AppActions = {
       actionType: ACTIONS.UNLOCK_ROOM,
       roomId: roomId
     });
+  },
+  initializeStores: function(initializeData) {
+    AppDispatcher.dispatch(_.extend(initializeData, {
+      actionType: ACTIONS.INITIALIZE_STORES
+    }));
   }
 };
 

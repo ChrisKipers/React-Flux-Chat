@@ -7,8 +7,6 @@ var _ = require('lodash');
 
 var CHANGE_EVENT = 'change';
 
-var initialized = false;
-
 var _users = [];
 
 function setUsers(users) {
@@ -25,12 +23,6 @@ function updateUser(user) {
 }
 
 var UserStore = assign({}, EventEmitter.prototype, {
-
-  isInitialized: function () {
-    return initialized;
-  },
-
-
   getUsers: function () {
     return _users;
   },
@@ -49,8 +41,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function (action) {
     switch (action.actionType) {
-      case ACTIONS.SET_USERS:
-        initialized = true;
+      case ACTIONS.INITIALIZE_STORES:
         setUsers(action.users);
         UserStore.emitChange();
         break;

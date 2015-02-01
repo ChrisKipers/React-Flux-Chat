@@ -9,8 +9,6 @@ var CHANGE_EVENT = 'change';
 
 var _user;
 
-var initialized = false;
-
 function setUser(user) {
   _user = user;
 }
@@ -20,11 +18,6 @@ function setUserName(userName) {
 }
 
 var SettingsStore = assign({}, EventEmitter.prototype, {
-
-  isInitialized: function () {
-    return initialized;
-  },
-
   getUser: function () {
     return _user;
   },
@@ -43,14 +36,13 @@ var SettingsStore = assign({}, EventEmitter.prototype, {
 
   dispatcherIndex: AppDispatcher.register(function (action) {
     switch (action.actionType) {
+      case ACTIONS.INITIALIZE_STORES:
+        setUser(action.user);
+        SettingsStore.emitChange();
+        break;
       case ACTIONS.SET_USER_NAME_FROM_UI:
         setUserName(action.userName);
         service.submitNewUserName(action.userName);
-        break;
-      case ACTIONS.SET_USER_FROM_SERVER:
-        initialized = true;
-        setUser(action.user);
-        SettingsStore.emitChange();
         break;
       case ACTIONS.UPDATE_USER:
         if (action.user._id === _user._id) {

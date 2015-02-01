@@ -10,16 +10,17 @@ var SettingActions = {
       userName: userName
     });
   },
-  setUserFromServer: function(user) {
-    AppDispatcher.dispatch({
-      actionType: ACTIONS.SET_USER_FROM_SERVER,
-      user: user
-    });
-  },
   joinRoom: function(roomId) {
     AppDispatcher.dispatch({
       actionType: ACTIONS.JOIN_ROOM,
       roomId: roomId
+    });
+  },
+  joinRoomSuccess: function(roomId, roomMessages) {
+    AppDispatcher.dispatch({
+      actionType: ACTIONS.JOIN_ROOM_SUCCESS,
+      roomId: roomId,
+      roomMessages: roomMessages
     });
   },
   leaveRoom: function(roomId) {
