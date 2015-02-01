@@ -21,7 +21,11 @@ var ToggleNavigationButton = React.createClass({
     AppStore.removeChangeListener(this._onAppStoreChange);
   },
   _onAppStoreChange: function () {
-    this.setState({active: AppStore.isNavShowing(), roomStates: AppStore.getChatRoomStates()});
+    //Rare issue where onAppStoreChange is being triggered by event after listener was removed
+    //This is because event that is trigger this is the one that is removing dom
+    if (this.isMounted()) {
+      this.setState({active: AppStore.isNavShowing(), roomStates: AppStore.getChatRoomStates()});
+    }
   },
   render: function () {
     var numberOfMissingMessagesForAllRooms = _.reduce(this.state.roomStates, function(numberOfMissingMessages, roomState) {

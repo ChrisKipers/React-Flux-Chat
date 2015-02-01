@@ -18,7 +18,11 @@ var ToggleSettingsButton = React.createClass({
     AppStore.removeChangeListener(this._onAppStoreChange);
   },
   _onAppStoreChange: function () {
-    this.setState({active: AppStore.isSettingsShowing()});
+    //Rare issue where onAppStoreChange is being triggered by event after listener was removed
+    //This is because event that is trigger this is the one that is removing dom
+    if (this.isMounted()) {
+      this.setState({active: AppStore.isSettingsShowing()});
+    }
   },
   render: function () {
     var classes = cx({

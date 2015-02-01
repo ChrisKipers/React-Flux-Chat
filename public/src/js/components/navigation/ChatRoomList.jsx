@@ -23,11 +23,13 @@ var ChatRoomList = React.createClass({
     ChatRoomStore.addChangeListener(this._onRoomsChange);
     AppStore.addChangeListener(this._onRoomStateChange);
     SettingStore.addChangeListener(this._onSettingsChange);
+    UserStore.addChangeListener(this._onUsersUpdate);
   },
   componentWillUnmount: function () {
     ChatRoomStore.removeChangeListener(this._onRoomsChange);
     AppStore.removeChangeListener(this._onRoomStateChange);
     SettingStore.removeChangeListener(this._onSettingsChange);
+    UserStore.removeChangeListener(this._onUsersUpdate);
   },
   _onRoomsChange: function () {
     this.setState({roomsById: ChatRoomStore.getAll()});
