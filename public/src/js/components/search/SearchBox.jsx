@@ -7,22 +7,30 @@ var ChatRoomSearchResult = require('./ChatRoomSearchResult.jsx');
 var UserSearchResult = require('./UserSearchResults.jsx');
 var NoSearchResults = require('./NoSearchResults.jsx');
 
-var ChatRoomStore = require('../stores/ChatRoomStore');
-var UserStore = require('../stores/UserStore');
+var ChatRoomStore = require('../../stores/ChatRoomStore');
+var UserStore = require('../../stores/UserStore');
+var SettingsStore = require('../../stores/SettingsStore');
 
 var SearchBox = React.createClass({
   mixins: [React.addons.LinkedStateMixin],
   getInitialState: function () {
-    return {active: false, searchText: '', users: UserStore.getUsers(), rooms: ChatRoomStore.getAll()};
+    return {
+      active: false, searchText: '',
+      users: UserStore.getUsers(),
+      rooms: ChatRoomStore.getAll(),
+      user: SettingsStore.getUser()
+    };
   },
   componentDidMount: function () {
     UserStore.addChangeListener(this._onUsersChange);
     ChatRoomStore.addChangeListener(this._onRoomsChange);
+    SettingsStore.addChangeListener(this._onUserChange);
   },
 
   componentWillUnmount: function () {
     UserStore.removeChangeListener(this._onUsersChange);
     ChatRoomStore.removeChangeListener(this._onRoomsChange);
+    SettingsStore.removeChangeListener(this._onUserChange);
   },
   render: function () {
     var searchResultsComponent = this.state.active ? this._renderResults() : null;
@@ -42,17 +50,14 @@ var SearchBox = React.createClass({
 
     var matchingRooms = _.values(this.state.rooms)
       .filter(function (room) {
-        return !room.isPrivate;
-      })
-      .filter(function (room) {
         var lowerCaseRoomName = room.name.toLowerCase();
-        return lowerCaseRoomName.indexOf(lowerCaseSearch) !== -1;
+        return !room.isPrivate && lowerCaseRoomName.indexOf(lowerCaseSearch) !== -1;
       });
 
     var matchingUsers = this.state.users.filter(function (user) {
       var lowerCaseUserName = user.userName.toLowerCase();
-      return lowerCaseUserName.indexOf(lowerCaseSearch) !== -1;
-    });
+      return user._id !== this.state.user._id && lowerCaseUserName.indexOf(lowerCaseSearch) !== -1;
+    }.bind(this));
 
     var roomResultsComponents = matchingRooms.map(function (room) {
       return <ChatRoomSearchResult {...room} key={room._id} onRoomJoin={this._clearSearchCriteria} />;
@@ -87,6 +92,9 @@ var SearchBox = React.createClass({
   },
   _onRoomsChange: function () {
     this.setState({rooms: ChatRoomStore.getAll()});
+  },
+  _onUserChange: function() {
+    this.setState({user: SettingsStore.getUser()});
   },
   _focus: function () {
     this.setState({active: true});

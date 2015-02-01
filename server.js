@@ -115,8 +115,6 @@ io.on('connection', function (socket) {
       socket.emit(ACTIONS.INITIALIZE_STORES, initializationData);
     });
 
-  emitUsers();
-
   RoomController.respond(io, socket);
   UserController.respond(io, socket);
   MessageController.respond(io, socket);

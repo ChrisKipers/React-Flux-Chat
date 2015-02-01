@@ -3,9 +3,9 @@
 var React = require('react/addons');
 var moment = require('moment');
 
-var TextRenderer = require('./TextRenderer.jsx');
+var TextRenderer = require('./../TextRenderer.jsx');
 
-var MessageActions = require('../actions/MessageActions');
+var MessageActions = require('../../actions/MessageActions');
 
 var Message = React.createClass({
   render: function () {

@@ -4,9 +4,9 @@ var React = require('react/addons');
 var cx = React.addons.classSet;
 var moment = require('moment');
 
-var ChatRoomActions = require('../actions/ChatRoomActions');
-var AppActions = require('../actions/AppActions');
-var TextRenderer = require('./TextRenderer.jsx');
+var ChatRoomActions = require('../../actions/ChatRoomActions');
+var AppActions = require('../../actions/AppActions');
+var TextRenderer = require('./../TextRenderer.jsx');
 
 var ChatRoomHeader = React.createClass({
   render: function() {

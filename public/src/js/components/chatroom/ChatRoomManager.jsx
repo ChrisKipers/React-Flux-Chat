@@ -5,8 +5,8 @@ var cx = React.addons.classSet;
 
 var ChatRoom = require('./ChatRoom.jsx');
 
-var AppStore = require('../stores/AppStore');
-var ChatRoomStore = require('../stores/ChatRoomStore');
+var AppStore = require('../../stores/AppStore');
+var ChatRoomStore = require('../../stores/ChatRoomStore');
 
 var ChatRoomManager = React.createClass({
   getInitialState: function () {

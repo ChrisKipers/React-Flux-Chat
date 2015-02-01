@@ -2,16 +2,17 @@
 /*jshint quotmark:false */
 var React = require('react/addons');
 var _ = require('lodash');
-var dimensions = require('../utils/dimensions');
+var dimensions = require('../../utils/dimensions');
 
 var ChatRoomHeader = require('./ChatRoomHeader.jsx');
 var PrivateChatRoomHeader = require('./PrivateChatRoomHeader.jsx');
-var MessageActions = require('../actions/MessageActions');
 var MessageList = require('./MessageList.jsx');
 
-var UserStore = require('../stores/UserStore');
-var SettingsStore = require('../stores/SettingsStore');
-var MessageStore = require('../stores/MessageStore');
+var UserStore = require('../../stores/UserStore');
+var SettingsStore = require('../../stores/SettingsStore');
+var MessageStore = require('../../stores/MessageStore');
+
+var MessageActions = require('../../actions/MessageActions');
 
 var ChatRoom = React.createClass({
   getInitialState: function () {

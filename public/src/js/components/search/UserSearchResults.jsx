@@ -1,7 +1,7 @@
 'use strict';
 /*jshint quotmark:false */
 var React = require('react/addons');
-var ChatRoomActions = require('../actions/ChatRoomActions');
+var ChatRoomActions = require('../../actions/ChatRoomActions');
 
 var UserSearchResult = React.createClass({
   render: function () {

@@ -4,9 +4,9 @@ var React = require('react/addons');
 
 var ChatRoomList = require('./ChatRoomList.jsx');
 var CreateRoomInput = require('./CreateRoomInput.jsx');
-var SearchBox = require('./SearchBox.jsx');
+var SearchBox = require('./../search/SearchBox.jsx');
 
-var UserStore = require('../stores/UserStore');
+var UserStore = require('../../stores/UserStore');
 
 var NavigationPanel = React.createClass({
   getInitialState: function () {

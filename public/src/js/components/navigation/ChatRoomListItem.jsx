@@ -3,10 +3,10 @@
 var React = require('react/addons');
 var cx = React.addons.classSet;
 
-var NewMessageIndicator = require('./NewMessageIndicator.jsx');
+var NewMessageIndicator = require('./../NewMessageIndicator.jsx');
 
-var AppActions = require('../actions/AppActions');
-var SettingActions = require('../actions/SettingActions');
+var AppActions = require('../../actions/AppActions');
+var SettingActions = require('../../actions/SettingActions');
 
 var ChatRoomListItem = React.createClass({
   render: function () {

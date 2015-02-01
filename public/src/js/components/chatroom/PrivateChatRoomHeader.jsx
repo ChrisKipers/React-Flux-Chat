@@ -4,7 +4,7 @@ var React = require('react/addons');
 var cx = React.addons.classSet;
 var _ = require('lodash');
 
-var AppActions = require('../actions/AppActions');
+var AppActions = require('../../actions/AppActions');
 
 var PrivateChatRoomHeader = React.createClass({
   render: function() {

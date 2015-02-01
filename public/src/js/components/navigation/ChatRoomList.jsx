@@ -5,10 +5,10 @@ var _ = require('lodash');
 
 var ChatRoomListItem = require('./ChatRoomListItem.jsx');
 
-var ChatRoomStore = require('../stores/ChatRoomStore');
-var AppStore = require('../stores/AppStore');
-var SettingStore = require('../stores/SettingsStore');
-var UserStore = require('../stores/UserStore');
+var ChatRoomStore = require('../../stores/ChatRoomStore');
+var AppStore = require('../../stores/AppStore');
+var SettingStore = require('../../stores/SettingsStore');
+var UserStore = require('../../stores/UserStore');
 
 var ChatRoomList = React.createClass({
   getInitialState: function () {

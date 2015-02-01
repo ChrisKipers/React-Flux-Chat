@@ -8,9 +8,9 @@ var APP_MODES = require('../constants').APP_MODES;
 var AppHeader = require('./AppHeader.jsx');
 var WelcomePanel = require('./WelcomePanel.jsx');
 var LoadingScreen = require('./LoadingScreen.jsx');
-var NavigationPanel = require('./NavigationPanel.jsx');
+var NavigationPanel = require('./navigation/NavigationPanel.jsx');
 var SettingsPanel = require('./SettingsPanel.jsx');
-var ChatRoomManager = require('./ChatRoomManager.jsx');
+var ChatRoomManager = require('./chatroom/ChatRoomManager.jsx');
 
 var AppStore = require('../stores/AppStore');
 
