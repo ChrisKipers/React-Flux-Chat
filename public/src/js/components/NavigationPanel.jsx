@@ -31,7 +31,6 @@ var NavigationPanel = React.createClass({
           <SearchBox />
           <ChatRoomList />
           <CreateRoomInput text="Create Room" />
-          <UserList users={this.state.users} />
         </div>
       </div>
     );

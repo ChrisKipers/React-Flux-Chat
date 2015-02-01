@@ -14,7 +14,7 @@ var initialized = false;
 var _roomById = {};
 
 function addRoom(room) {
-  _roomById[room._id] = room;
+  _roomById[room._id] = _roomById[room._id] || room;
 }
 
 function updateRoom(updatedRoom) {
@@ -70,11 +70,18 @@ var ChatRoomStore = assign({}, EventEmitter.prototype, {
         addRoom(action.room);
         ChatRoomStore.emitChange();
         break;
+      case ACTIONS.ADD_PRIVATE_ROOM:
+        addRoom(action.room);
+        ChatRoomStore.emitChange();
+        break;
       case ACTIONS.SUBMIT_MESSAGE:
         service.submitMessage(action.message);
         break;
       case ACTIONS.SUBMIT_ROOM:
         service.submitNewRoom(action.room);
+        break;
+      case ACTIONS.SUBMIT_PRIVATE_ROOM:
+        service.submitPrivateRoom(action.recipientId);
         break;
       case ACTIONS.SET_ROOMS:
         initialized = true;

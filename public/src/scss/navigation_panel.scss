@@ -15,8 +15,6 @@
 
 .room-list, .user-list {
 
-  padding-top: 15px;
-
   &:before {
     color: $PRIMARY_HEADER_COLOR;
     padding: 10px;
@@ -31,12 +29,14 @@
 }
 
 .room-list {
+
   &:before {
     content: "ROOMS";
   }
 }
 
 .user-list {
+  padding-top: 15px;
   &:before {
     content: "USERS";
   }

@@ -19,6 +19,7 @@ $borderProperties: 1px solid $BORDER_COLOR;
       border: $borderProperties;
       box-shadow: 0px 2px 2px #000000;
 
+
       .user-search-result, .chat-room-search-result, .no-search-results {
         background: $LIGHT_BACKGROUND_COLOR;
         padding: 10px;
@@ -26,6 +27,28 @@ $borderProperties: 1px solid $BORDER_COLOR;
 
         &:hover {
           background: $LIGHT_BACKGROUND_HOVER_COLOR;
+        }
+      }
+
+      .user-results, .room-results {
+        &:before {
+          color: $PRIMARY_HEADER_COLOR;
+          display: block;
+          padding: 5px;
+          border-top: $borderProperties;
+          background: $LIGHT_BACKGROUND_HOVER_COLOR;
+        }
+      }
+
+      .user-results {
+        &:before {
+          content: "USERS"
+        }
+      }
+
+      .room-results {
+        &:before {
+          content: "ROOMS"
         }
       }
     }

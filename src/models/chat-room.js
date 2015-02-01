@@ -6,7 +6,6 @@ var ChatRoomSchema = new Schema({
   name: {
     type: String,
     default: '',
-    required: 'Please fill Chat Room name',
     trim: true
   },
   created: {
@@ -17,10 +16,18 @@ var ChatRoomSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
+  recipientId: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  },
   messages: [{
     type: Schema.ObjectId,
     ref: 'Message'
-  }]
+  }],
+  isPrivate: {
+    type: Boolean,
+    default: false
+  }
 });
 
 mongoose.model('ChatRoom', ChatRoomSchema);

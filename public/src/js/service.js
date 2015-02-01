@@ -37,6 +37,10 @@ socket.on('connect', function() {
   socket.on(ACTIONS.UPDATE_ROOM, function (room) {
     ChatRoomActions.updateRoom(room);
   });
+  socket.on(ACTIONS.ADD_PRIVATE_ROOM, function(room, cb) {
+    ChatRoomActions.addPrivateRoom(room);
+    cb();
+  });
 });
 
 
@@ -46,6 +50,10 @@ function submitMessage(message) {
 
 function submitNewRoom(room) {
   socket.emit(ACTIONS.SUBMIT_ROOM, room);
+}
+
+function submitPrivateRoom(recipientId) {
+  socket.emit(ACTIONS.SUBMIT_PRIVATE_ROOM, recipientId);
 }
 
 function submitNewUserName(userName) {
@@ -78,6 +86,7 @@ function leaveRoom(roomId) {
 module.exports = {
   submitMessage: submitMessage,
   submitNewRoom: submitNewRoom,
+  submitPrivateRoom: submitPrivateRoom,
   submitNewUserName: submitNewUserName,
   submitMessageUpdate: submitMessageUpdate,
   submitRoomUpdate: submitRoomUpdate,

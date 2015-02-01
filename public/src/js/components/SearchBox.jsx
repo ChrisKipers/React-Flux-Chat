@@ -25,7 +25,7 @@ var SearchBox = React.createClass({
     ChatRoomStore.removeChangeListener(this._onRoomsChange);
   },
   render: function () {
-    var searchResultsComponent = this.state.active ? this._calculateResults() : null;
+    var searchResultsComponent = this.state.active ? this._renderResults() : null;
 
     return (
       <div className="search-box">
@@ -37,13 +37,17 @@ var SearchBox = React.createClass({
       </div>
     );
   },
-  _calculateResults: function () {
+  _renderResults: function () {
     var lowerCaseSearch = this.state.searchText.toLowerCase();
 
-    var matchingRooms = _.values(this.state.rooms).filter(function (room) {
-      var lowerCaseRoomName = room.name.toLowerCase();
-      return lowerCaseRoomName.indexOf(lowerCaseSearch) !== -1;
-    });
+    var matchingRooms = _.values(this.state.rooms)
+      .filter(function (room) {
+        return !room.isPrivate;
+      })
+      .filter(function (room) {
+        var lowerCaseRoomName = room.name.toLowerCase();
+        return lowerCaseRoomName.indexOf(lowerCaseSearch) !== -1;
+      });
 
     var matchingUsers = this.state.users.filter(function (user) {
       var lowerCaseUserName = user.userName.toLowerCase();
@@ -58,17 +62,19 @@ var SearchBox = React.createClass({
       return <UserSearchResult {...user} key={user._id}  onRoomJoin={this._clearSearchCriteria} />;
     }.bind(this));
 
+    var roomResultsComponent = roomResultsComponents.length > 0 ?
+      <ul className="room-results">{roomResultsComponents}</ul> : null;
+
+    var userResultsComponent = userResultsComponents.length > 0 ?
+      <ul className="user-results">{userResultsComponents}</ul> : null;
+
     var noResultsComponent = roomResultsComponents.length + userResultsComponents.length === 0 ?
       <NoSearchResults /> : null;
 
     return (
       <div className="search-results">
-        <ul>
-          {roomResultsComponents}
-        </ul>
-        <ul>
-          {userResultsComponents}
-        </ul>
+        {roomResultsComponent}
+        {userResultsComponent}
         {noResultsComponent}
       </div>
     );
@@ -79,13 +85,13 @@ var SearchBox = React.createClass({
   _onUsersChange: function () {
     this.setState({users: UserStore.getUsers()});
   },
-  _onRoomsChange: function() {
+  _onRoomsChange: function () {
     this.setState({rooms: ChatRoomStore.getAll()});
   },
-  _focus: function() {
+  _focus: function () {
     this.setState({active: true});
   },
-  _blur: function() {
+  _blur: function () {
     this.setState({active: false});
   }
 });

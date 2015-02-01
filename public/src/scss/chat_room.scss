@@ -60,11 +60,15 @@ $unlock_button_dimension: 25px;
 
   .chat-room-name {
     margin-bottom: 3px;
+  }
 
-    .text-renderer-view, .text-renderer-edit {
-      height: 30px;
-      font-size: 20px;
-    }
+  .display-user-name, .text-renderer-view, .text-renderer-edit {
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .display-user-name {
+    padding: 5px 0 5px 0;
   }
 
   &.locked {

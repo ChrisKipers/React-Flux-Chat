@@ -5,6 +5,7 @@ var _ = require('lodash');
 var dimensions = require('../utils/dimensions');
 
 var ChatRoomHeader = require('./ChatRoomHeader.jsx');
+var PrivateChatRoomHeader = require('./PrivateChatRoomHeader.jsx');
 var MessageActions = require('../actions/MessageActions');
 var MessageList = require('./MessageList.jsx');
 
@@ -31,9 +32,13 @@ var ChatRoom = React.createClass({
   render: function() {
     var isRoomEditable = this.props.room.creatorId === this.state.user._id;
     var mergedRoomData = this._mergeRoomWithUserData();
+    var headerComponent = this.props.room.isPrivate ?
+      <PrivateChatRoomHeader room={mergedRoomData} user={this.state.user} users={this.state.users} locked={this.props.locked}/> :
+      <ChatRoomHeader room={mergedRoomData} editable={isRoomEditable} locked={this.props.locked}/>;
+
     return (
       <div className="chat-room">
-        <ChatRoomHeader room={mergedRoomData} editable={isRoomEditable} locked={this.props.locked}/>
+        {headerComponent}
         <MessageList messages={mergedRoomData.messages} user={this.state.user}/>
         <form onSubmit={this._submitMessage} className="new-message-form">
           <input type="text" placeholder="Enter Message" ref="messageInput" />
