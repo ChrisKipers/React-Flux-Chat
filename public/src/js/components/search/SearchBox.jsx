@@ -2,6 +2,8 @@
 /*jshint quotmark:false */
 var React = require('react/addons');
 var _ = require('lodash');
+var utils = require('../../utils/utils');
+var dimensions = require('../../utils/dimensions');
 
 var ChatRoomSearchResult = require('./ChatRoomSearchResult.jsx');
 var UserSearchResult = require('./UserSearchResults.jsx');
@@ -77,7 +79,7 @@ var SearchBox = React.createClass({
       <NoSearchResults /> : null;
 
     return (
-      <div className="search-results">
+      <div className="search-results" ref="searchResults">
         {roomResultsComponent}
         {userResultsComponent}
         {noResultsComponent}
@@ -97,10 +99,19 @@ var SearchBox = React.createClass({
     this.setState({user: SettingsStore.getUser()});
   },
   _focus: function () {
-    this.setState({active: true});
+    this.setState({active: true}, function () {
+      this._setSearchResultsMaxHeight();
+    }.bind(this));
   },
   _blur: function () {
     this.setState({active: false});
+  },
+  _setSearchResultsMaxHeight: function () {
+    var resultsEl = this.refs.searchResults.getDOMNode();
+    var resultsOffset = utils.cumulativeOffset(resultsEl);
+    var windowHeight = dimensions.getWindowHeight();
+    var maxHeight = windowHeight - resultsOffset.top - 10;
+    resultsEl.style.maxHeight = maxHeight + 'px';
   }
 });
 

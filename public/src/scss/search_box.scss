@@ -18,6 +18,7 @@ $borderProperties: 1px solid $BORDER_COLOR;
       position: absolute;
       border: $borderProperties;
       box-shadow: 0px 2px 2px #000000;
+      overflow-y: auto;
 
 
       .user-search-result, .chat-room-search-result, .no-search-results {
